@@ -33,16 +33,18 @@
   }
 
   /* Hover glows */
-  .store-links a[href*="steam"]       { --hover: #171D25; } /* Steam navy */
+  .store-links a[href*="steam"]       { --hover: #246975; } /* Steam aqua */
   .store-links a[href*="epicgames"]   { --hover: #2E2E2E; } /* Epic dark gray */
   .store-links a[href*="playstation"] { --hover: #0070d1; } /* PlayStation blue */
   .store-links a[href*="xbox"]        { --hover: #107c10; } /* Xbox green */
 
+  /* Explicit Steam override just in case */
   .store-links a[href*="steam"]:hover {
-    border-color: #171D25 !important;
-    color: #171D25 !important;
-    box-shadow: 0 0 10px #171D25 !important;
+    border-color: #246975 !important;
+    color: #246975 !important;
+    box-shadow: 0 0 10px #246975 !important;
   }
+
   .store-links a:hover {
     border-color: var(--hover);
     color: var(--hover);
@@ -67,9 +69,9 @@
   /* Buy Now header */
   .buy-now {
     text-align: center;
-    font-size: 1.25rem;  /* a bit larger than body */
+    font-size: 1.25rem;
     font-weight: 700;
-    color: #107c10;      /* tasteful green */
+    color: #107c10;
     margin: 1.5rem 0 0.5rem;
   }
 </style>
@@ -87,11 +89,11 @@
 
   <div class="mototrials-header">
     <h2 style="margin:0;">MotoTrials</h2>
-    <!-- Upload this alongside index.html; lowercase filename -->
-    <img src="mototrials-logo.png" alt="MotoTrials logo" onerror="this.style.display='none';">
+    <!-- Use URL-encoded spaces so it loads reliably -->
+    <img src="motor%20trials%20logo.png?v=1" alt="MotoTrials logo" onerror="this.style.display='none';">
   </div>
 
-  <p>100% physics-based motorcycle game with buttery handling and shiny achievements.</p>
+  <p>100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
 
   <p><a href="https://www.youtube.com/@proudarts9127" target="_blank">🎥 Watch the trailer →</a></p>
   <p><a href="privacy/" target="_blank">🔒 Privacy Policy</a></p>
