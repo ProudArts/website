@@ -38,13 +38,11 @@
   .store-links a[href*="playstation"] { --hover: #0070d1; } /* PlayStation blue */
   .store-links a[href*="xbox"]        { --hover: #107c10; } /* Xbox green */
 
-  /* Explicit Steam override just in case */
   .store-links a[href*="steam"]:hover {
     border-color: #246975 !important;
     color: #246975 !important;
     box-shadow: 0 0 10px #246975 !important;
   }
-
   .store-links a:hover {
     border-color: var(--hover);
     color: var(--hover);
@@ -52,18 +50,27 @@
     transform: translateY(-2px);
   }
 
-  /* MotoTrials heading + image layout */
+  /* MotoTrials heading + image layout (bigger title, logo close by) */
   .mototrials-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 1rem;
+    justify-content: center;    /* center the pair as a unit */
+    gap: .75rem;                /* small gap so they sit close */
+    flex-wrap: wrap;            /* stack gracefully on mobile */
+    text-align: center;
+  }
+  .mototrials-title {
+    margin: 0;
+    line-height: 1.05;
+    font-weight: 800;
+    /* ~5x feel on desktop, scales down on mobile */
+    font-size: clamp(2.2rem, 6vw, 3.4rem);
+    letter-spacing: .5px;
   }
   .mototrials-header img {
-    max-width: 160px;
+    max-width: 180px;           /* bump up a touch */
     height: auto;
-    border-radius: 0.5rem;
+    border-radius: .5rem;
   }
 
   /* Buy Now header */
@@ -88,8 +95,7 @@
   <hr style="margin:2rem 0;">
 
   <div class="mototrials-header">
-    <h2 style="margin:0;">MotoTrials</h2>
-    <!-- Use URL-encoded spaces so it loads reliably -->
+    <h2 class="mototrials-title">MotoTrials</h2>
     <img src="mototrailslogo.png?v=1" alt="MotoTrials logo" onerror="this.style.display='none';">
   </div>
 
