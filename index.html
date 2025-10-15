@@ -33,26 +33,16 @@
   }
 
   /* Hover glows */
-  .store-links a[href*="steam"] {
-    --hover: #171D25; /* True Steam navy */
-  }
-  .store-links a[href*="epicgames"] {
-    --hover: #2E2E2E; /* Epic dark gray */
-  }
-  .store-links a[href*="playstation"] {
-    --hover: #0070d1; /* PlayStation blue */
-  }
-  .store-links a[href*="xbox"] {
-    --hover: #107c10; /* Xbox green */
-  }
+  .store-links a[href*="steam"]       { --hover: #171D25; } /* Steam navy */
+  .store-links a[href*="epicgames"]   { --hover: #2E2E2E; } /* Epic dark gray */
+  .store-links a[href*="playstation"] { --hover: #0070d1; } /* PlayStation blue */
+  .store-links a[href*="xbox"]        { --hover: #107c10; } /* Xbox green */
 
-  /* Explicit Steam hover override (in case variables conflict) */
   .store-links a[href*="steam"]:hover {
     border-color: #171D25 !important;
     color: #171D25 !important;
     box-shadow: 0 0 10px #171D25 !important;
   }
-
   .store-links a:hover {
     border-color: var(--hover);
     color: var(--hover);
@@ -73,6 +63,15 @@
     height: auto;
     border-radius: 0.5rem;
   }
+
+  /* Buy Now header */
+  .buy-now {
+    text-align: center;
+    font-size: 1.25rem;  /* a bit larger than body */
+    font-weight: 700;
+    color: #107c10;      /* tasteful green */
+    margin: 1.5rem 0 0.5rem;
+  }
 </style>
 
 <body>
@@ -88,6 +87,7 @@
 
   <div class="mototrials-header">
     <h2 style="margin:0;">MotoTrials</h2>
+    <!-- Upload this alongside index.html; lowercase filename -->
     <img src="mototrials-logo.png" alt="MotoTrials logo" onerror="this.style.display='none';">
   </div>
 
@@ -96,8 +96,7 @@
   <p><a href="https://www.youtube.com/@proudarts9127" target="_blank">🎥 Watch the trailer →</a></p>
   <p><a href="privacy/" target="_blank">🔒 Privacy Policy</a></p>
 
-  <div style="margin:1.5rem 0 0.5rem;font-weight:600;">Available on:</div>
-
+  <div class="buy-now">Buy Now</div>
   <div class="store-links">
     <a href="https://store.steampowered.com/app/1191050/MotoTrials" target="_blank">Steam</a>
     <a href="https://store.epicgames.com/en-US/p/mototrials-fd1abb" target="_blank">Epic Games Store</a>
