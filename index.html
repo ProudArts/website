@@ -33,16 +33,45 @@
   }
 
   /* Hover glows */
-  .store-links a[href*="steam"]       { --hover: #171D25; } /* Steam navy */
-  .store-links a[href*="epicgames"]   { --hover: #2E2E2E; } /* Epic dark gray */
-  .store-links a[href*="playstation"] { --hover: #0070d1; } /* PlayStation blue */
-  .store-links a[href*="xbox"]        { --hover: #107c10; } /* Xbox green */
+  .store-links a[href*="steam"] {
+    --hover: #171D25; /* True Steam navy */
+  }
+  .store-links a[href*="epicgames"] {
+    --hover: #2E2E2E; /* Epic dark gray */
+  }
+  .store-links a[href*="playstation"] {
+    --hover: #0070d1; /* PlayStation blue */
+  }
+  .store-links a[href*="xbox"] {
+    --hover: #107c10; /* Xbox green */
+  }
+
+  /* Explicit Steam hover override (in case variables conflict) */
+  .store-links a[href*="steam"]:hover {
+    border-color: #171D25 !important;
+    color: #171D25 !important;
+    box-shadow: 0 0 10px #171D25 !important;
+  }
 
   .store-links a:hover {
     border-color: var(--hover);
     color: var(--hover);
     box-shadow: 0 0 10px var(--hover);
     transform: translateY(-2px);
+  }
+
+  /* MotoTrials heading + image layout */
+  .mototrials-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .mototrials-header img {
+    max-width: 160px;
+    height: auto;
+    border-radius: 0.5rem;
   }
 </style>
 
@@ -57,7 +86,11 @@
 
   <hr style="margin:2rem 0;">
 
-  <h2>MotoTrials</h2>
+  <div class="mototrials-header">
+    <h2 style="margin:0;">MotoTrials</h2>
+    <img src="mototrials-logo.png" alt="MotoTrials logo" onerror="this.style.display='none';">
+  </div>
+
   <p>100% physics-based motorcycle game with buttery handling and shiny achievements.</p>
 
   <p><a href="https://www.youtube.com/@proudarts9127" target="_blank">🎥 Watch the trailer →</a></p>
