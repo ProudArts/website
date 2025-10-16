@@ -32,7 +32,6 @@
     color: #222;
   }
 
-  /* Hover glows */
   .store-links a[href*="steam"]       { --hover: #246975; }
   .store-links a[href*="epicgames"]   { --hover: #2E2E2E; }
   .store-links a[href*="playstation"] { --hover: #0070d1; }
@@ -73,13 +72,13 @@
 
   .buy-now {
     text-align: center;
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-size: 3.75rem; /* 3× original size (1.25rem × 3) */
+    font-weight: 800;
     color: #107c10;
-    margin: 1.5rem 0 0.5rem;
+    margin: 2rem 0 1rem;
+    letter-spacing: 1px;
   }
 
-  /* Trailer */
   .trailer-shell {
     position: relative;
     width: 100%;
@@ -101,6 +100,12 @@
     display:flex; align-items:center; justify-content:center;
   }
   .play-badge svg { fill:#000; }
+
+  .privacy-link {
+    display:block;
+    text-align:center;
+    margin-top:2.5rem;
+  }
 </style>
 
 <body>
@@ -121,7 +126,7 @@
 
   <p style="text-align:center;">100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
 
-  <!-- Embedded trailer replaces old "watch trailer" link -->
+  <!-- Trailer embed -->
   <div class="trailer-shell" data-video-id="X7VtzO11uSI" role="button" aria-label="Play MotoTrials trailer">
     <div class="play-badge">
       <div>
@@ -130,9 +135,8 @@
     </div>
   </div>
 
-  <p style="text-align:center;"><a href="privacy/" target="_blank">🔒 Privacy Policy</a></p>
-
   <div class="buy-now">Buy Now</div>
+
   <div class="store-links">
     <a href="https://store.steampowered.com/app/1191050/MotoTrials" target="_blank">Steam</a>
     <a href="https://store.epicgames.com/en-US/p/mototrials-fd1abb" target="_blank">Epic Games Store</a>
@@ -150,7 +154,11 @@
     <li><a href="https://www.youtube.com/watch?v=VkFedXlNXQE" target="_blank">GZA et KARO</a> – “Featured MotoTrials in multiple live streams from France”</li>
   </ul>
 
-  <p style="margin-top:2rem;font-size:0.9em;color:#555;text-align:center;">
+  <div class="privacy-link">
+    <a href="privacy/" target="_blank">🔒 Privacy Policy</a>
+  </div>
+
+  <p style="margin-top:.5rem;font-size:0.9em;color:#555;text-align:center;">
     © 2025 Proud Arts LLC — All Rights Reserved
   </p>
 
