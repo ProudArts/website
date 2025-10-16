@@ -33,10 +33,10 @@
   }
 
   /* Hover glows */
-  .store-links a[href*="steam"]       { --hover: #246975; } /* Steam aqua */
-  .store-links a[href*="epicgames"]   { --hover: #2E2E2E; } /* Epic dark gray */
-  .store-links a[href*="playstation"] { --hover: #0070d1; } /* PlayStation blue */
-  .store-links a[href*="xbox"]        { --hover: #107c10; } /* Xbox green */
+  .store-links a[href*="steam"]       { --hover: #246975; }
+  .store-links a[href*="epicgames"]   { --hover: #2E2E2E; }
+  .store-links a[href*="playstation"] { --hover: #0070d1; }
+  .store-links a[href*="xbox"]        { --hover: #107c10; }
 
   .store-links a[href*="steam"]:hover {
     border-color: #246975 !important;
@@ -50,30 +50,27 @@
     transform: translateY(-2px);
   }
 
-  /* MotoTrials heading + image layout (bigger title, logo close by) */
   .mototrials-header {
     display: flex;
     align-items: center;
-    justify-content: center;    /* center the pair as a unit */
-    gap: .75rem;                /* small gap so they sit close */
-    flex-wrap: wrap;            /* stack gracefully on mobile */
+    justify-content: center;
+    gap: .75rem;
+    flex-wrap: wrap;
     text-align: center;
   }
   .mototrials-title {
     margin: 0;
     line-height: 1.05;
     font-weight: 800;
-    /* ~5x feel on desktop, scales down on mobile */
     font-size: clamp(2.2rem, 6vw, 3.4rem);
     letter-spacing: .5px;
   }
   .mototrials-header img {
-    max-width: 180px;           /* bump up a touch */
+    max-width: 180px;
     height: auto;
     border-radius: .5rem;
   }
 
-  /* Buy Now header */
   .buy-now {
     text-align: center;
     font-size: 1.25rem;
@@ -81,6 +78,29 @@
     color: #107c10;
     margin: 1.5rem 0 0.5rem;
   }
+
+  /* Trailer */
+  .trailer-shell {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    background: #000 center/cover no-repeat url('https://img.youtube.com/vi/X7VtzO11uSI/hqdefault.jpg');
+    margin: 1.25rem auto 2rem;
+  }
+  .play-badge {
+    position:absolute; inset:0;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .play-badge div {
+    width:72px; height:72px; border-radius:50%;
+    background:rgba(255,255,255,.9);
+    box-shadow:0 6px 20px rgba(0,0,0,.35);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .play-badge svg { fill:#000; }
 </style>
 
 <body>
@@ -99,10 +119,18 @@
     <img src="mototrailslogo.png?v=1" alt="MotoTrials logo" onerror="this.style.display='none';">
   </div>
 
-  <p>100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
+  <p style="text-align:center;">100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
 
-  <p><a href="https://www.youtube.com/watch?v=X7VtzO11uSI" target="_blank">🎥 Watch the trailer →</a></p>
-  <p><a href="privacy/" target="_blank">🔒 Privacy Policy</a></p>
+  <!-- Embedded trailer replaces old "watch trailer" link -->
+  <div class="trailer-shell" data-video-id="X7VtzO11uSI" role="button" aria-label="Play MotoTrials trailer">
+    <div class="play-badge">
+      <div>
+        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <p style="text-align:center;"><a href="privacy/" target="_blank">🔒 Privacy Policy</a></p>
 
   <div class="buy-now">Buy Now</div>
   <div class="store-links">
@@ -125,6 +153,74 @@
   <p style="margin-top:2rem;font-size:0.9em;color:#555;text-align:center;">
     © 2025 Proud Arts LLC — All Rights Reserved
   </p>
+
+<script>
+(function(){
+  const shell = document.querySelector('.trailer-shell');
+  if (!shell) return;
+  const videoId = shell.dataset.videoId;
+  let player, ytReady = false, iframeInserted = false, visibleLogged = false;
+
+  function loadYTApi(cb){
+    if (window.YT && window.YT.Player) { ytReady = true; cb(); return; }
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+    window.onYouTubeIframeAPIReady = function(){ ytReady = true; cb(); };
+  }
+
+  function insertIframe(){
+    if (iframeInserted) return;
+    iframeInserted = true;
+    const iframeDiv = document.createElement('div');
+    iframeDiv.id = 'yt-trailer-player';
+    iframeDiv.style.position='absolute';
+    iframeDiv.style.inset='0';
+    shell.appendChild(iframeDiv);
+
+    loadYTApi(function(){
+      player = new YT.Player('yt-trailer-player', {
+        videoId: videoId,
+        playerVars: { rel:0, modestbranding:1, playsinline:1, origin:location.origin },
+      });
+    });
+  }
+
+  const io = 'IntersectionObserver' in window ? new IntersectionObserver((entries)=>{
+    if (entries[0].isIntersecting) {
+      insertIframe();
+      if (!visibleLogged && window.gtag) gtag('event','trailer_visible',{location:'hero'});
+      visibleLogged = true;
+      io.disconnect();
+    }
+  }, { threshold:0.25 }) : null;
+  if (io) io.observe(shell); else insertIframe();
+
+  shell.addEventListener('click', function(){
+    if (player && typeof player.playVideo==='function') {
+      try { player.mute(); player.playVideo(); }
+      catch(e){ hardSwap(); }
+    } else { hardSwap(); }
+    shell.querySelector('.play-badge')?.remove();
+    if (window.gtag) gtag('event','trailer_play',{location:'hero'});
+  });
+
+  function hardSwap(){
+    shell.innerHTML='';
+    const iframe=document.createElement('iframe');
+    iframe.allow='autoplay; encrypted-media; picture-in-picture';
+    iframe.allowFullscreen=true;
+    iframe.loading='lazy';
+    iframe.style.position='absolute';
+    iframe.style.inset='0';
+    iframe.style.width='100%';
+    iframe.style.height='100%';
+    iframe.style.border='0';
+    iframe.src=`https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1`;
+    shell.appendChild(iframe);
+  }
+})();
+</script>
 
 </body>
 </html>
