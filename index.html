@@ -1,83 +1,6 @@
-<!doctype html>
-<html lang="en">
-<meta charset="utf-8">
-<title>Proud Arts — Official Site</title>
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="icon" href="Logo.png">
-
+<!-- 🔧 Replace your trailer CSS with this -->
 <style>
-  body {
-    font-family: system-ui, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-    max-width: 720px;
-    margin: 4rem auto;
-    padding: 0 1rem;
-    line-height: 1.6;
-    color: #222;
-    background: #fff;
-  }
-
-  .store-links {
-    display: flex;
-    flex-wrap: wrap;
-    gap: .5rem;
-    justify-content: center;
-  }
-
-  .store-links a {
-    text-decoration: none;
-    padding: .6rem .9rem;
-    border: 1px solid #ddd;
-    border-radius: .6rem;
-    transition: all 0.25s ease;
-    color: #222;
-  }
-
-  .store-links a[href*="steam"]       { --hover: #246975; }
-  .store-links a[href*="epicgames"]   { --hover: #2E2E2E; }
-  .store-links a[href*="playstation"] { --hover: #0070d1; }
-  .store-links a[href*="xbox"]        { --hover: #107c10; }
-
-  .store-links a[href*="steam"]:hover {
-    border-color: #246975 !important;
-    color: #246975 !important;
-    box-shadow: 0 0 10px #246975 !important;
-  }
-  .store-links a:hover {
-    border-color: var(--hover);
-    color: var(--hover);
-    box-shadow: 0 0 10px var(--hover);
-    transform: translateY(-2px);
-  }
-
-  .mototrials-header {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: .75rem;
-    flex-wrap: wrap;
-    text-align: center;
-  }
-  .mototrials-title {
-    margin: 0;
-    line-height: 1.05;
-    font-weight: 800;
-    font-size: clamp(2.2rem, 6vw, 3.4rem);
-    letter-spacing: .5px;
-  }
-  .mototrials-header img {
-    max-width: 180px;
-    height: auto;
-    border-radius: .5rem;
-  }
-
-  .buy-now {
-    text-align: center;
-    font-size: 3.75rem;
-    font-weight: 800;
-    color: #107c10;
-    margin: 2rem 0 1rem;
-    letter-spacing: 1px;
-  }
+  /* ... keep your existing styles above ... */
 
   .trailer-shell {
     position: relative;
@@ -89,10 +12,16 @@
     background: #000 center/cover no-repeat url('https://img.youtube.com/vi/X7VtzO11uSI/hqdefault.jpg');
     margin: 1.25rem auto 2rem;
   }
-  .play-badge {
-    position:absolute; inset:0;
-    display:flex; align-items:center; justify-content:center;
+  /* Make any iframe fill the box — this prevents the top-left crop */
+  .trailer-shell iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
   }
+
+  .play-badge { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; }
   .play-badge div {
     width:72px; height:72px; border-radius:50%;
     background:rgba(255,255,255,.9);
@@ -101,37 +30,53 @@
   }
   .play-badge svg { fill:#000; }
 
-  .privacy-link {
-    display:block;
-    text-align:center;
-    margin-top:2.5rem;
+  /* Logo/image hardening for small screens */
+  .mototrials-header img {
+    max-width: min(180px, 45vw);
+    height: auto;
+    border-radius: .5rem;
+  }
+
+  /* Optional: a bit less outer margin on phones */
+  @media (max-width: 480px) {
+    body { margin: 2rem auto; }
   }
 </style>
 
-<body>
+<!-- 🔧 Replace your top logo block with this more robust version -->
+<div style="text-align:center;margin-bottom:1.5rem;">
+  <!-- Use exact-case filename; remove onerror self-hide; provide alt + dimensions hint -->
+  <img
+    src="Logo.png"
+    alt="Proud Arts"
+    style="max-width:260px;width:50%;height:auto;display:inline-block"
+    loading="lazy">
+  <!-- Fallback if the file name/path is wrong (shows only if image fails) -->
+  <noscript><strong>Proud Arts</strong></noscript>
+</div>
 
-  <!-- Top logo only -->
-  <div style="text-align:center;margin-bottom:1.5rem;">
-    <img src="Logo.png" alt="Proud Arts logo" style="max-width:260px;width:50%;height:auto;" onerror="this.style.display='none';" loading="lazy">
-  </div>
+<!-- 🔧 Add this script ONCE (after the trailer-shell div) -->
+<script>
+  // Click-to-play: swaps poster for a properly sized YouTube iframe
+  (function () {
+    var shells = document.querySelectorAll('.trailer-shell');
+    shells.forEach(function (el) {
+      var id = el.getAttribute('data-video-id');
+      if (!id) return;
 
-  <hr style="margin:2rem 0;">
-
-  <div class="mototrials-header">
-    <h2 class="mototrials-title">MotoTrials</h2>
-    <img src="mototrailslogo.png?v=1" alt="MotoTrials logo" onerror="this.style.display='none';">
-  </div>
-
-  <p style="text-align:center;">100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
-
-  <!-- Trailer embed -->
-  <div class="trailer-shell" data-video-id="X7VtzO11uSI" role="button" aria-label="Play MotoTrials trailer">
-    <div class="play-badge">
-      <div>
-        <svg width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      </div>
-    </div>
-  </div>
+      el.addEventListener('click', function () {
+        var iframe = document.createElement('iframe');
+        iframe.src =
+          'https://www.youtube.com/embed/' + encodeURIComponent(id) +
+          '?autoplay=1&playsinline=1&rel=0&modestbranding=1';
+        iframe.setAttribute('allow', 'autoplay; encrypted-media; picture-in-picture;');
+        iframe.setAttribute('allowfullscreen', '');
+        el.innerHTML = '';           // remove play badge/poster
+        el.appendChild(iframe);      // fill via CSS above
+      }, { once: true });
+    });
+  })();
+</script>
 
   <div class="buy-now">Buy Now</div>
 
