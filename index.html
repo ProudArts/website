@@ -4,7 +4,8 @@
   <meta charset="utf-8">
   <title>Proud Arts — Official Site</title>
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <link rel="icon" href="logo.png"> <!-- make sure the case matches the actual file -->
+  <!-- favicon: try lowercase first (your original), JS below will swap if needed -->
+  <link rel="icon" href="logo.png">
 
   <style>
     :root { color-scheme: light dark; }
@@ -19,9 +20,7 @@
       background: #fff;
     }
 
-    .store-links {
-      display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center;
-    }
+    .store-links { display: flex; flex-wrap: wrap; gap: .5rem; justify-content: center; }
     .store-links a {
       text-decoration: none; padding: .6rem .9rem; border: 1px solid #ddd;
       border-radius: .6rem; transition: all .25s ease; color: #222;
@@ -79,24 +78,23 @@
 </head>
 <body>
 
-  <!-- Top logo (ensure the filename and case match your server exactly) -->
+  <!-- Top logo (kept exactly as your working version) -->
   <div style="text-align:center;margin-bottom:1.5rem;">
-    <img src="logo.png" alt="Proud Arts logo"
-         style="max-width:260px;width:50%;height:auto;"
-         loading="lazy">
+    <img id="brandLogo" src="logo.png" alt="Proud Arts logo"
+         style="max-width:260px;width:50%;height:auto;" loading="lazy">
   </div>
 
   <hr style="margin:2rem 0;">
 
   <div class="mototrials-header">
     <h2 class="mototrials-title">MotoTrials</h2>
-    <!-- NOTE: check the filename; “mototrailslogo.png” is probably a typo -->
-    <img src="mototrialslogo.png?v=1" alt="MotoTrials logo" loading="lazy">
+    <!-- Kept your src; JS below will auto-try casing/typo variants if needed -->
+    <img id="gameLogo" src="mototrialslogo.png?v=1" alt="MotoTrials logo" loading="lazy">
   </div>
 
   <p style="text-align:center;">100% physics-based motorcycle game. Inspired by Squid Game, LIMBO, and Trials.</p>
 
-  <!-- Trailer embed (click-to-play) -->
+  <!-- Trailer embed (click-to-play) — this is the version you said works perfectly -->
   <div class="trailer-shell" data-video-id="X7VtzO11uSI" role="button" aria-label="Play MotoTrials trailer">
     <div class="play-badge">
       <div>
@@ -106,7 +104,7 @@
   </div>
 
   <script>
-    // Replace the poster with a properly sized iframe on click
+    // Keep your click-to-iframe behavior intact
     document.addEventListener('click', function (e) {
       const shell = e.target.closest('.trailer-shell');
       if (!shell) return;
@@ -118,7 +116,66 @@
       shell.innerHTML = '';
       shell.appendChild(iframe);
     }, { passive: true });
+
+    // Minimal, invisible image fallbacks for common filename/casing issues
+    function addFallbacks(img, candidates) {
+      if (!img) return;
+      let i = 0;
+      const original = img.getAttribute('src');
+      const list = [original, ...candidates].filter(Boolean);
+      img.addEventListener('error', function handler () {
+        i++;
+        if (i < list.length) {
+          img.src = list[i];
+        } else {
+          img.removeEventListener('error', handler);
+          // last resort: hide it so layout stays clean
+          img.style.display = 'none';
+          console.warn('All image fallbacks failed for:', original, 'tried:', list);
+        }
+      });
+    }
+
+    // Try common variants:
+    // - case differences (Logo.png vs logo.png)
+    // - asset folder use
+    // - known typo: "mototrailslogo.png"
+    addFallbacks(
+      document.getElementById('brandLogo'),
+      ['Logo.png', '/logo.png', '/assets/logo.png', '/assets/Logo.png']
+    );
+
+    addFallbacks(
+      document.getElementById('gameLogo'),
+      [
+        'mototrialslogo.png',               // without query
+        'MotoTrialsLogo.png',               // PascalCase
+        'mototrailslogo.png',               // common typo
+        '/assets/mototrialslogo.png',
+        '/assets/MotoTrialsLogo.png'
+      ]
+    );
+
+    // Optional: also try to rescue the favicon if casing is different on server
+    (function fixFavicon(){
+      const link = document.querySelector('link[rel="icon"]');
+      if (!link) return;
+      const tests = ['Logo.png', '/logo.png', '/assets/logo.png', '/assets/Logo.png'];
+      const img = new Image();
+      let i = 0;
+      img.onerror = function(){
+        if (i < tests.length){
+          link.href = tests[i++];
+          img.src = link.href;
+        }
+      };
+      img.onload = function(){ /* success, nothing else needed */ };
+      img.src = link.href;
+    })();
   </script>
+</body>
+</html>
+
 
 
 
