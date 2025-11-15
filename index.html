@@ -213,14 +213,25 @@
 <p>Real reactions from real players – these moments mean the world to us.</p>
 
 <div style="
-  display: grid;
-  /* Changed minmax to 240px to make the videos roughly 30% bigger */
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  display: flex;
+  overflow-x: auto;
   gap: 1.5rem;
   margin-top: 1rem;
+  padding-bottom: 1.5rem; /* Space for the scrollbar */
+  scroll-snap-type: x mandatory; /* Forces the snap effect */
+  -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
 ">
 
-  <div style="background:#111;padding:0.5rem;border-radius:10px;box-shadow:0 0 6px rgba(0,0,0,0.4);display:flex;flex-direction:column;">
+  <div style="
+    flex: 0 0 300px; /* Fixed width of 300px, prevents shrinking */
+    scroll-snap-align: center; /* Snaps this card to the center */
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
     <div style="width:100%; position: relative;">
       <iframe 
         src="https://www.youtube.com/embed/UdN9Vfczp1o" 
@@ -233,7 +244,16 @@
     </div>
   </div>
 
-  <div style="background:#111;padding:0.5rem;border-radius:10px;box-shadow:0 0 6px rgba(0,0,0,0.4);display:flex;flex-direction:column;">
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
     <div style="width:100%; position: relative;">
       <iframe 
         src="https://www.youtube.com/embed/3fyRd98OYMg" 
@@ -246,7 +266,16 @@
     </div>
   </div>
 
-  <div style="background:#111;padding:0.5rem;border-radius:10px;box-shadow:0 0 6px rgba(0,0,0,0.4);display:flex;flex-direction:column;">
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
     <div style="width:100%; position: relative;">
       <iframe 
         src="https://www.youtube.com/embed/5HGQZBbBo-o" 
@@ -259,7 +288,16 @@
     </div>
   </div>
 
-  <div style="background:#111;padding:0.5rem;border-radius:10px;box-shadow:0 0 6px rgba(0,0,0,0.4);display:flex;flex-direction:column;">
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
     <div style="width:100%; position: relative;">
       <iframe 
         src="https://www.youtube.com/embed/Vc_1NgAeVus" 
@@ -272,7 +310,16 @@
     </div>
   </div>
 
-  <div style="background:#111;padding:0.5rem;border-radius:10px;box-shadow:0 0 6px rgba(0,0,0,0.4);display:flex;flex-direction:column;">
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
     <div style="width:100%; position: relative;">
       <iframe 
         src="https://www.youtube.com/embed/cZSt-7y4vQU" 
