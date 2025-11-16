@@ -210,28 +210,28 @@
 
 
 <style>
-  /* This targets the scrollbar specifically for the carousel */
-  .video-carousel::-webkit-scrollbar {
-    height: 16px; /* This makes it 2x thicker (standard is usually 8px) */
-  }
+  /* This targets the scrollbar specifically for the carousel */
+  .video-carousel::-webkit-scrollbar {
+    height: 16px; /* This makes it 2x thicker (standard is usually 8px) */
+  }
 
-  /* This is the background of the scrollbar (the track) */
-  .video-carousel::-webkit-scrollbar-track {
-    background: #000; 
-    border-radius: 8px;
-  }
+  /* This is the background of the scrollbar (the track) */
+  .video-carousel::-webkit-scrollbar-track {
+    background: #000; 
+    border-radius: 8px;
+  }
 
-  /* This is the part you grab (the thumb) */
-  .video-carousel::-webkit-scrollbar-thumb {
-    background: #555; /* Dark grey color */
-    border-radius: 8px; /* Round edges so it looks nice */
-    border: 3px solid #000; /* Adds a little padding around the grabber */
-  }
+  /* This is the part you grab (the thumb) */
+  .video-carousel::-webkit-scrollbar-thumb {
+    background: #555; /* Dark grey color */
+    border-radius: 8px; /* Round edges so it looks nice */
+    border: 3px solid #000; /* Adds a little padding around the grabber */
+  }
 
-  /* Changes color when you hover over it */
-  .video-carousel::-webkit-scrollbar-thumb:hover {
-    background: #888; 
-  }
+  /* Changes color when you hover over it */
+  .video-carousel::-webkit-scrollbar-thumb:hover {
+    background: #888; 
+  }
 </style>
 
 
@@ -239,124 +239,141 @@
 <p>Real reactions from real players – these moments mean the world to us.</p>
 
 <div class="video-carousel" style="
-  display: flex;
-  overflow-x: auto;
-  gap: 1.5rem;
-  margin-top: 1rem;
-  padding-bottom: 1.5rem; 
-  scroll-snap-type: x mandatory; 
-  -webkit-overflow-scrolling: touch;
+  display: flex;
+  overflow-x: auto;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-bottom: 1.5rem; 
+  scroll-snap-type: x mandatory; 
+  -webkit-overflow-scrolling: touch;
 ">
 
-  <div style="
-    flex: 0 0 300px; 
-    scroll-snap-align: center; 
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/UdN9Vfczp1o" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px; 
+    scroll-snap-align: center; 
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/UdN9Vfczp1o" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <div style="
-    flex: 0 0 300px;
-    scroll-snap-align: center;
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/3fyRd98OYMg" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/3fyRd98OYMg" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <div style="
-    flex: 0 0 300px;
-    scroll-snap-align: center;
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/5HGQZBbBo-o" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/5HGQZBbBo-o" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <div style="
-    flex: 0 0 300px;
-    scroll-snap-align: center;
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/Vc_1NgAeVus" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+  _
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/Vc_1NgAeVus" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <div style="
-    flex: 0 0 300px;
-    scroll-snap-align: center;
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/cZSt-7y4vQU" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/cZSt-7y4vQU" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-  <div style="
-    flex: 0 0 300px;
-    scroll-snap-align: center;
-    background:#111;
-    padding:0.5rem;
-    border-radius:10px;
-    box-shadow:0 0 6px rgba(0,0,0,0.4);
-    display:flex;
-    flex-direction:column;
-  ">
-    <div style="width:100%; position: relative;">
-      <iframe 
-        src="https://www.youtube.com/embed/soCzhFAABOc" 
-        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
-        allowfullscreen></iframe>
-    </div>
-  </div>
+  <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/soCzhFAABOc" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
 
-</div>
+    <div style="
+    flex: 0 0 300px;
+    scroll-snap-align: center;
+    background:#111;
+    padding:0.5rem;
+    border-radius:10px;
+    box-shadow:0 0 6px rgba(0,0,0,0.4);
+    display:flex;
+    flex-direction:column;
+  ">
+    <div style="width:100%; position: relative;">
+      <iframe 
+        src="https://www.youtube.com/embed/m1z9e8IEygs" 
+        style="width:100%; aspect-ratio: 9/16; border:0; border-radius:8px; display: block;" 
+        allowfullscreen></iframe>
+    </div>
+  </div>
+  </div>
 
 
 
