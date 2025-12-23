@@ -896,104 +896,157 @@
 
 
 
+
 <section class="hof">
   <h2>MotoTrials — Hall of Fame</h2>
+
   <p class="hof-blurb">
-    No-death runs are the highest honor in MotoTrials. These riders completed the full run with zero deaths — pure discipline, nerves of steel, and absolute control.
+    No-death runs represent the highest achievement in MotoTrials.
+    One continuous run. Zero mistakes. Absolute discipline.
   </p>
 
   <div class="hof-grid">
-    <!-- Ringa (left / first) -->
-    <a class="hof-card" href="PASTE_RINGA_LINK_HERE" target="_blank" rel="noopener">
-      <img src="icons/ringa.png" alt="Ringa69 — No-Death Run — 37:28" loading="lazy">
+
+    <!-- Ringa -->
+    <a class="hof-card"
+       href="https://www.youtube.com/watch?v=ETNOX9hbBmI"
+       target="_blank" rel="noopener">
+      <img src="icons/ringa.png"
+           alt="Ringa69 Wildfire — No-Death Run — 37:28"
+           loading="lazy">
+
       <div class="hof-caption">
         <div class="hof-name">Ringa69</div>
+        <div class="hof-nickname">Wildfire</div>
         <div class="hof-time">No-Death Run — 37:28</div>
       </div>
     </a>
 
-    <!-- John (right / second) -->
-    <a class="hof-card" href="PASTE_JOHN_LINK_HERE" target="_blank" rel="noopener">
-      <img src="icons/johndaniels.png" alt="John Daniels — No-Death Run — 44:58" loading="lazy">
+    <!-- John -->
+    <a class="hof-card"
+       href="https://youtu.be/BonK0H8dosM"
+       target="_blank" rel="noopener">
+      <img src="icons/johndaniels.png"
+           alt="John Daniels Commander — No-Death Run — 44:58"
+           loading="lazy">
+
       <div class="hof-caption">
         <div class="hof-name">John Daniels</div>
+        <div class="hof-nickname">Commander</div>
         <div class="hof-time">No-Death Run — 44:58</div>
       </div>
     </a>
+
   </div>
 </section>
 
 <style>
   .hof{
-    margin: 2.5rem 0;
-    padding: 1.25rem 1rem;
-    border: 1px solid rgba(255,255,255,.12);
-    border-radius: 14px;
-    background: rgba(0,0,0,.18);
+    margin: 3rem 0;
+    padding: 1.6rem 1.4rem;
+    border: 1px solid rgba(255,255,255,.14);
+    border-radius: 16px;
+    background: linear-gradient(
+      180deg,
+      rgba(0,0,0,.30),
+      rgba(0,0,0,.18)
+    );
   }
+
   .hof h2{
-    margin: 0 0 .35rem 0;
-    letter-spacing: .5px;
+    margin: 0 0 .4rem 0;
+    font-weight: 800;
+    letter-spacing: .08em;
+    text-transform: uppercase;
   }
+
   .hof-blurb{
-    margin: 0 0 1.25rem 0;
-    max-width: 78ch;
+    max-width: 80ch;
+    margin: 0 0 1.6rem 0;
     opacity: .9;
-    line-height: 1.45;
+    line-height: 1.55;
   }
+
   .hof-grid{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.1rem;
-    align-items: start;
+    gap: 1.25rem;
   }
+
   .hof-card{
     display: block;
     text-decoration: none;
-    border-radius: 14px;
+    border-radius: 16px;
     overflow: hidden;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(0,0,0,.25);
-    transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+    background: rgba(0,0,0,.32);
+    border: 1px solid rgba(255,255,255,.16);
+    transition:
+      transform .15s ease,
+      box-shadow .15s ease,
+      border-color .15s ease;
   }
+
   .hof-card:hover{
-    transform: translateY(-2px);
-    border-color: rgba(255,255,255,.22);
-    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+    transform: translateY(-3px);
+    border-color: rgba(255,255,255,.28);
+    box-shadow: 0 14px 40px rgba(0,0,0,.45);
   }
+
   .hof-card img{
     display: block;
     width: 100%;
     height: auto;
   }
+
   .hof-caption{
-    padding: .75rem .85rem .9rem .85rem;
-  }
-  .hof-name{
-    font-weight: 800;
-    letter-spacing: .6px;
-  }
-  .hof-time{
-    margin-top: .2rem;
-    opacity: .9;
-    font-size: .95rem;
+    padding: .85rem .95rem 1rem .95rem;
+    background: rgba(0,0,0,.35);
   }
 
-  /* Keep cards from getting too huge on ultra-wide screens */
+  .hof-name{
+    font-weight: 900;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: #ffffff;
+  }
+
+  .hof-nickname{
+    margin-top: .15rem;
+    font-size: .78rem;
+    letter-spacing: .28em;
+    text-transform: uppercase;
+    opacity: .75;
+    color: #ffffff;
+  }
+
+  .hof-time{
+    margin-top: .35rem;
+    font-size: .95rem;
+    opacity: .9;
+    color: #ffffff;
+  }
+
   @media (min-width: 980px){
     .hof-grid{
-      grid-template-columns: repeat(2, minmax(0, 420px));
-      justify-content: start;
+      grid-template-columns: repeat(2, 420px);
     }
   }
 
-  /* Mobile: stack */
   @media (max-width: 720px){
     .hof-grid{
       grid-template-columns: 1fr;
     }
   }
 </style>
+
+
+
+
+
+
+
+
+
 
 
 
