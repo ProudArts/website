@@ -891,6 +891,113 @@
 
 
 
+
+
+
+
+
+<section class="hof">
+  <h2>MotoTrials — Hall of Fame</h2>
+  <p class="hof-blurb">
+    No-death runs are the highest honor in MotoTrials. These riders completed the full run with zero deaths — pure discipline, nerves of steel, and absolute control.
+  </p>
+
+  <div class="hof-grid">
+    <!-- Ringa (left / first) -->
+    <a class="hof-card" href="PASTE_RINGA_LINK_HERE" target="_blank" rel="noopener">
+      <img src="icons/ringa.png" alt="Ringa69 — No-Death Run — 37:28" loading="lazy">
+      <div class="hof-caption">
+        <div class="hof-name">Ringa69</div>
+        <div class="hof-time">No-Death Run — 37:28</div>
+      </div>
+    </a>
+
+    <!-- John (right / second) -->
+    <a class="hof-card" href="PASTE_JOHN_LINK_HERE" target="_blank" rel="noopener">
+      <img src="icons/johndaniels.png" alt="John Daniels — No-Death Run — 44:58" loading="lazy">
+      <div class="hof-caption">
+        <div class="hof-name">John Daniels</div>
+        <div class="hof-time">No-Death Run — 44:58</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<style>
+  .hof{
+    margin: 2.5rem 0;
+    padding: 1.25rem 1rem;
+    border: 1px solid rgba(255,255,255,.12);
+    border-radius: 14px;
+    background: rgba(0,0,0,.18);
+  }
+  .hof h2{
+    margin: 0 0 .35rem 0;
+    letter-spacing: .5px;
+  }
+  .hof-blurb{
+    margin: 0 0 1.25rem 0;
+    max-width: 78ch;
+    opacity: .9;
+    line-height: 1.45;
+  }
+  .hof-grid{
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.1rem;
+    align-items: start;
+  }
+  .hof-card{
+    display: block;
+    text-decoration: none;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.14);
+    background: rgba(0,0,0,.25);
+    transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease;
+  }
+  .hof-card:hover{
+    transform: translateY(-2px);
+    border-color: rgba(255,255,255,.22);
+    box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  }
+  .hof-card img{
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .hof-caption{
+    padding: .75rem .85rem .9rem .85rem;
+  }
+  .hof-name{
+    font-weight: 800;
+    letter-spacing: .6px;
+  }
+  .hof-time{
+    margin-top: .2rem;
+    opacity: .9;
+    font-size: .95rem;
+  }
+
+  /* Keep cards from getting too huge on ultra-wide screens */
+  @media (min-width: 980px){
+    .hof-grid{
+      grid-template-columns: repeat(2, minmax(0, 420px));
+      justify-content: start;
+    }
+  }
+
+  /* Mobile: stack */
+  @media (max-width: 720px){
+    .hof-grid{
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+
+
+
   
   <hr style="margin:2.5rem 0;">
 
