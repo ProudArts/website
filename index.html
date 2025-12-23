@@ -970,13 +970,13 @@
   .hof-grid{
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 1.25rem;
+    gap: 1.1rem;
   }
 
   .hof-card{
     display: block;
     text-decoration: none;
-    border-radius: 16px;
+    border-radius: 14px;
     overflow: hidden;
     background: rgba(0,0,0,.32);
     border: 1px solid rgba(255,255,255,.16);
@@ -987,9 +987,9 @@
   }
 
   .hof-card:hover{
-    transform: translateY(-3px);
+    transform: translateY(-2px);
     border-color: rgba(255,255,255,.28);
-    box-shadow: 0 14px 40px rgba(0,0,0,.45);
+    box-shadow: 0 12px 32px rgba(0,0,0,.45);
   }
 
   .hof-card img{
@@ -999,8 +999,8 @@
   }
 
   .hof-caption{
-    padding: .85rem .95rem 1rem .95rem;
-    background: rgba(0,0,0,.35);
+    padding: .6rem .7rem .75rem .7rem;
+    background: rgba(0,0,0,.38);
   }
 
   .hof-name{
@@ -1008,11 +1008,12 @@
     letter-spacing: .09em;
     text-transform: uppercase;
     color: #ffffff;
+    font-size: .9rem;
   }
 
   .hof-nickname{
-    margin-top: .15rem;
-    font-size: .78rem;
+    margin-top: .12rem;
+    font-size: .72rem;
     letter-spacing: .28em;
     text-transform: uppercase;
     opacity: .75;
@@ -1020,24 +1021,28 @@
   }
 
   .hof-time{
-    margin-top: .35rem;
-    font-size: .95rem;
+    margin-top: .3rem;
+    font-size: .85rem;
     opacity: .9;
     color: #ffffff;
   }
 
+  /* Desktop sizing — makes cards ~60–65% of previous size */
   @media (min-width: 980px){
     .hof-grid{
-      grid-template-columns: repeat(2, 420px);
+      grid-template-columns: repeat(2, 320px);
+      justify-content: start;
     }
   }
 
+  /* Mobile: stack cleanly */
   @media (max-width: 720px){
     .hof-grid{
       grid-template-columns: 1fr;
     }
   }
 </style>
+
 
 
 
