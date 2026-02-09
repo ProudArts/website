@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mile-Marker Benchmark</title>
+    <style>
+        body { font-family: -apple-system, sans-serif; background: #fff; display: flex; justify-content: center; padding-top: 60px; color: #111; }
+        .container { width: 100%; max-width: 400px; padding: 20px; }
+        label { display: block; font-size: 0.75rem; font-weight: 800; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; }
+        input { width: 100%; border: none; border-bottom: 2px solid #eee; padding: 15px 0; font-size: 2rem; outline: none; margin-bottom: 40px; transition: 0.3s; }
+        input:focus { border-bottom-color: #2ecc71; }
+        
+        .result-box { text-align: center; }
+        .cents-display { font-size: 6rem; font-weight: 900; color: #2ecc71; line-height: 1; margin: 0; }
+        .cents-symbol { font-size: 2.5rem; vertical-align: top; margin-left: 5px; }
+        .sub-label { font-size: 1.1rem; color: #888; font-weight: 600; margin-top: 10px; }
+        
+        /* The Benchmark Badge */
+        .benchmark { display: inline-block; margin-top: 25px; padding: 8px 15px; border-radius: 20px; background: #f0f0f0; font-size: 0.85rem; color: #666; font-weight: bold; }
+        .good { background: #e8f5e9; color: #2e7d32; }
+        .bad { background: #ffebee; color: #c62828; }
+        
+        #miles-left { color: #ccc; font-size: 0.8rem; margin-top: 20px; font-style: italic; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <label>Asking Price ($)</label>
+    <input type="number" id="price" placeholder="e.g. 12000" oninput="updateCents()">
+
+    <label>Current Mileage</label>
+    <input type="number" id="miles" placeholder="e.g. 80000" oninput="updateCents()">
+
+    <div class="result-box">
+        <p class="cents-display"><span id="big-num">0</span><span class="cents-symbol">¢</span></p>
+        <div class="sub-label">PER REMAINING MILE</div>
+        
+        <div id="badge" class="benchmark">Enter details...</div>
+        
+        <div id="miles-left">Based on 200,000 mile life expectancy</div>
+    </div>
+</div>
+
+<script>
+    function updateCents() {
+        const p = parseFloat(document.getElementById('price').value) || 0;
+        const m = parseFloat(document.getElementById('miles').value) || 0;
+        const limit = 200000;
+        const avgCents = 22.0; // The benchmark: Average used car value in today's market
+        
+        const remaining = limit - m;
+
+        if (p > 0 && remaining > 0) {
+            const centsPerMile = ((p / remaining) * 100).toFixed(1);
+            const badge = document.getElementById('badge');
+            
+            document.getElementById('big-num').innerText = centsPerMile;
+            
+            // Logic for the Benchmark Badge
+            if (centsPerMile <= avgCents) {
+                badge.innerText = "✓ GOOD DEAL (Avg: " + avgCents + "¢)";
+                badge.className = "benchmark good";
+            } else {
+                badge.innerText = "✕ OVER AVERAGE (Avg: " + avgCents + "¢)";
+                badge.className = "benchmark bad";
+            }
+            
+            document.getElementById('miles-left').innerText = remaining.toLocaleString() + " miles left until 200k";
+        } else {
+            document.getElementById('big-num').innerText = "0";
+            document.getElementById('badge').innerText = "Waiting for input...";
+            document.getElementById('badge').className = "benchmark";
+        }
+    }
+</script>
+
+</body>
+</html>
