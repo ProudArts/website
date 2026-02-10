@@ -22,16 +22,7 @@
             border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
         }
-        h2 { margin-top: 0; color: #222; text-align: center; margin-bottom: 5px; }
-        
-        .usage-badge {
-            font-size: 0.75rem;
-            color: #888;
-            text-align: center;
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+        h2 { margin-top: 0; color: #222; text-align: center; margin-bottom: 25px; }
 
         .config-section {
             background: #f8f9fa;
@@ -105,8 +96,16 @@
             font-weight: bold;
             color: #007bff;
             text-align: center;
+            line-height: 1.2;
         }
         .winner .result-cell { color: #28a745; }
+
+        .status-msg {
+            font-size: 0.75rem;
+            font-weight: normal;
+            display: block;
+            margin-top: 4px;
+        }
 
         .remove-btn {
             background: #ff4d4d;
@@ -154,7 +153,6 @@
 
 <div class="container">
     <h2>Vehicle Remaining Mile Calculator</h2>
-    <div class="usage-badge" id="usage-stat">Calculations Performed: 1,402</div>
     
     <button class="config-toggle" onclick="toggleConfig()">⚙️ Advanced Settings</button>
     
@@ -194,126 +192,3 @@
     <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
 
     <div class="info-text">
-        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the cost for every mile left in the vehicle's expected life.</p>
-        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find <strong>Miles Left</strong>. We then divide the price by those miles. The vehicle with the <strong>lowest cost per mile</strong> is highlighted in green.</p>
-    </div>
-</div>
-
-<footer>
-    &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
-    Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
-</footer>
-
-<script>
-    let sessionCalculations = 0;
-    const baseCount = 1402;
-
-    function updateUsageDisplay() {
-        const display = document.getElementById('usage-stat');
-        display.innerText = `Calculations Performed: ${(baseCount + sessionCalculations).toLocaleString()}`;
-    }
-
-    function toggleConfig() {
-        const config = document.getElementById('config');
-        config.style.display = config.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function formatCurrency(input) {
-        let value = input.value.replace(/\D/g, "");
-        if (value) {
-            input.value = "$" + Number(value).toLocaleString();
-        } else {
-            input.value = "";
-        }
-        calculateAll();
-    }
-
-    function formatNumber(input) {
-        let value = input.value.replace(/\D/g, "");
-        if (value) {
-            input.value = Number(value).toLocaleString();
-        } else {
-            input.value = "";
-        }
-        calculateAll();
-    }
-
-    function formatLifespan(input) {
-        formatNumber(input);
-        calculateAll();
-    }
-
-    function addRow() {
-        const list = document.getElementById('vehicle-list');
-        const count = list.getElementsByClassName('vehicle-row').length + 1;
-        
-        const newRow = document.createElement('div');
-        newRow.className = 'vehicle-row';
-        newRow.innerHTML = `
-            <input type="text" value="Vehicle ${count}" oninput="calculateAll()">
-            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
-            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
-            <div class="data-cell miles-left">-</div>
-            <div class="result-cell">-</div>
-            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
-        `;
-        list.appendChild(newRow);
-        calculateAll();
-    }
-
-    function calculateAll() {
-        const lifespanStr = document.getElementById('lifespan').value.replace(/\D/g, "");
-        const lifespan = parseFloat(lifespanStr) || 200000;
-        const rows = document.getElementsByClassName('vehicle-row');
-        
-        let bestCost = Infinity;
-        let bestRow = null;
-        let hasValidInput = false;
-
-        for (let row of rows) {
-            row.classList.remove('winner');
-            const price = parseFloat(row.querySelector('.price-input').value.replace(/\D/g, ""));
-            const mileage = parseFloat(row.querySelector('.mileage-input').value.replace(/\D/g, ""));
-            const leftDisplay = row.querySelector('.miles-left');
-            const output = row.querySelector('.result-cell');
-
-            if (isNaN(price) || isNaN(mileage)) {
-                leftDisplay.innerText = "-";
-                output.innerText = "-";
-                continue;
-            }
-
-            const remainingMiles = lifespan - mileage;
-            leftDisplay.innerText = remainingMiles > 0 ? remainingMiles.toLocaleString() : "0";
-
-            if (remainingMiles <= 0) {
-                output.innerText = "EOL";
-                output.style.color = "#dc3545";
-            } else {
-                const costPerMile = price / remainingMiles;
-                // Switched to 3 decimals for precision
-                output.innerText = "$" + costPerMile.toFixed(3);
-                output.style.color = "#007bff";
-                hasValidInput = true;
-
-                if (costPerMile < bestCost) {
-                    bestCost = costPerMile;
-                    bestRow = row;
-                }
-            }
-        }
-
-        const activeCalcs = Array.from(rows).filter(r => r.querySelector('.result-cell').innerText.includes('$')).length;
-        if (bestRow && activeCalcs > 1) {
-            bestRow.classList.add('winner');
-        }
-
-        if (hasValidInput) {
-            sessionCalculations++;
-            updateUsageDisplay();
-        }
-    }
-</script>
-
-</body>
-</html>
