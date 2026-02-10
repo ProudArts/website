@@ -16,7 +16,7 @@
         }
         .container { 
             width: 100%;
-            max-width: 850px; 
+            max-width: 900px; 
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
@@ -46,8 +46,8 @@
 
         .header-row {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 40px;
+            gap: 10px;
             margin-bottom: 10px;
             padding: 0 10px;
             font-weight: bold;
@@ -57,10 +57,10 @@
 
         .vehicle-row {
             display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 15px;
-            margin-bottom: 15px;
-            padding: 15px;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr 40px;
+            gap: 10px;
+            margin-bottom: 10px;
+            padding: 10px;
             background: #fff;
             border: 1px solid #eee;
             border-radius: 8px;
@@ -69,24 +69,34 @@
 
         input { 
             width: 100%; 
-            padding: 12px; 
+            padding: 10px; 
             border: 1px solid #ccc; 
             border-radius: 6px; 
             box-sizing: border-box; 
-            font-size: 1rem;
+            font-size: 0.95rem;
             text-align: center;
         }
 
         .result-cell {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: bold;
             color: #007bff;
             text-align: center;
         }
 
+        .remove-btn {
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            height: 30px;
+            font-weight: bold;
+        }
+
         .add-btn {
             display: block;
-            width: 200px;
+            width: 220px;
             margin: 20px auto;
             padding: 12px;
             background-color: #28a745;
@@ -96,7 +106,6 @@
             cursor: pointer;
             font-weight: bold;
         }
-        .add-btn:hover { background-color: #218838; }
 
         .info-text { 
             margin-top: 30px; 
@@ -106,6 +115,15 @@
             border-top: 1px solid #eee;
             padding-top: 20px;
         }
+
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #777;
+            padding-bottom: 40px;
+        }
+        footer a { color: #007bff; text-decoration: none; }
     </style>
 </head>
 <body>
@@ -117,30 +135,39 @@
     
     <div id="config" class="config-section">
         <label style="font-size: 0.9rem;">Estimated Max Lifespan (Miles):</label>
-        <input type="number" id="lifespan" value="200000" style="width: 150px; margin-left: 10px;" oninput="calculateAll()">
+        <input type="number" id="lifespan" value="200000" style="width: 120px; margin-left: 10px;" oninput="calculateAll()">
     </div>
 
     <div class="header-row">
-        <div>Asking Price ($)</div>
-        <div>Current Mileage</div>
-        <div>Cost per Mile</div>
+        <div>Vehicle Name</div>
+        <div>Price ($)</div>
+        <div>Mileage</div>
+        <div>Cost/Mile</div>
+        <div></div>
     </div>
 
     <div id="vehicle-list">
         <div class="vehicle-row">
+            <input type="text" placeholder="e.g. Blue SUV" oninput="calculateAll()">
             <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
             <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
             <div class="result-cell">-</div>
+            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         </div>
     </div>
 
     <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
 
     <div class="info-text">
-        <p><strong>How to use:</strong> This tool is designed to help you compare similar vehicles, specifically those of the same make, model, or year. It is most effective for comparing cars in the same class rather than different types of vehicles (like a sports car vs. a truck).</p>
-        <p><strong>Method:</strong> We subtract the current mileage from the estimated lifespan (default 200,000 miles) to find the remaining life. We then divide the price by those miles to get your "unit cost." If you believe a specific vehicle will last longer or shorter, you can adjust the lifespan in the <strong>Advanced Settings</strong>.</p>
+        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the "unit price" of a vehicle's remaining life based on a 200,000-mile benchmark.</p>
+        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan to find remaining miles, then divide price by those miles. If a vehicle is built to last longer (like a diesel truck), adjust the lifespan in <strong>Advanced Settings</strong>.</p>
     </div>
 </div>
+
+<footer>
+    &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
+    Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
+</footer>
 
 <script>
     function toggleConfig() {
@@ -156,13 +183,13 @@
             const newRow = document.createElement('div');
             newRow.className = 'vehicle-row';
             newRow.innerHTML = `
+                <input type="text" placeholder="Vehicle description" oninput="calculateAll()">
                 <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
                 <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
                 <div class="result-cell">-</div>
+                <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
             `;
             list.appendChild(newRow);
-        } else {
-            alert("Maximum of 10 vehicles reached.");
         }
     }
 
@@ -183,7 +210,7 @@
             const remainingMiles = lifespan - mileage;
 
             if (remainingMiles <= 0) {
-                output.innerText = "End of Life";
+                output.innerText = "EOL";
                 output.style.color = "#dc3545";
             } else {
                 const costPerMile = price / remainingMiles;
