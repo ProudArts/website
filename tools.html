@@ -12,43 +12,100 @@
             display: flex; 
             flex-direction: column;
             align-items: center; 
-            justify-content: flex-start;
-            min-height: 100vh;
             margin: 0;
         }
         .container { 
             width: 100%;
-            max-width: 450px; 
+            max-width: 850px; 
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-            box-sizing: border-box;
         }
         h2 { margin-top: 0; color: #222; text-align: center; }
-        label { display: block; margin-bottom: 8px; font-weight: bold; color: #444; }
+        
+        .config-section {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+            border: 1px solid #ddd;
+        }
+        .config-toggle {
+            display: block;
+            margin: 0 auto 20px;
+            background: none;
+            border: 1px solid #999;
+            color: #666;
+            padding: 5px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.8rem;
+        }
+
+        .header-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 10px;
+            padding: 0 10px;
+            font-weight: bold;
+            color: #444;
+            text-align: center;
+        }
+
+        .vehicle-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            align-items: center;
+        }
+
         input { 
             width: 100%; 
             padding: 12px; 
-            margin-bottom: 25px; 
             border: 1px solid #ccc; 
             border-radius: 6px; 
             box-sizing: border-box; 
             font-size: 1rem;
+            text-align: center;
         }
-        .result-box { background: #f8f9fa; padding: 20px; border-radius: 8px; text-align: center; border: 1px solid #e9ecef; }
-        .result-label { font-size: 0.95em; color: #666; margin-bottom: 5px; }
-        .result-value { font-size: 2em; font-weight: bold; color: #007bff; }
-        
+
+        .result-cell {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #007bff;
+            text-align: center;
+        }
+
+        .add-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 12px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .add-btn:hover { background-color: #218838; }
+
         .info-text { 
-            margin-top: 25px; 
+            margin-top: 30px; 
             font-size: 0.9rem; 
             color: #555; 
-            line-height: 1.5;
+            line-height: 1.6;
             border-top: 1px solid #eee;
             padding-top: 20px;
         }
-        .info-text p { margin-bottom: 12px; }
     </style>
 </head>
 <body>
@@ -56,45 +113,83 @@
 <div class="container">
     <h2>Vehicle Remaining Mile Calculator</h2>
     
-    <label for="price">Asking Price ($)</label>
-    <input type="number" id="price" placeholder="e.g. 23000" oninput="calculate()">
-
-    <label for="mileage">Current Mileage</label>
-    <input type="number" id="mileage" placeholder="e.g. 80000" oninput="calculate()">
-
-    <div class="result-box">
-        <div class="result-label">Cost per Remaining Mile</div>
-        <div id="output" class="result-value">-</div>
+    <button class="config-toggle" onclick="toggleConfig()">⚙️ Advanced Settings</button>
+    
+    <div id="config" class="config-section">
+        <label style="font-size: 0.9rem;">Estimated Max Lifespan (Miles):</label>
+        <input type="number" id="lifespan" value="200000" style="width: 150px; margin-left: 10px;" oninput="calculateAll()">
     </div>
 
+    <div class="header-row">
+        <div>Asking Price ($)</div>
+        <div>Current Mileage</div>
+        <div>Cost per Mile</div>
+    </div>
+
+    <div id="vehicle-list">
+        <div class="vehicle-row">
+            <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
+            <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
+            <div class="result-cell">-</div>
+        </div>
+    </div>
+
+    <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
+
     <div class="info-text">
-        <p><strong>How it works:</strong> Most modern vehicles are expected to last approximately 200,000 miles. This calculator helps you determine the "unit price" of a vehicle's remaining life.</p>
-        <p>By subtracting the current mileage from 200,000, we find the estimated miles left. Dividing the price by these miles reveals your cost per mile, allowing you to compare two similar vehicles objectively. </p>
-        <p><em>Example:</em> A lower-priced car with significantly higher mileage might actually cost you more "per mile" than a more expensive car with fewer miles.</p>
+        <p><strong>How to use:</strong> This tool is designed to help you compare similar vehicles, specifically those of the same make, model, or year. It is most effective for comparing cars in the same class rather than different types of vehicles (like a sports car vs. a truck).</p>
+        <p><strong>Method:</strong> We subtract the current mileage from the estimated lifespan (default 200,000 miles) to find the remaining life. We then divide the price by those miles to get your "unit cost." If you believe a specific vehicle will last longer or shorter, you can adjust the lifespan in the <strong>Advanced Settings</strong>.</p>
     </div>
 </div>
 
 <script>
-    function calculate() {
-        const price = parseFloat(document.getElementById('price').value);
-        const mileage = parseFloat(document.getElementById('mileage').value);
-        const output = document.getElementById('output');
+    function toggleConfig() {
+        const config = document.getElementById('config');
+        config.style.display = config.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function addRow() {
+        const list = document.getElementById('vehicle-list');
+        const rowCount = list.getElementsByClassName('vehicle-row').length;
         
-        const lifespan = 200000;
-
-        if (isNaN(price) || isNaN(mileage) || mileage < 0) {
-            output.innerText = "-";
-            return;
-        }
-
-        const remainingMiles = lifespan - mileage;
-
-        if (remainingMiles <= 0) {
-            output.innerText = "End of Life";
+        if (rowCount < 10) {
+            const newRow = document.createElement('div');
+            newRow.className = 'vehicle-row';
+            newRow.innerHTML = `
+                <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
+                <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
+                <div class="result-cell">-</div>
+            `;
+            list.appendChild(newRow);
         } else {
-            const costPerMile = price / remainingMiles;
-            // Using 3 decimal places for a balance of precision and readability
-            output.innerText = "$" + costPerMile.toFixed(3);
+            alert("Maximum of 10 vehicles reached.");
+        }
+    }
+
+    function calculateAll() {
+        const lifespan = parseFloat(document.getElementById('lifespan').value) || 200000;
+        const rows = document.getElementsByClassName('vehicle-row');
+
+        for (let row of rows) {
+            const price = parseFloat(row.querySelector('.price-input').value);
+            const mileage = parseFloat(row.querySelector('.mileage-input').value);
+            const output = row.querySelector('.result-cell');
+
+            if (isNaN(price) || isNaN(mileage) || mileage < 0) {
+                output.innerText = "-";
+                continue;
+            }
+
+            const remainingMiles = lifespan - mileage;
+
+            if (remainingMiles <= 0) {
+                output.innerText = "End of Life";
+                output.style.color = "#dc3545";
+            } else {
+                const costPerMile = price / remainingMiles;
+                output.innerText = "$" + costPerMile.toFixed(2);
+                output.style.color = "#007bff";
+            }
         }
     }
 </script>
