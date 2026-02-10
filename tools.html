@@ -10,7 +10,7 @@
             padding: 20px; 
             background-color: #f4f4f4; 
             display: flex; 
-            flex-direction: column;
+            flex-direction: column; 
             align-items: center; 
             margin: 0;
         }
@@ -153,7 +153,6 @@
             justify-content: center;
             margin-top: 10px;
             margin-bottom: 25px;
-            /* 1.0 is full size. Adjust lower (e.g., 0.9) to shrink if needed. */
             transform: scale(1.0);
             transform-origin: center;
         }
@@ -162,7 +161,7 @@
 <body>
 
 <div class="container">
-    <h2>Vehicle Remaining Mile Calculator</h2>
+    <h2>Free Price Per Mile Calculator</h2>
     
     <button class="config-toggle" onclick="toggleConfig()">⚙️ Advanced Settings</button>
     
@@ -172,11 +171,11 @@
     </div>
 
     <div class="header-row">
-        <div>Label</div>
+        <div>Vehicle Name</div>
         <div>Price</div>
         <div>Current Miles</div>
         <div>Miles Left</div>
-        <div>Cost per Mile</div>
+        <div>Price Per Mile</div>
         <div></div>
     </div>
 
@@ -202,9 +201,9 @@
     <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
 
     <div class="info-text">
-        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the cost for every mile left in the vehicle's expected life.</p>
-        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find <strong>Miles Left</strong>. We then divide the price by those miles. The vehicle with the <strong>lowest cost per mile</strong> is highlighted in green.</p>
-        <p><strong>Pro Tip:</strong> If you are comparing heavy-duty vehicles or high-longevity models, click <strong>Advanced Settings</strong> to increase the estimated Max Lifespan.</p>
+        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the "unit price" for every mile left in the vehicle's expected life.</p>
+        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find <strong>Miles Left</strong>. We then divide the price by those miles to find the <strong>Price Per Mile</strong>. The vehicle with the best value is highlighted in green.</p>
+        <p><strong>Pro Tip:</strong> Click <strong>Advanced Settings</strong> to adjust the Max Lifespan for heavy-duty trucks or high-longevity models.</p>
     </div>
 </div>
 
@@ -320,4 +319,3 @@
 
 </body>
 </html>
-
