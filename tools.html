@@ -16,7 +16,7 @@
         }
         .container { 
             width: 100%;
-            max-width: 900px; 
+            max-width: 950px; 
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
@@ -46,7 +46,7 @@
 
         .header-row {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1.2fr 40px;
             gap: 10px;
             margin-bottom: 10px;
             padding: 0 10px;
@@ -57,14 +57,22 @@
 
         .vehicle-row {
             display: grid;
-            grid-template-columns: 1.5fr 1fr 1fr 1fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1.2fr 40px;
             gap: 10px;
             margin-bottom: 10px;
             padding: 10px;
             background: #fff;
-            border: 1px solid #eee;
+            border: 2px solid #eee;
             border-radius: 8px;
             align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Highlighting the winner */
+        .winner {
+            border-color: #28a745;
+            background-color: #f0fff4;
+            box-shadow: 0 0 10px rgba(40, 167, 69, 0.2);
         }
 
         input { 
@@ -83,6 +91,7 @@
             color: #007bff;
             text-align: center;
         }
+        .winner .result-cell { color: #28a745; }
 
         .remove-btn {
             background: #ff4d4d;
@@ -135,22 +144,29 @@
     
     <div id="config" class="config-section">
         <label style="font-size: 0.9rem;">Estimated Max Lifespan (Miles):</label>
-        <input type="number" id="lifespan" value="200000" style="width: 120px; margin-left: 10px;" oninput="calculateAll()">
+        <input type="text" id="lifespan" value="200,000" style="width: 120px; margin-left: 10px;" oninput="formatLifespan(this)">
     </div>
 
     <div class="header-row">
-        <div>Vehicle Name</div>
-        <div>Price ($)</div>
-        <div>Mileage</div>
-        <div>Cost/Mile</div>
+        <div>Label</div>
+        <div>Price</div>
+        <div>Current Miles</div>
+        <div>Cost per Remaining Mile</div>
         <div></div>
     </div>
 
     <div id="vehicle-list">
         <div class="vehicle-row">
-            <input type="text" placeholder="e.g. Blue SUV" oninput="calculateAll()">
-            <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
-            <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
+            <input type="text" value="Vehicle 1" oninput="calculateAll()">
+            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
+            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+            <div class="result-cell">-</div>
+            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
+        </div>
+        <div class="vehicle-row">
+            <input type="text" value="Vehicle 2" oninput="calculateAll()">
+            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
+            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
             <div class="result-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         </div>
@@ -159,8 +175,8 @@
     <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
 
     <div class="info-text">
-        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the "unit price" of a vehicle's remaining life based on a 200,000-mile benchmark.</p>
-        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan to find remaining miles, then divide price by those miles. If a vehicle is built to last longer (like a diesel truck), adjust the lifespan in <strong>Advanced Settings</strong>.</p>
+        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the cost for every mile left in the vehicle's expected life.</p>
+        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find remaining miles, then divide price by those miles. The vehicle with the <strong>lowest cost per mile</strong> will be highlighted in green.</p>
     </div>
 </div>
 
@@ -175,34 +191,65 @@
         config.style.display = config.style.display === 'block' ? 'none' : 'block';
     }
 
+    // Formatter for Currency ($ and commas)
+    function formatCurrency(input) {
+        let value = input.value.replace(/\D/g, "");
+        if (value) {
+            input.value = "$" + Number(value).toLocaleString();
+        } else {
+            input.value = "";
+        }
+        calculateAll();
+    }
+
+    // Formatter for Miles (commas only)
+    function formatNumber(input) {
+        let value = input.value.replace(/\D/g, "");
+        if (value) {
+            input.value = Number(value).toLocaleString();
+        } else {
+            input.value = "";
+        }
+        calculateAll();
+    }
+
+    function formatLifespan(input) {
+        formatNumber(input);
+        calculateAll();
+    }
+
     function addRow() {
         const list = document.getElementById('vehicle-list');
-        const rowCount = list.getElementsByClassName('vehicle-row').length;
+        const count = list.getElementsByClassName('vehicle-row').length + 1;
         
-        if (rowCount < 10) {
-            const newRow = document.createElement('div');
-            newRow.className = 'vehicle-row';
-            newRow.innerHTML = `
-                <input type="text" placeholder="Vehicle description" oninput="calculateAll()">
-                <input type="number" class="price-input" placeholder="Price" oninput="calculateAll()">
-                <input type="number" class="mileage-input" placeholder="Miles" oninput="calculateAll()">
-                <div class="result-cell">-</div>
-                <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
-            `;
-            list.appendChild(newRow);
-        }
+        const newRow = document.createElement('div');
+        newRow.className = 'vehicle-row';
+        newRow.innerHTML = `
+            <input type="text" value="Vehicle ${count}" oninput="calculateAll()">
+            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
+            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+            <div class="result-cell">-</div>
+            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
+        `;
+        list.appendChild(newRow);
+        calculateAll();
     }
 
     function calculateAll() {
-        const lifespan = parseFloat(document.getElementById('lifespan').value) || 200000;
+        const lifespanStr = document.getElementById('lifespan').value.replace(/\D/g, "");
+        const lifespan = parseFloat(lifespanStr) || 200000;
         const rows = document.getElementsByClassName('vehicle-row');
+        
+        let bestCost = Infinity;
+        let bestRow = null;
 
         for (let row of rows) {
-            const price = parseFloat(row.querySelector('.price-input').value);
-            const mileage = parseFloat(row.querySelector('.mileage-input').value);
+            row.classList.remove('winner'); // Reset highlight
+            const price = parseFloat(row.querySelector('.price-input').value.replace(/\D/g, ""));
+            const mileage = parseFloat(row.querySelector('.mileage-input').value.replace(/\D/g, ""));
             const output = row.querySelector('.result-cell');
 
-            if (isNaN(price) || isNaN(mileage) || mileage < 0) {
+            if (isNaN(price) || isNaN(mileage)) {
                 output.innerText = "-";
                 continue;
             }
@@ -216,7 +263,19 @@
                 const costPerMile = price / remainingMiles;
                 output.innerText = "$" + costPerMile.toFixed(2);
                 output.style.color = "#007bff";
+
+                // Track the best value
+                if (costPerMile < bestCost && costPerMile > 0) {
+                    bestCost = costPerMile;
+                    bestRow = row;
+                }
             }
+        }
+
+        // Apply winner highlight if we have a clear winner and more than one valid entry
+        const validRows = Array.from(rows).filter(r => r.querySelector('.result-cell').innerText.includes('$'));
+        if (bestRow && validRows.length > 1) {
+            bestRow.classList.add('winner');
         }
     }
 </script>
