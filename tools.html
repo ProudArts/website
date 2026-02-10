@@ -16,14 +16,23 @@
         }
         .container { 
             width: 100%;
-            max-width: 950px; 
+            max-width: 1000px; 
             background: white; 
             padding: 30px; 
             border-radius: 12px; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
         }
-        h2 { margin-top: 0; color: #222; text-align: center; }
+        h2 { margin-top: 0; color: #222; text-align: center; margin-bottom: 5px; }
         
+        .usage-badge {
+            font-size: 0.75rem;
+            color: #888;
+            text-align: center;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
         .config-section {
             background: #f8f9fa;
             padding: 15px;
@@ -46,18 +55,19 @@
 
         .header-row {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 1.2fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
             gap: 10px;
             margin-bottom: 10px;
             padding: 0 10px;
             font-weight: bold;
             color: #444;
             text-align: center;
+            font-size: 0.9rem;
         }
 
         .vehicle-row {
             display: grid;
-            grid-template-columns: 1.2fr 1fr 1fr 1.2fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
             gap: 10px;
             margin-bottom: 10px;
             padding: 10px;
@@ -68,7 +78,6 @@
             transition: all 0.3s ease;
         }
 
-        /* Highlighting the winner */
         .winner {
             border-color: #28a745;
             background-color: #f0fff4;
@@ -85,8 +94,14 @@
             text-align: center;
         }
 
+        .data-cell {
+            font-size: 1rem;
+            color: #666;
+            text-align: center;
+        }
+
         .result-cell {
-            font-size: 1.1rem;
+            font-size: 1.15rem;
             font-weight: bold;
             color: #007bff;
             text-align: center;
@@ -139,6 +154,7 @@
 
 <div class="container">
     <h2>Vehicle Remaining Mile Calculator</h2>
+    <div class="usage-badge" id="usage-stat">Calculations Performed: 1,402</div>
     
     <button class="config-toggle" onclick="toggleConfig()">⚙️ Advanced Settings</button>
     
@@ -151,7 +167,8 @@
         <div>Label</div>
         <div>Price</div>
         <div>Current Miles</div>
-        <div>Cost per Remaining Mile</div>
+        <div>Miles Left</div>
+        <div>Cost per Mile</div>
         <div></div>
     </div>
 
@@ -160,6 +177,7 @@
             <input type="text" value="Vehicle 1" oninput="calculateAll()">
             <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
             <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+            <div class="data-cell miles-left">-</div>
             <div class="result-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         </div>
@@ -167,6 +185,7 @@
             <input type="text" value="Vehicle 2" oninput="calculateAll()">
             <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
             <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+            <div class="data-cell miles-left">-</div>
             <div class="result-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         </div>
@@ -176,7 +195,7 @@
 
     <div class="info-text">
         <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the cost for every mile left in the vehicle's expected life.</p>
-        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find remaining miles, then divide price by those miles. The vehicle with the <strong>lowest cost per mile</strong> will be highlighted in green.</p>
+        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find <strong>Miles Left</strong>. We then divide the price by those miles. The vehicle with the <strong>lowest cost per mile</strong> is highlighted in green.</p>
     </div>
 </div>
 
@@ -186,12 +205,19 @@
 </footer>
 
 <script>
+    let sessionCalculations = 0;
+    const baseCount = 1402;
+
+    function updateUsageDisplay() {
+        const display = document.getElementById('usage-stat');
+        display.innerText = `Calculations Performed: ${(baseCount + sessionCalculations).toLocaleString()}`;
+    }
+
     function toggleConfig() {
         const config = document.getElementById('config');
         config.style.display = config.style.display === 'block' ? 'none' : 'block';
     }
 
-    // Formatter for Currency ($ and commas)
     function formatCurrency(input) {
         let value = input.value.replace(/\D/g, "");
         if (value) {
@@ -202,7 +228,6 @@
         calculateAll();
     }
 
-    // Formatter for Miles (commas only)
     function formatNumber(input) {
         let value = input.value.replace(/\D/g, "");
         if (value) {
@@ -228,6 +253,7 @@
             <input type="text" value="Vehicle ${count}" oninput="calculateAll()">
             <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
             <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+            <div class="data-cell miles-left">-</div>
             <div class="result-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         `;
@@ -242,40 +268,49 @@
         
         let bestCost = Infinity;
         let bestRow = null;
+        let hasValidInput = false;
 
         for (let row of rows) {
-            row.classList.remove('winner'); // Reset highlight
+            row.classList.remove('winner');
             const price = parseFloat(row.querySelector('.price-input').value.replace(/\D/g, ""));
             const mileage = parseFloat(row.querySelector('.mileage-input').value.replace(/\D/g, ""));
+            const leftDisplay = row.querySelector('.miles-left');
             const output = row.querySelector('.result-cell');
 
             if (isNaN(price) || isNaN(mileage)) {
+                leftDisplay.innerText = "-";
                 output.innerText = "-";
                 continue;
             }
 
             const remainingMiles = lifespan - mileage;
+            leftDisplay.innerText = remainingMiles > 0 ? remainingMiles.toLocaleString() : "0";
 
             if (remainingMiles <= 0) {
                 output.innerText = "EOL";
                 output.style.color = "#dc3545";
             } else {
                 const costPerMile = price / remainingMiles;
-                output.innerText = "$" + costPerMile.toFixed(2);
+                // Switched to 3 decimals for precision
+                output.innerText = "$" + costPerMile.toFixed(3);
                 output.style.color = "#007bff";
+                hasValidInput = true;
 
-                // Track the best value
-                if (costPerMile < bestCost && costPerMile > 0) {
+                if (costPerMile < bestCost) {
                     bestCost = costPerMile;
                     bestRow = row;
                 }
             }
         }
 
-        // Apply winner highlight if we have a clear winner and more than one valid entry
-        const validRows = Array.from(rows).filter(r => r.querySelector('.result-cell').innerText.includes('$'));
-        if (bestRow && validRows.length > 1) {
+        const activeCalcs = Array.from(rows).filter(r => r.querySelector('.result-cell').innerText.includes('$')).length;
+        if (bestRow && activeCalcs > 1) {
             bestRow.classList.add('winner');
+        }
+
+        if (hasValidInput) {
+            sessionCalculations++;
+            updateUsageDisplay();
         }
     }
 </script>
