@@ -3,18 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Switchman | Trolley Dilemmas</title>
+<title>The Switchman | Animated Dilemmas</title>
 <style>
   :root {
     --bg: #0f1117;
-    --card: #1a1d26;
-    --card-border: #2b3040;
+    --card: #181b24;
+    --card-border: #2c3242;
     --accent: #ff4757;
     --track-a: #2ed573;
     --track-b: #ffa502;
     --text: #f1f2f6;
-    --text-muted: #a4b0be;
-    --rail: #57606f;
+    --text-muted: #8e99ac;
+    --rail-color: #57606f;
+    --tie-color: #2f3542;
   }
   * {
     box-sizing: border-box;
@@ -23,271 +24,301 @@
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   }
   body {
-    background-color: var(--bg);
+    background: var(--bg);
     color: var(--text);
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 24px 16px;
+    padding: 20px 12px;
   }
   .app-container {
     display: flex;
     flex-direction: row;
-    gap: 24px;
+    gap: 20px;
     width: 100%;
-    max-width: 1100px;
-    align-items: flex-start;
+    max-width: 1150px;
   }
   .main-stage {
-    flex: 1 1 700px;
+    flex: 1 1 740px;
     background: var(--card);
     border: 1px solid var(--card-border);
     border-radius: 12px;
-    padding: 24px;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
   .ad-rail {
-    flex: 0 0 300px;
+    flex: 0 0 280px;
     background: var(--card);
     border: 1px dashed var(--card-border);
     border-radius: 12px;
-    min-height: 450px;
     padding: 16px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     text-align: center;
-    font-size: 0.85rem;
     color: var(--text-muted);
+    font-size: 0.85rem;
   }
   .ad-slot {
     width: 100%;
     min-height: 250px;
-    background: rgba(0,0,0,0.2);
+    background: rgba(0,0,0,0.25);
     border: 1px solid var(--card-border);
+    margin-top: 12px;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 12px;
-    border-radius: 6px;
   }
   header {
     display: flex;
     justify-content: space-between;
-    align-items: baseline;
+    align-items: center;
     border-bottom: 1px solid var(--card-border);
     padding-bottom: 12px;
   }
-  h1 {
-    font-size: 1.3rem;
-    font-weight: 700;
+  .game-title {
+    font-size: 1.25rem;
+    font-weight: 800;
     letter-spacing: 0.5px;
   }
-  .progress-counter {
+  .progress-tag {
+    font-size: 0.85rem;
+    font-weight: 700;
     color: var(--text-muted);
-    font-size: 0.9rem;
-    font-weight: 600;
+  }
+  .scenario-header {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
   }
   .scenario-title {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 800;
-    color: #fff;
   }
   .scenario-desc {
     color: var(--text-muted);
-    line-height: 1.5;
+    font-size: 0.9rem;
   }
-  .tracks-display {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
-    margin-top: 8px;
-  }
-  .track-card {
-    background: rgba(255,255,255,0.02);
+
+  /* SVG Junction Stage */
+  .rail-canvas-wrapper {
+    width: 100%;
+    background: #090b10;
     border: 2px solid var(--card-border);
     border-radius: 10px;
-    padding: 20px;
-    cursor: pointer;
-    transition: all 0.2s ease;
     position: relative;
+    overflow: hidden;
   }
-  .track-card:hover {
-    border-color: var(--text-muted);
+  svg#rail-stage {
+    width: 100%;
+    height: auto;
+    display: block;
   }
-  .track-card.selected {
-    border-color: var(--accent);
-    background: rgba(255, 71, 87, 0.08);
+
+  /* Interactive Target Click Zones */
+  .target-zone {
+    cursor: pointer;
+    transition: opacity 0.2s ease;
   }
-  .track-label {
-    font-size: 0.85rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 8px;
+  .target-zone:hover {
+    filter: brightness(1.2);
   }
-  .track-a-label { color: var(--track-a); }
-  .track-b-label { color: var(--track-b); }
-  .track-target {
-    font-size: 1.1rem;
-    font-weight: 600;
-    line-height: 1.4;
+  .zone-rect {
+    fill: rgba(255, 255, 255, 0.02);
+    stroke: var(--card-border);
+    stroke-width: 2;
+    rx: 8;
+    transition: all 0.2s ease;
   }
-  .lever-control-panel {
+  .target-zone.selected .zone-rect {
+    stroke: var(--accent);
+    fill: rgba(255, 71, 87, 0.12);
+  }
+
+  /* Signal lights */
+  .signal-bulb {
+    transition: fill 0.2s ease;
+  }
+
+  /* Mechanical lever control bar */
+  .control-strip {
     display: flex;
-    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 12px 16px;
     gap: 12px;
-    margin: 8px 0;
   }
-  .switch-instruction {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .mechanical-switch {
+  .lever-btn-group {
     display: flex;
-    background: #0b0d12;
-    padding: 6px;
-    border-radius: 40px;
-    border: 2px solid var(--card-border);
     gap: 8px;
   }
-  .switch-arm {
-    padding: 12px 28px;
-    border-radius: 30px;
-    background: transparent;
-    border: none;
+  .lever-btn {
+    background: #252a38;
     color: var(--text-muted);
+    border: 1px solid var(--card-border);
+    padding: 8px 16px;
+    border-radius: 6px;
     font-weight: 700;
+    font-size: 0.85rem;
     cursor: pointer;
     transition: all 0.15s ease;
   }
-  .switch-arm.active-a {
+  .lever-btn.active-a {
     background: var(--track-a);
     color: #0b0d12;
-    box-shadow: 0 0 12px rgba(46, 213, 115, 0.4);
+    box-shadow: 0 0 10px rgba(46, 213, 115, 0.4);
+    border-color: var(--track-a);
   }
-  .switch-arm.active-b {
+  .lever-btn.active-b {
     background: var(--track-b);
     color: #0b0d12;
-    box-shadow: 0 0 12px rgba(255, 165, 2, 0.4);
+    box-shadow: 0 0 10px rgba(255, 165, 2, 0.4);
+    border-color: var(--track-b);
   }
-  .feedback-box {
+
+  .dispatch-btn {
+    background: var(--accent);
+    color: white;
+    font-weight: 800;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 6px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    transition: transform 0.1s ease, filter 0.15s ease;
+  }
+  .dispatch-btn:hover {
+    filter: brightness(1.1);
+  }
+  .dispatch-btn:active {
+    transform: scale(0.98);
+  }
+  .dispatch-btn:disabled {
+    background: #3a4154;
+    cursor: not-allowed;
+    filter: none;
+  }
+
+  /* Feedback box */
+  .feedback-drawer {
     display: none;
     flex-direction: column;
-    gap: 14px;
-    background: rgba(0,0,0,0.25);
+    gap: 12px;
+    background: rgba(0,0,0,0.3);
     border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .distribution-bar {
-    width: 100%;
-    height: 16px;
-    background: var(--track-b);
     border-radius: 8px;
-    overflow: hidden;
-    display: flex;
+    padding: 16px;
+    animation: fadeIn 0.3s ease;
   }
-  .distribution-fill {
-    height: 100%;
-    background: var(--track-a);
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
   }
-  .distribution-labels {
+  .stat-labels {
     display: flex;
     justify-content: space-between;
     font-size: 0.85rem;
     font-weight: 700;
   }
-  .outcome-summary {
-    font-size: 0.95rem;
-    line-height: 1.5;
-    color: var(--text);
+  .split-meter {
+    width: 100%;
+    height: 14px;
+    background: var(--track-b);
+    border-radius: 7px;
+    overflow: hidden;
+    display: flex;
   }
-  .btn-next {
+  .split-meter-fill {
+    height: 100%;
+    background: var(--track-a);
+    transition: width 0.4s ease;
+  }
+  .outcome-report {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+  .next-round-btn {
     align-self: flex-end;
-    background: var(--accent);
+    background: #3742fa;
     color: #fff;
     border: none;
-    padding: 12px 24px;
+    padding: 10px 20px;
     border-radius: 6px;
     font-weight: 700;
     cursor: pointer;
-    margin-top: 8px;
   }
+
+  /* Dashboard */
   .summary-dashboard {
     display: none;
     flex-direction: column;
-    gap: 20px;
-  }
-  .metric-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
     gap: 16px;
   }
-  .metric-card {
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .metric-tile {
     background: rgba(0,0,0,0.25);
     border: 1px solid var(--card-border);
-    padding: 16px;
     border-radius: 8px;
+    padding: 16px;
     text-align: center;
   }
-  .metric-val {
-    font-size: 2rem;
+  .metric-number {
+    font-size: 2.2rem;
     font-weight: 800;
-    margin-top: 6px;
+    margin-top: 4px;
   }
-  .badge-container {
+  .badge-box {
     text-align: center;
-    padding: 24px;
+    padding: 24px 16px;
+    background: rgba(255,255,255,0.015);
     border: 1px solid var(--card-border);
     border-radius: 8px;
-    background: rgba(255,255,255,0.01);
   }
-  .badge-name {
+  .badge-headline {
     font-size: 1.6rem;
     font-weight: 900;
     color: var(--accent);
-    margin-top: 8px;
+    margin-top: 6px;
   }
-  .badge-desc {
+  .badge-body {
     color: var(--text-muted);
     font-size: 0.95rem;
     margin-top: 8px;
     line-height: 1.4;
   }
-  .proudarts-cta {
-    display: inline-block;
+  .btn-proudarts {
     text-align: center;
     text-decoration: none;
-    background: #2f3542;
+    background: #2b3040;
     color: #fff;
-    padding: 14px 24px;
-    border-radius: 6px;
     font-weight: 700;
+    padding: 12px;
+    border-radius: 6px;
     border: 1px solid var(--card-border);
-    transition: background 0.2s;
   }
-  .proudarts-cta:hover {
-    background: #3f4857;
+
+  /* Trolley SVG Animation */
+  #trolley-cart {
+    transition: transform 1.2s cubic-bezier(0.45, 0, 0.25, 1);
   }
-  @media (max-width: 860px) {
+
+  @media (max-width: 840px) {
     .app-container {
       flex-direction: column;
     }
     .ad-rail {
       width: 100%;
       min-height: 120px;
-      flex: none;
-    }
-    .tracks-display {
-      grid-template-columns: 1fr;
     }
   }
 </style>
@@ -297,318 +328,611 @@
 <div class="app-container">
   <div class="main-stage">
     <header>
-      <h1>THE SWITCHMAN</h1>
-      <span class="progress-counter" id="round-indicator">Dilemma 1 of 11</span>
+      <div class="game-title">THE SWITCHMAN</div>
+      <div class="progress-tag" id="progress-indicator">Dilemma 1 of 11</div>
     </header>
 
-    <div id="play-area">
-      <div>
-        <h2 class="scenario-title" id="scenario-title">Loading...</h2>
-        <p class="scenario-desc" id="scenario-desc">Route the train along the tracks to minimize net societal harm.</p>
+    <div id="game-arena">
+      <div class="scenario-header">
+        <h2 class="scenario-title" id="dilemma-title">Loading track data...</h2>
+        <p class="scenario-desc" id="dilemma-instructions">Select a path by clicking the victims, toggling the switch, or pulling the lever, then dispatch the trolley.</p>
       </div>
 
-      <div class="tracks-display">
-        <div class="track-card" id="card-a" onclick="throwSwitch('A')">
-          <div class="track-label track-a-label">Track A</div>
-          <div class="track-target" id="text-target-a"></div>
-        </div>
-        <div class="track-card" id="card-b" onclick="throwSwitch('B')">
-          <div class="track-label track-b-label">Track B</div>
-          <div class="track-target" id="text-target-b"></div>
-        </div>
+      <!-- SVG Visual Railway Stage -->
+      <div class="rail-canvas-wrapper">
+        <svg id="rail-stage" viewBox="0 0 900 360">
+          <defs>
+            <!-- Ties pattern -->
+            <pattern id="rail-ties" width="20" height="20" patternUnits="userSpaceOnUse">
+              <line x1="10" y1="0" x2="10" y2="20" stroke="#252a38" stroke-width="4"/>
+            </pattern>
+          </defs>
+
+          <!-- Ground Backdrop -->
+          <rect x="0" y="0" width="900" height="360" fill="#0d0f15"/>
+
+          <!-- Cross ties (sleeper boards) -->
+          <!-- Track A ties (Bottom straight track) -->
+          <g stroke="#1f2430" stroke-width="6">
+            <line x1="50" y1="240" x2="50" y2="280"/>
+            <line x1="90" y1="240" x2="90" y2="280"/>
+            <line x1="130" y1="240" x2="130" y2="280"/>
+            <line x1="170" y1="240" x2="170" y2="280"/>
+            <line x1="210" y1="240" x2="210" y2="280"/>
+            <line x1="250" y1="240" x2="250" y2="280"/>
+            <line x1="290" y1="240" x2="290" y2="280"/>
+            <line x1="330" y1="240" x2="330" y2="280"/>
+            <line x1="370" y1="240" x2="370" y2="280"/>
+            <line x1="410" y1="240" x2="410" y2="280"/>
+            <line x1="450" y1="240" x2="450" y2="280"/>
+            <line x1="490" y1="240" x2="490" y2="280"/>
+            <line x1="530" y1="240" x2="530" y2="280"/>
+            <line x1="570" y1="240" x2="570" y2="280"/>
+            <line x1="610" y1="240" x2="610" y2="280"/>
+            <line x1="650" y1="240" x2="650" y2="280"/>
+
+            <!-- Track B ties (Top spur track) -->
+            <line x1="380" y1="180" x2="400" y2="210" stroke-width="5"/>
+            <line x1="420" y1="140" x2="440" y2="170" stroke-width="5"/>
+            <line x1="460" y1="100" x2="480" y2="130" stroke-width="5"/>
+            <line x1="490" y1="80" x2="490" y2="120"/>
+            <line x1="530" y1="80" x2="530" y2="120"/>
+            <line x1="570" y1="80" x2="570" y2="120"/>
+            <line x1="610" y1="80" x2="610" y2="120"/>
+            <line x1="650" y1="80" x2="650" y2="120"/>
+          </g>
+
+          <!-- Steel Rails -->
+          <!-- Main Bottom Track A -->
+          <line x1="40" y1="248" x2="670" y2="248" stroke="#4b5568" stroke-width="4"/>
+          <line x1="40" y1="272" x2="670" y2="272" stroke="#4b5568" stroke-width="4"/>
+
+          <!-- Top Spur Track B -->
+          <path d="M 330 248 C 410 248, 440 88, 520 88 L 670 88" fill="none" stroke="#4b5568" stroke-width="4"/>
+          <path d="M 350 272 C 430 272, 460 112, 540 112 L 670 112" fill="none" stroke="#4b5568" stroke-width="4"/>
+
+          <!-- Dynamic Junction Switch Tongue -->
+          <line id="switch-blade" x1="325" y1="248" x2="365" y2="248" stroke="#ffa502" stroke-width="5" stroke-linecap="round"/>
+
+          <!-- Signal Lights -->
+          <g transform="translate(680, 80)">
+            <rect x="0" y="0" width="16" height="32" rx="4" fill="#1e2330" stroke="#333a4d"/>
+            <circle id="bulb-b" class="signal-bulb" cx="8" cy="16" r="5" fill="#444"/>
+          </g>
+          <g transform="translate(680, 240)">
+            <rect x="0" y="0" width="16" height="32" rx="4" fill="#1e2330" stroke="#333a4d"/>
+            <circle id="bulb-a" class="signal-bulb" cx="8" cy="16" r="5" fill="#2ed573"/>
+          </g>
+
+          <!-- Switchman stick figure and ground stand -->
+          <g id="switchman-unit" transform="translate(300, 160)">
+            <!-- Stand platform -->
+            <rect x="-10" y="55" width="40" height="6" rx="2" fill="#2f3542"/>
+            <!-- Switch box -->
+            <rect x="12" y="40" width="12" height="16" rx="2" fill="#475266"/>
+            <!-- Mechanical Lever Stick -->
+            <line id="svg-lever-arm" x1="18" y1="50" x2="26" y2="24" stroke="#ff4757" stroke-width="4" stroke-linecap="round"/>
+            <circle id="svg-lever-knob" cx="26" cy="24" r="4" fill="#ff4757"/>
+
+            <!-- The Little Guy Operator -->
+            <!-- Head -->
+            <circle cx="-2" cy="20" r="7" fill="#f1f2f6"/>
+            <!-- Hardhat -->
+            <path d="M -11 20 Q -2 12 7 20 Z" fill="#ffa502"/>
+            <!-- Body -->
+            <line x1="-2" y1="27" x2="-2" y2="44" stroke="#f1f2f6" stroke-width="3"/>
+            <!-- Arms pulling toward the lever -->
+            <line x1="-2" y1="32" x2="16" y2="35" stroke="#f1f2f6" stroke-width="2.5"/>
+            <!-- Legs -->
+            <line x1="-2" y1="44" x2="-8" y2="56" stroke="#f1f2f6" stroke-width="3"/>
+            <line x1="-2" y1="44" x2="4" y2="56" stroke="#f1f2f6" stroke-width="3"/>
+          </g>
+
+          <!-- Clickable Victim Target Area B (Top Spur) -->
+          <g class="target-zone" id="zone-target-b" onclick="chooseTrack('B')">
+            <rect class="zone-rect" x="705" y="45" width="180" height="110"/>
+            <text x="715" y="70" fill="var(--track-b)" font-size="12" font-weight="900" letter-spacing="1">TRACK B (DIVERSIION)</text>
+            <!-- Render Target Icon / Visual -->
+            <g id="svg-graphic-b" transform="translate(715, 80)"></g>
+            <text id="svg-label-b" x="715" y="142" fill="#fff" font-size="12" font-weight="600" width="160"></text>
+          </g>
+
+          <!-- Clickable Victim Target Area A (Bottom Main) -->
+          <g class="target-zone selected" id="zone-target-a" onclick="chooseTrack('A')">
+            <rect class="zone-rect" x="705" y="205" width="180" height="110"/>
+            <text x="715" y="230" fill="var(--track-a)" font-size="12" font-weight="900" letter-spacing="1">TRACK A (MAIN LINE)</text>
+            <!-- Render Target Icon / Visual -->
+            <g id="svg-graphic-a" transform="translate(715, 240)"></g>
+            <text id="svg-label-a" x="715" y="302" fill="#fff" font-size="12" font-weight="600"></text>
+          </g>
+
+          <!-- Animated Trolley Car Unit -->
+          <g id="trolley-cart" transform="translate(60, 222)">
+            <!-- Trolley Body Shadow -->
+            <rect x="2" y="32" width="70" height="6" rx="3" fill="rgba(0,0,0,0.5)"/>
+            <!-- Metal Body -->
+            <rect x="0" y="4" width="74" height="28" rx="4" fill="#c0392b" stroke="#962d22" stroke-width="2"/>
+            <!-- Roof curve -->
+            <path d="M 0 8 Q 37 0 74 8 Z" fill="#e74c3c"/>
+            <!-- Windows -->
+            <rect x="8" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
+            <rect x="24" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
+            <rect x="40" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
+            <rect x="56" y="10" width="10" height="10" rx="1" fill="#f39c12"/> <!-- Headlight glass -->
+            <!-- Cowcatcher Grill -->
+            <polygon points="74,20 84,30 74,30" fill="#2c3e50"/>
+            <!-- Steel Wheels -->
+            <circle cx="16" cy="32" r="5" fill="#2c3e50" stroke="#7f8c8d" stroke-width="2"/>
+            <circle cx="58" cy="32" r="5" fill="#2c3e50" stroke="#7f8c8d" stroke-width="2"/>
+          </g>
+        </svg>
       </div>
 
-      <div class="lever-control-panel">
-        <span class="switch-instruction">Throw Switch Lever</span>
-        <div class="mechanical-switch">
-          <button type="button" class="switch-arm" id="lever-a" onclick="throwSwitch('A')">Divert Track A</button>
-          <button type="button" class="switch-arm" id="lever-b" onclick="throwSwitch('B')">Divert Track B</button>
+      <!-- Controls Row -->
+      <div class="control-strip">
+        <div class="lever-btn-group">
+          <button type="button" class="lever-btn active-a" id="btn-sw-a" onclick="chooseTrack('A')">Route Track A (Straight)</button>
+          <button type="button" class="lever-btn" id="btn-sw-b" onclick="chooseTrack('B')">Route Track B (Divert Up)</button>
         </div>
+        <button type="button" class="dispatch-btn" id="btn-dispatch" onclick="dispatchTrolley()">PULL LEVER & FIRE TROLLEY</button>
       </div>
 
-      <div class="feedback-box" id="feedback-box">
-        <div class="distribution-labels">
-          <span id="stat-a">Track A: 0%</span>
-          <span id="stat-b">Track B: 0%</span>
+      <!-- Feedback / Statistics Drawer -->
+      <div class="feedback-drawer" id="feedback-drawer">
+        <div class="stat-labels">
+          <span id="stat-label-a" style="color: var(--track-a)">Track A: 50%</span>
+          <span id="stat-label-b" style="color: var(--track-b)">Track B: 50%</span>
         </div>
-        <div class="distribution-bar">
-          <div class="distribution-fill" id="distribution-fill" style="width: 50%;"></div>
+        <div class="split-meter">
+          <div class="split-meter-fill" id="meter-fill" style="width: 50%;"></div>
         </div>
-        <div class="outcome-summary" id="outcome-text"></div>
-        <button type="button" class="btn-next" onclick="advanceRound()">Next Dilemma</button>
+        <p class="outcome-report" id="outcome-desc"></p>
+        <button type="button" class="next-round-btn" onclick="nextRound()">Next Dilemma</button>
       </div>
     </div>
 
+    <!-- Final Operational Debrief -->
     <div class="summary-dashboard" id="summary-dashboard">
-      <div>
-        <h2 class="scenario-title">Operational Debrief</h2>
-        <p class="scenario-desc">The run is complete, the tallies are locked, and the consequences stand.</p>
+      <div class="scenario-header">
+        <h2 class="scenario-title">Comprehensive Run Debrief</h2>
+        <p class="scenario-desc">Eleven calculations finished. Here is the net balance sheet of your run.</p>
       </div>
 
-      <div class="metric-grid">
-        <div class="metric-card">
-          <div class="switch-instruction">Casualties Incurred</div>
-          <div class="metric-val" style="color: var(--accent);" id="final-casualties">0</div>
+      <div class="metrics-grid">
+        <div class="metric-tile">
+          <span class="progress-tag">CASUALTIES INCURRED</span>
+          <div class="metric-number" style="color: var(--accent)" id="total-lost">0</div>
         </div>
-        <div class="metric-card">
-          <div class="switch-instruction">Casualties Averted</div>
-          <div class="metric-val" style="color: var(--track-a);" id="final-saved">0</div>
+        <div class="metric-tile">
+          <span class="progress-tag">CASUALTIES PREVENTED</span>
+          <div class="metric-number" style="color: var(--track-a)" id="total-saved">0</div>
         </div>
       </div>
 
-      <div class="badge-container">
-        <div class="switch-instruction">Calculated Moral Alignment</div>
-        <div class="badge-name" id="badge-title">Relentless Utilitarian</div>
-        <div class="badge-desc" id="badge-desc">You measure moral rectitude strictly through cold, aggregate outcomes. Favoritism yields to the balance sheet of net suffering.</div>
+      <div class="badge-box">
+        <span class="progress-tag">CALCULATED ALIGNMENT</span>
+        <div class="badge-headline" id="badge-title">Relentless Utilitarian</div>
+        <div class="badge-body" id="badge-description">You measure moral rectitude strictly through cold, aggregate outcomes. Sentiment yields cleanly to the balance sheet of net suffering.</div>
       </div>
 
-      <button type="button" class="btn-next" style="align-self: center;" onclick="copyResults()">Copy Debrief Results</button>
-      <a class="proudarts-cta" href="https://proudarts.com" target="_blank" rel="noopener">Explore ProudArts Games and Projects</a>
+      <button type="button" class="dispatch-btn" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
+      <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
   </div>
 
   <aside class="ad-rail">
     <div>Sponsorship Terminal</div>
-    <div class="ad-slot" id="ad-banner-slot">
-      <span>Advertisement Slot<br>300x250 Programmatic</span>
+    <div class="ad-slot">
+      <span>300x250 Programmatic Ad Unit</span>
     </div>
   </aside>
 </div>
 
 <script>
-const dilemmas = [
+// Graphic icons generator for the tracks
+function renderGraphic(type, count) {
+  if (type === 'commuter' || type === 'person') {
+    let out = '';
+    for(let i = 0; i < Math.min(count, 8); i++) {
+      let ox = i * 18;
+      out += `<g transform="translate(${ox}, 0)">
+        <circle cx="8" cy="8" r="5" fill="#f1f2f6"/>
+        <line x1="8" y1="13" x2="8" y2="28" stroke="#f1f2f6" stroke-width="2.5"/>
+        <line x1="8" y1="18" x2="2" y2="24" stroke="#f1f2f6" stroke-width="2"/>
+        <line x1="8" y1="18" x2="14" y2="24" stroke="#f1f2f6" stroke-width="2"/>
+        <line x1="8" y1="28" x2="4" y2="38" stroke="#f1f2f6" stroke-width="2.5"/>
+        <line x1="8" y1="28" x2="12" y2="38" stroke="#f1f2f6" stroke-width="2.5"/>
+      </g>`;
+    }
+    return out;
+  }
+  if (type === 'elderly') {
+    let out = '';
+    for(let i = 0; i < Math.min(count, 8); i++) {
+      let ox = i * 18;
+      out += `<g transform="translate(${ox}, 0)">
+        <circle cx="8" cy="8" r="5" fill="#bdc3c7"/>
+        <line x1="8" y1="13" x2="8" y2="28" stroke="#bdc3c7" stroke-width="2.5"/>
+        <line x1="8" y1="18" x2="15" y2="28" stroke="#f39c12" stroke-width="2"/> <!-- cane -->
+        <line x1="8" y1="28" x2="5" y2="38" stroke="#bdc3c7" stroke-width="2.5"/>
+        <line x1="8" y1="28" x2="11" y2="38" stroke="#bdc3c7" stroke-width="2.5"/>
+      </g>`;
+    }
+    return out;
+  }
+  if (type === 'children') {
+    let out = '';
+    for(let i = 0; i < Math.min(count, 8); i++) {
+      let ox = i * 20;
+      out += `<g transform="translate(${ox}, 8)">
+        <circle cx="8" cy="8" r="4" fill="#f1c40f"/>
+        <line x1="8" y1="12" x2="8" y2="22" stroke="#f1c40f" stroke-width="2"/>
+        <line x1="8" y1="22" x2="4" y2="30" stroke="#f1c40f" stroke-width="2"/>
+        <line x1="8" y1="22" x2="12" y2="30" stroke="#f1c40f" stroke-width="2"/>
+      </g>`;
+    }
+    return out;
+  }
+  if (type === 'dog') {
+    return `<g transform="translate(10, 8)">
+      <ellipse cx="20" cy="22" rx="14" ry="8" fill="#e67e22"/>
+      <circle cx="34" cy="16" r="6" fill="#d35400"/>
+      <line x1="10" y1="26" x2="8" y2="38" stroke="#d35400" stroke-width="3"/>
+      <line x1="26" y1="26" x2="28" y2="38" stroke="#d35400" stroke-width="3"/>
+      <path d="M 6 20 Q 2 12 6 8" stroke="#e67e22" stroke-width="3" fill="none"/>
+    </g>`;
+  }
+  if (type === 'infrastructure') {
+    return `<g transform="translate(10, 0)">
+      <rect x="0" y="10" width="30" height="30" fill="#34495e"/>
+      <polygon points="15,0 0,10 30,10" fill="#e74c3c"/>
+      <text x="36" y="28" fill="#f1f2f6" font-size="11" font-weight="bold">300k GRID</text>
+    </g>`;
+  }
+  if (type === 'surgeon') {
+    return `<g transform="translate(10, 0)">
+      <circle cx="12" cy="8" r="5" fill="#1abc9c"/>
+      <line x1="12" y1="13" x2="12" y2="28" stroke="#1abc9c" stroke-width="3"/>
+      <line x1="12" y1="28" x2="7" y2="38" stroke="#1abc9c" stroke-width="2.5"/>
+      <line x1="12" y1="28" x2="17" y2="38" stroke="#1abc9c" stroke-width="2.5"/>
+      <line x1="12" y1="18" x2="22" y2="18" stroke="#ecf0f1" stroke-width="2"/>
+    </g>`;
+  }
+  if (type === 'mystery') {
+    return `<g transform="translate(20, 0)">
+      <circle cx="12" cy="8" r="6" fill="#9b59b6"/>
+      <text x="8" y="32" fill="#9b59b6" font-size="28" font-weight="bold">?</text>
+    </g>`;
+  }
+  return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
+}
+
+const scenarios = [
   {
     title: "Round 1: The Baseline",
     trackA: "5 random commuters",
     trackB: "1 random commuter",
-    lossA: 5,
-    lossB: 1,
+    typeA: "commuter", countA: 5,
+    typeB: "commuter", countB: 1,
+    lossA: 5, lossB: 1,
     baseA: 18,
-    utilitarianChoice: "B",
-    summaryA: "You allowed five deaths to spare one, multiplying aggregate misery by five.",
-    summaryB: "Four net lives preserved, pure arithmetic triumphing over arbitrary paralysis."
+    utilitarianTarget: 'B',
+    commentA: "Five lives extinguished to preserve a single life. Net welfare drops sharply.",
+    commentB: "Four net lives preserved. Pure arithmetic prevailing over sentiment."
   },
   {
     title: "Round 2: The Life-Years",
     trackA: "8 elderly retirees",
     trackB: "2 young children",
-    lossA: 8,
-    lossB: 2,
+    typeA: "elderly", countA: 8,
+    typeB: "children", countB: 2,
+    lossA: 8, lossB: 2,
     baseA: 31,
-    utilitarianChoice: "A",
-    summaryA: "Preserving children yields decades more aggregate conscious life, regardless of raw headcount.",
-    summaryB: "You sacrificed the bulk of potential future human experience to preserve eight near-terminal journeys."
+    utilitarianTarget: 'A',
+    commentA: "Preserving children yields decades more cumulative conscious experience.",
+    commentB: "Sacrificed decades of future potential to preserve eight near-terminal journeys."
   },
   {
     title: "Round 3: The Best Friend",
     trackA: "1 of your best friends",
     trackB: "4 total strangers",
-    lossA: 1,
-    lossB: 4,
+    typeA: "person", countA: 1,
+    typeB: "person", countB: 4,
+    lossA: 1, lossB: 4,
     baseA: 62,
-    utilitarianChoice: "A",
-    summaryA: "One funeral produces less global misery than four, your private loyalty notwithstanding.",
-    summaryB: "Personal sentiment won out, costing society four productive units instead of one."
+    utilitarianTarget: 'A',
+    commentA: "One grieving circle versus four, putting communal welfare ahead of private affection.",
+    commentB: "Tribal loyalty cost society four lives instead of one."
   },
   {
     title: "Round 4: The Father",
     trackA: "Your father",
     trackB: "5 elderly men his same age",
-    lossA: 1,
-    lossB: 5,
+    typeA: "person", countA: 1,
+    typeB: "elderly", countB: 5,
+    lossA: 1, lossB: 5,
     baseA: 58,
-    utilitarianChoice: "A",
-    summaryA: "One grieving household versus five, an austere execution of net well-being.",
-    summaryB: "You favored personal attachment, multiplying communal despair by five."
+    utilitarianTarget: 'A',
+    commentA: "Personal attachment subordinated to prevent five grieving households.",
+    commentB: "Parental bias multiplied aggregate social despair fivefold."
   },
   {
     title: "Round 5: The Infrastructure",
-    trackA: "Power and clean water cut to 300,000 residents for two weeks in summer",
+    trackA: "Power and water cut to 300,000 residents for two weeks in summer",
     trackB: "3 utility workers",
-    lossA: 35,
-    lossB: 3,
+    typeA: "infrastructure", countA: 1,
+    typeB: "person", countB: 3,
+    lossA: 35, lossB: 3,
     baseA: 22,
-    utilitarianChoice: "B",
-    summaryA: "Widespread infrastructure loss causes catastrophic ripple effects, hospital failures, and severe misery.",
-    summaryB: "Three immediate losses absorbed to protect three hundred thousand from dangerous systemic collapse."
+    utilitarianTarget: 'B',
+    commentA: "Wide blackout cascade cripples eldercare and emergency systems, inflicting massive harm.",
+    commentB: "Three immediate casualties absorbed to shield three hundred thousand from severe hazards."
   },
   {
     title: "Round 6: The Bloodline",
     trackA: "Your own child",
     trackB: "6 stranger children",
-    lossA: 1,
-    lossB: 6,
+    typeA: "children", countA: 1,
+    typeB: "children", countB: 6,
+    lossA: 1, lossB: 6,
     baseA: 78,
-    utilitarianChoice: "A",
-    summaryA: "Six surviving youths create vastly greater future aggregate utility than one.",
-    summaryB: "Parental bias preserved a single life, while extinguishing six entirely equivalent minds."
+    utilitarianTarget: 'A',
+    commentA: "Six surviving youths generate vastly greater future experience than a single child.",
+    commentB: "Kinship preference preserved one child while extinguishing six equivalent futures."
   },
   {
     title: "Round 7: The Self-Trade",
     trackA: "8 regular people",
     trackB: "You",
-    lossA: 8,
-    lossB: 1,
+    typeA: "person", countA: 8,
+    typeB: "person", countB: 1,
+    lossA: 8, lossB: 1,
     baseA: 12,
-    utilitarianChoice: "B",
-    summaryA: "Eight functional citizens surrendered so your individual viewpoint could endure.",
-    summaryB: "Trading one conscious entity for eight produces the cleanest possible balance sheet."
+    utilitarianTarget: 'B',
+    commentA: "Eight functional minds extinguished to preserve your own perspective.",
+    commentB: "Trading one self-unit for eight produces the cleanest possible ledger."
   },
   {
     title: "Round 8: The Potential Life",
     trackA: "1 pregnant woman",
     trackB: "1 adult woman",
-    lossA: 2,
-    lossB: 1,
+    typeA: "person", countA: 2,
+    typeB: "person", countB: 1,
+    lossA: 2, lossB: 1,
     baseA: 34,
-    utilitarianChoice: "B",
-    summaryA: "Two distinct trajectories extinguished where only one had to fall.",
-    summaryB: "Preserving both mother and upcoming life maximizes cumulative years lived."
+    utilitarianTarget: 'B',
+    commentA: "Two lives extinguished where only one had to fall.",
+    commentB: "Preserving both mother and child maximizes cumulative future experience."
   },
   {
     title: "Round 9: The Animal Bond",
     trackA: "Your beloved family dog of 10 years",
     trackB: "1 total stranger",
-    lossA: 0.5,
-    lossB: 1,
+    typeA: "dog", countA: 1,
+    typeB: "person", countB: 1,
+    lossA: 0.5, lossB: 1,
     baseA: 64,
-    utilitarianChoice: "A",
-    summaryA: "A human being continues contributing to global consciousness at the expense of a beloved pet.",
-    summaryB: "You chose non-human companionship over a member of human society, leaving families devastated."
+    utilitarianTarget: 'A',
+    commentA: "A human member of society continues contributing, despite the genuine sorrow of losing a pet.",
+    commentB: "Animal loyalty prioritized over human consciousness, devastating a human household."
   },
   {
     title: "Round 10: The Scalpel",
-    trackA: "1 top trauma surgeon operating on hundreds of critical cases a year",
+    trackA: "1 top trauma surgeon operating on hundreds of cases a year",
     trackB: "5 average working citizens",
-    lossA: 10,
-    lossB: 5,
+    typeA: "surgeon", countA: 1,
+    typeB: "person", countB: 5,
+    lossA: 10, lossB: 5,
     baseA: 27,
-    utilitarianChoice: "B",
-    summaryA: "A single death cascade takes hundreds of potential future surgical patients down with it.",
-    summaryB: "Preserving the surgeon saves many more downstream lives than the five immediate casualties."
+    utilitarianTarget: 'B',
+    commentA: "The death of a surgeon cascades into dozens of downstream emergency room fatalities.",
+    commentB: "Preserving the surgeon directly spares hundreds of future surgical patients."
   },
   {
     title: "Round 11: The Veil (Bonus Round)",
     trackA: "5 confirmed strangers",
     trackB: "1 mystery individual who has a chance of being someone you deeply love",
-    lossA: 5,
-    lossB: 1,
+    typeA: "person", countA: 5,
+    typeB: "mystery", countB: 1,
+    lossA: 5, lossB: 1,
     baseA: 41,
-    utilitarianChoice: "B",
-    summaryA: "Paranoia over a personal loss cost five definitive lives in exchange for pure speculation.",
-    summaryB: "Five guaranteed survivors secured over an uncertain personal probability, maximizing expected lives."
+    utilitarianTarget: 'B',
+    commentA: "Subjective fear of a personal loss sacrificed five guaranteed human lives.",
+    commentB: "Five guaranteed survivors secured over an uncertain probability."
   }
 ];
 
-let currentIdx = 0;
-let aggregateCasualties = 0;
-let aggregateAverted = 0;
-let utilitarianChoicesCount = 0;
-let choiceLocked = false;
+let roundIdx = 0;
+let selectedTrack = 'A';
+let runLocked = false;
+let totalCasualties = 0;
+let totalPrevented = 0;
+let optimalDecisionsCount = 0;
 
-function loadRound(idx) {
-  choiceLocked = false;
-  document.getElementById("round-indicator").innerText = `Dilemma ${idx + 1} of ${dilemmas.length}`;
-  document.getElementById("scenario-title").innerText = dilemmas[idx].title;
-  document.getElementById("text-target-a").innerText = dilemmas[idx].trackA;
-  document.getElementById("text-target-b").innerText = dilemmas[idx].trackB;
+function setupRound(idx) {
+  runLocked = false;
+  const data = scenarios[idx];
 
-  document.getElementById("card-a").classList.remove("selected");
-  document.getElementById("card-b").classList.remove("selected");
-  document.getElementById("lever-a").classList.remove("active-a");
-  document.getElementById("lever-b").classList.remove("active-b");
-  document.getElementById("feedback-box").style.display = "none";
+  document.getElementById("progress-indicator").innerText = `Dilemma ${idx + 1} of ${scenarios.length}`;
+  document.getElementById("dilemma-title").innerText = data.title;
+  document.getElementById("svg-label-a").textContent = data.trackA.length > 24 ? data.trackA.substring(0, 22) + "..." : data.trackA;
+  document.getElementById("svg-label-b").textContent = data.trackB.length > 24 ? data.trackB.substring(0, 22) + "..." : data.trackB;
+
+  document.getElementById("svg-graphic-a").innerHTML = renderGraphic(data.typeA, data.countA);
+  document.getElementById("svg-graphic-b").innerHTML = renderGraphic(data.typeB, data.countB);
+
+  // Reset trolley cart position
+  const cart = document.getElementById("trolley-cart");
+  cart.style.transform = "translate(60px, 222px)";
+
+  document.getElementById("feedback-drawer").style.display = "none";
+  document.getElementById("btn-dispatch").disabled = false;
+
+  chooseTrack('A');
 }
 
-function throwSwitch(choice) {
-  if (choiceLocked) return;
-  choiceLocked = true;
+function chooseTrack(choice) {
+  if (runLocked) return;
+  selectedTrack = choice;
 
-  const current = dilemmas[currentIdx];
-  const cardA = document.getElementById("card-a");
-  const cardB = document.getElementById("card-b");
-  const leverA = document.getElementById("lever-a");
-  const leverB = document.getElementById("lever-b");
-  const outcomeText = document.getElementById("outcome-text");
+  const zoneA = document.getElementById("zone-target-a");
+  const zoneB = document.getElementById("zone-target-b");
+  const btnA = document.getElementById("btn-sw-a");
+  const btnB = document.getElementById("btn-sw-b");
+  const blade = document.getElementById("switch-blade");
+  const bulbA = document.getElementById("bulb-a");
+  const bulbB = document.getElementById("bulb-b");
+  const leverArm = document.getElementById("svg-lever-arm");
+  const leverKnob = document.getElementById("svg-lever-knob");
+
+  if (choice === 'A') {
+    zoneA.classList.add("selected");
+    zoneB.classList.remove("selected");
+    btnA.classList.add("active-a");
+    btnB.classList.remove("active-b");
+
+    // Point track blade straight
+    blade.setAttribute("x1", "325");
+    blade.setAttribute("y1", "248");
+    blade.setAttribute("x2", "375");
+    blade.setAttribute("y2", "248");
+    blade.setAttribute("stroke", "#2ed573");
+
+    // Signal lights
+    bulbA.setAttribute("fill", "#2ed573");
+    bulbB.setAttribute("fill", "#333a4d");
+
+    // Lever arm straight back
+    leverArm.setAttribute("x2", "26");
+    leverArm.setAttribute("y2", "24");
+    leverKnob.setAttribute("cx", "26");
+    leverKnob.setAttribute("cy", "24");
+  } else {
+    zoneB.classList.add("selected");
+    zoneA.classList.remove("selected");
+    btnB.classList.add("active-b");
+    btnA.classList.remove("active-a");
+
+    // Point track blade toward spur curve
+    blade.setAttribute("x1", "325");
+    blade.setAttribute("y1", "248");
+    blade.setAttribute("x2", "365");
+    blade.setAttribute("y2", "230");
+    blade.setAttribute("stroke", "#ffa502");
+
+    // Signal lights
+    bulbB.setAttribute("fill", "#ffa502");
+    bulbA.setAttribute("fill", "#333a4d");
+
+    // Lever arm pulled forward
+    leverArm.setAttribute("x2", "4");
+    leverArm.setAttribute("y2", "26");
+    leverKnob.setAttribute("cx", "4");
+    leverKnob.setAttribute("cy", "26");
+  }
+}
+
+function dispatchTrolley() {
+  if (runLocked) return;
+  runLocked = true;
+  document.getElementById("btn-dispatch").disabled = true;
+
+  const cart = document.getElementById("trolley-cart");
+  const cur = scenarios[roundIdx];
+
+  if (selectedTrack === 'A') {
+    // Chug straight along bottom track
+    cart.style.transform = "translate(650px, 222px)";
+  } else {
+    // Chug up along spur track
+    cart.style.transform = "translate(650px, 62px)";
+  }
+
+  setTimeout(() => {
+    evaluateResults();
+  }, 1200);
+}
+
+function evaluateResults() {
+  const cur = scenarios[roundIdx];
+  const outcomeDesc = document.getElementById("outcome-desc");
 
   let casualties = 0;
   let averted = 0;
 
-  if (choice === 'A') {
-    cardA.classList.add("selected");
-    leverA.classList.add("active-a");
-    casualties = current.lossA;
-    averted = current.lossB;
-    outcomeText.innerText = current.summaryA;
+  if (selectedTrack === 'A') {
+    casualties = cur.lossA;
+    averted = cur.lossB;
+    outcomeDesc.innerText = cur.commentA;
   } else {
-    cardB.classList.add("selected");
-    leverB.classList.add("active-b");
-    casualties = current.lossB;
-    averted = current.lossA;
-    outcomeText.innerText = current.summaryB;
+    casualties = cur.lossB;
+    averted = cur.lossA;
+    outcomeDesc.innerText = cur.commentB;
   }
 
-  aggregateCasualties += casualties;
-  aggregateAverted += averted;
+  totalCasualties += casualties;
+  totalPrevented += averted;
 
-  if (choice === current.utilitarianChoice) {
-    utilitarianChoicesCount++;
+  if (selectedTrack === cur.utilitarianTarget) {
+    optimalDecisionsCount++;
   }
 
-  const variance = (Math.floor(Math.random() * 5) - 2);
-  let displayA = Math.min(Math.max(current.baseA + variance, 5), 95);
-  let displayB = 100 - displayA;
+  // Realistic random variance around the crowd split
+  const variance = Math.floor(Math.random() * 5) - 2;
+  const pctA = Math.min(Math.max(cur.baseA + variance, 5), 95);
+  const pctB = 100 - pctA;
 
-  document.getElementById("stat-a").innerText = `Track A: ${displayA}% of switch operators`;
-  document.getElementById("stat-b").innerText = `Track B: ${displayB}% of switch operators`;
-  document.getElementById("distribution-fill").style.width = `${displayA}%`;
+  document.getElementById("stat-label-a").innerText = `Track A: ${pctA}% of switchmen`;
+  document.getElementById("stat-label-b").innerText = `Track B: ${pctB}% of switchmen`;
+  document.getElementById("meter-fill").style.width = `${pctA}%`;
 
-  document.getElementById("feedback-box").style.display = "flex";
+  document.getElementById("feedback-drawer").style.display = "flex";
 }
 
-function advanceRound() {
-  currentIdx++;
-  if (currentIdx < dilemmas.length) {
-    loadRound(currentIdx);
+function nextRound() {
+  roundIdx++;
+  if (roundIdx < scenarios.length) {
+    setupRound(roundIdx);
   } else {
-    concludeRun();
+    showDashboard();
   }
 }
 
-function concludeRun() {
-  document.getElementById("play-area").style.display = "none";
-  document.getElementById("round-indicator").innerText = "Completed";
+function showDashboard() {
+  document.getElementById("game-arena").style.display = "none";
+  document.getElementById("progress-indicator").innerText = "Completed";
   document.getElementById("summary-dashboard").style.display = "flex";
 
-  document.getElementById("final-casualties").innerText = aggregateCasualties.toFixed(1).replace(".0", "");
-  document.getElementById("final-saved").innerText = aggregateAverted.toFixed(1).replace(".0", "");
+  document.getElementById("total-lost").innerText = totalCasualties.toFixed(1).replace(".0", "");
+  document.getElementById("total-saved").innerText = totalPrevented.toFixed(1).replace(".0", "");
 
-  const badgeTitle = document.getElementById("badge-title");
-  const badgeDesc = document.getElementById("badge-desc");
+  const bTitle = document.getElementById("badge-title");
+  const bDesc = document.getElementById("badge-description");
 
-  if (utilitarianChoicesCount >= 9) {
-    badgeTitle.innerText = "Relentless Minimizer of Suffering";
-    badgeDesc.innerText = "You treat conscious beings as universally equal units on a ledger, cutting down bias to maximize net surviving life.";
-  } else if (utilitarianChoicesCount >= 5) {
-    badgeTitle.innerText = "Pragmatic Balancer";
-    badgeDesc.innerText = "You recognize that net welfare drives moral obligations, though close personal loyalties occasionally break your calculation.";
+  if (optimalDecisionsCount >= 9) {
+    bTitle.innerText = "Relentless Minimizer of Suffering";
+    bDesc.innerText = "You view sentient beings as universally equal units on a ledger, discarding bias to maximize net surviving life.";
+  } else if (optimalDecisionsCount >= 5) {
+    bTitle.innerText = "Pragmatic Balancer";
+    bDesc.innerText = "You recognize that net welfare drives moral obligations, though personal loyalties occasionally break your calculation.";
   } else {
-    badgeTitle.innerText = "Tribal Sentinel";
-    badgeDesc.innerText = "Kinship and personal duties override broader global welfare, choosing heavy external casualties to shield specific favored entities.";
+    bTitle.innerText = "Tribal Sentinel";
+    bDesc.innerText = "Kinship and personal bonds override global welfare, absorbing massive external casualties to shield favored entities.";
   }
 }
 
-function copyResults() {
+function copyStats() {
   const badge = document.getElementById("badge-title").innerText;
-  const lost = document.getElementById("final-casualties").innerText;
-  const saved = document.getElementById("final-saved").innerText;
-  const payload = `The Switchman Debrief:\nAlignment: ${badge}\nCasualties Absorbed: ${lost}\nCasualties Averted: ${saved}\nTest the switch: https://proudarts.com/trolleygame`;
-  navigator.clipboard.writeText(payload).then(() => {
+  const lost = document.getElementById("total-lost").innerText;
+  const saved = document.getElementById("total-saved").innerText;
+  const str = `The Switchman Debrief:\nAlignment: ${badge}\nLives Lost: ${lost}\nLives Prevented: ${saved}\nPlay at: https://proudarts.com/trolleygame`;
+  navigator.clipboard.writeText(str).then(() => {
     alert("Results copied to clipboard.");
   });
 }
 
-loadRound(0);
+// Initialize on dilemma 1
+setupRound(0);
 </script>
 
 </body>
