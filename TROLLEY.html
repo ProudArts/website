@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Switchman | Trolley Dilemmas</title>
+<style>
+  :root {
+    --bg: #0f1117;
+    --card: #1a1d26;
+    --card-border: #2b3040;
+    --accent: #ff4757;
+    --track-a: #2ed573;
+    --track-b: #ffa502;
+    --text: #f1f2f6;
+    --text-muted: #a4b0be;
+    --rail: #57606f;
+  }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  body {
+    background-color: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 24px 16px;
+  }
+  .app-container {
+    display: flex;
+    flex-direction: row;
+    gap: 24px;
+    width: 100%;
+    max-width: 1100px;
+    align-items: flex-start;
+  }
+  .main-stage {
+    flex: 1 1 700px;
+    background: var(--card);
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ad-rail {
+    flex: 0 0 300px;
+    background: var(--card);
+    border: 1px dashed var(--card-border);
+    border-radius: 12px;
+    min-height: 450px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+  }
+  .ad-slot {
+    width: 100%;
+    min-height: 250px;
+    background: rgba(0,0,0,0.2);
+    border: 1px solid var(--card-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 12px;
+    border-radius: 6px;
+  }
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    border-bottom: 1px solid var(--card-border);
+    padding-bottom: 12px;
+  }
+  h1 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  .progress-counter {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .scenario-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #fff;
+  }
+  .scenario-desc {
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+  .tracks-display {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 8px;
+  }
+  .track-card {
+    background: rgba(255,255,255,0.02);
+    border: 2px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  .track-card:hover {
+    border-color: var(--text-muted);
+  }
+  .track-card.selected {
+    border-color: var(--accent);
+    background: rgba(255, 71, 87, 0.08);
+  }
+  .track-label {
+    font-size: 0.85rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  .track-a-label { color: var(--track-a); }
+  .track-b-label { color: var(--track-b); }
+  .track-target {
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .lever-control-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin: 8px 0;
+  }
+  .switch-instruction {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .mechanical-switch {
+    display: flex;
+    background: #0b0d12;
+    padding: 6px;
+    border-radius: 40px;
+    border: 2px solid var(--card-border);
+    gap: 8px;
+  }
+  .switch-arm {
+    padding: 12px 28px;
+    border-radius: 30px;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .switch-arm.active-a {
+    background: var(--track-a);
+    color: #0b0d12;
+    box-shadow: 0 0 12px rgba(46, 213, 115, 0.4);
+  }
+  .switch-arm.active-b {
+    background: var(--track-b);
+    color: #0b0d12;
+    box-shadow: 0 0 12px rgba(255, 165, 2, 0.4);
+  }
+  .feedback-box {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .distribution-bar {
+    width: 100%;
+    height: 16px;
+    background: var(--track-b);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+  }
+  .distribution-fill {
+    height: 100%;
+    background: var(--track-a);
+  }
+  .distribution-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+  .outcome-summary {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--text);
+  }
+  .btn-next {
+    align-self: flex-end;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+  .summary-dashboard {
+    display: none;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .metric-card {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--card-border);
+    padding: 16px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  .metric-val {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-top: 6px;
+  }
+  .badge-container {
+    text-align: center;
+    padding: 24px;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: rgba(255,255,255,0.01);
+  }
+  .badge-name {
+    font-size: 1.6rem;
+    font-weight: 900;
+    color: var(--accent);
+    margin-top: 8px;
+  }
+  .badge-desc {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
+  .proudarts-cta {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    background: #2f3542;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 6px;
+    font-weight: 700;
+    border: 1px solid var(--card-border);
+    transition: background 0.2s;
+  }
+  .proudarts-cta:hover {
+    background: #3f4857;
+  }
+  @media (max-width: 860px) {
+    .app-container {
+      flex-direction: column;
+    }
+    .ad-rail {
+      width: 100%;
+      min-height: 120px;
+      flex: none;
+    }
+    .tracks-display {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="app-container">
+  <div class="main-stage">
+    <header>
+      <h1>THE SWITCHMAN</h1>
+      <span class="progress-counter" id="round-indicator">Dilemma 1 of 11</span>
+    </header>
+
+    <div id="play-area">
+      <div>
+        <h2 class="scenario-title" id="scenario-title">Loading...</h2>
+        <p class="scenario-desc" id="scenario-desc">Route the train along the tracks to minimize net societal harm.</p>
+      </div>
+
+      <div class="tracks-display">
+        <div class="track-card" id="card-a" onclick="throwSwitch('A')">
+          <div class="track-label track-a-label">Track A</div>
+          <div class="track-target" id="text-target-a"></div>
+        </div>
+        <div class="track-card" id="card-b" onclick="throwSwitch('B')">
+          <div class="track-label track-b-label">Track B</div>
+          <div class="track-target" id="text-target-b"></div>
+        </div>
+      </div>
+
+      <div class="lever-control-panel">
+        <span class="switch-instruction">Throw Switch Lever</span>
+        <div class="mechanical-switch">
+          <button type="button" class="switch-arm" id="lever-a" onclick="throwSwitch('A')">Divert Track A</button>
+          <button type="button" class="switch-arm" id="lever-b" onclick="throwSwitch('B')">Divert Track B</button>
+        </div>
+      </div>
+
+      <div class="feedback-box" id="feedback-box">
+        <div class="distribution-labels">
+          <span id="stat-a">Track A: 0%</span>
+          <span id="stat-b">Track B: 0%</span>
+        </div>
+        <div class="distribution-bar">
+          <div class="distribution-fill" id="distribution-fill" style="width: 50%;"></div>
+        </div>
+        <div class="outcome-summary" id="outcome-text"></div>
+        <button type="button" class="btn-next" onclick="advanceRound()">Next Dilemma</button>
+      </div>
+    </div>
+
+    <div class="summary-dashboard" id="summary-dashboard">
+      <div>
+        <h2 class="scenario-title">Operational Debrief</h2>
+        <p class="scenario-desc">The run is complete, the tallies are locked, and the consequences stand.</p>
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric-card">
+          <div class="switch-instruction">Casualties Incurred</div>
+          <div class="metric-val" style="color: var(--accent);" id="final-casualties">0</div>
+        </div>
+        <div class="metric-card">
+          <div class="switch-instruction">Casualties Averted</div>
+          <div class="metric-val" style="color: var(--track-a);" id="final-saved">0</div>
+        </div>
+      </div>
+
+      <div class="badge-container">
+        <div class="switch-instruction">Calculated Moral Alignment</div>
+        <div class="badge-name" id="badge-title">Relentless Utilitarian</div>
+        <div class="badge-desc" id="badge-desc">You measure moral rectitude strictly through cold, aggregate outcomes. Favoritism yields to the balance sheet of net suffering.</div>
+      </div>
+
+      <button type="button" class="btn-next" style="align-self: center;" onclick="copyResults()">Copy Debrief Results</button>
+      <a class="proudarts-cta" href="https://proudarts.com" target="_blank" rel="noopener">Explore ProudArts Games and Projects</a>
+    </div>
+  </div>
+
+  <aside class="ad-rail">
+    <div>Sponsorship Terminal</div>
+    <div class="ad-slot" id="ad-banner-slot">
+      <span>Advertisement Slot<br>300x250 Programmatic</span>
+    </div>
+  </aside>
+</div>
+
+<script>
+const dilemmas = [
+  {
+    title: "Round 1: The Baseline",
+    trackA: "5 random commuters",
+    trackB: "1 random commuter",
+    lossA: 5,
+    lossB: 1,
+    baseA: 18,
+    utilitarianChoice: "B",
+    summaryA: "You allowed five deaths to spare one, multiplying aggregate misery by five.",
+    summaryB: "Four net lives preserved, pure arithmetic triumphing over arbitrary paralysis."
+  },
+  {
+    title: "Round 2: The Life-Years",
+    trackA: "8 elderly retirees",
+    trackB: "2 young children",
+    lossA: 8,
+    lossB: 2,
+    baseA: 31,
+    utilitarianChoice: "A",
+    summaryA: "Preserving children yields decades more aggregate conscious life, regardless of raw headcount.",
+    summaryB: "You sacrificed the bulk of potential future human experience to preserve eight near-terminal journeys."
+  },
+  {
+    title: "Round 3: The Best Friend",
+    trackA: "1 of your best friends",
+    trackB: "4 total strangers",
+    lossA: 1,
+    lossB: 4,
+    baseA: 62,
+    utilitarianChoice: "A",
+    summaryA: "One funeral produces less global misery than four, your private loyalty notwithstanding.",
+    summaryB: "Personal sentiment won out, costing society four productive units instead of one."
+  },
+  {
+    title: "Round 4: The Father",
+    trackA: "Your father",
+    trackB: "5 elderly men his same age",
+    lossA: 1,
+    lossB: 5,
+    baseA: 58,
+    utilitarianChoice: "A",
+    summaryA: "One grieving household versus five, an austere execution of net well-being.",
+    summaryB: "You favored personal attachment, multiplying communal despair by five."
+  },
+  {
+    title: "Round 5: The Infrastructure",
+    trackA: "Power and clean water cut to 300,000 residents for two weeks in summer",
+    trackB: "3 utility workers",
+    lossA: 35,
+    lossB: 3,
+    baseA: 22,
+    utilitarianChoice: "B",
+    summaryA: "Widespread infrastructure loss causes catastrophic ripple effects, hospital failures, and severe misery.",
+    summaryB: "Three immediate losses absorbed to protect three hundred thousand from dangerous systemic collapse."
+  },
+  {
+    title: "Round 6: The Bloodline",
+    trackA: "Your own child",
+    trackB: "6 stranger children",
+    lossA: 1,
+    lossB: 6,
+    baseA: 78,
+    utilitarianChoice: "A",
+    summaryA: "Six surviving youths create vastly greater future aggregate utility than one.",
+    summaryB: "Parental bias preserved a single life, while extinguishing six entirely equivalent minds."
+  },
+  {
+    title: "Round 7: The Self-Trade",
+    trackA: "8 regular people",
+    trackB: "You",
+    lossA: 8,
+    lossB: 1,
+    baseA: 12,
+    utilitarianChoice: "B",
+    summaryA: "Eight functional citizens surrendered so your individual viewpoint could endure.",
+    summaryB: "Trading one conscious entity for eight produces the cleanest possible balance sheet."
+  },
+  {
+    title: "Round 8: The Potential Life",
+    trackA: "1 pregnant woman",
+    trackB: "1 adult woman",
+    lossA: 2,
+    lossB: 1,
+    baseA: 34,
+    utilitarianChoice: "B",
+    summaryA: "Two distinct trajectories extinguished where only one had to fall.",
+    summaryB: "Preserving both mother and upcoming life maximizes cumulative years lived."
+  },
+  {
+    title: "Round 9: The Animal Bond",
+    trackA: "Your beloved family dog of 10 years",
+    trackB: "1 total stranger",
+    lossA: 0.5,
+    lossB: 1,
+    baseA: 64,
+    utilitarianChoice: "A",
+    summaryA: "A human being continues contributing to global consciousness at the expense of a beloved pet.",
+    summaryB: "You chose non-human companionship over a member of human society, leaving families devastated."
+  },
+  {
+    title: "Round 10: The Scalpel",
+    trackA: "1 top trauma surgeon operating on hundreds of critical cases a year",
+    trackB: "5 average working citizens",
+    lossA: 10,
+    lossB: 5,
+    baseA: 27,
+    utilitarianChoice: "B",
+    summaryA: "A single death cascade takes hundreds of potential future surgical patients down with it.",
+    summaryB: "Preserving the surgeon saves many more downstream lives than the five immediate casualties."
+  },
+  {
+    title: "Round 11: The Veil (Bonus Round)",
+    trackA: "5 confirmed strangers",
+    trackB: "1 mystery individual who has a chance of being someone you deeply love",
+    lossA: 5,
+    lossB: 1,
+    baseA: 41,
+    utilitarianChoice: "B",
+    summaryA: "Paranoia over a personal loss cost five definitive lives in exchange for pure speculation.",
+    summaryB: "Five guaranteed survivors secured over an uncertain personal probability, maximizing expected lives."
+  }
+];
+
+let currentIdx = 0;
+let aggregateCasualties = 0;
+let aggregateAverted = 0;
+let utilitarianChoicesCount = 0;
+let choiceLocked = false;
+
+function loadRound(idx) {
+  choiceLocked = false;
+  document.getElementById("round-indicator").innerText = `Dilemma ${idx + 1} of ${dilemmas.length}`;
+  document.getElementById("scenario-title").innerText = dilemmas[idx].title;
+  document.getElementById("text-target-a").innerText = dilemmas[idx].trackA;
+  document.getElementById("text-target-b").innerText = dilemmas[idx].trackB;
+
+  document.getElementById("card-a").classList.remove("selected");
+  document.getElementById("card-b").classList.remove("selected");
+  document.getElementById("lever-a").classList.remove("active-a");
+  document.getElementById("lever-b").classList.remove("active-b");
+  document.getElementById("feedback-box").style.display = "none";
+}
+
+function throwSwitch(choice) {
+  if (choiceLocked) return;
+  choiceLocked = true;
+
+  const current = dilemmas[currentIdx];
+  const cardA = document.getElementById("card-a");
+  const cardB = document.getElementById("card-b");
+  const leverA = document.getElementById("lever-a");
+  const leverB = document.getElementById("lever-b");
+  const outcomeText = document.getElementById("outcome-text");
+
+  let casualties = 0;
+  let averted = 0;
+
+  if (choice === 'A') {
+    cardA.classList.add("selected");
+    leverA.classList.add("active-a");
+    casualties = current.lossA;
+    averted = current.lossB;
+    outcomeText.innerText = current.summaryA;
+  } else {
+    cardB.classList.add("selected");
+    leverB.classList.add("active-b");
+    casualties = current.lossB;
+    averted = current.lossA;
+    outcomeText.innerText = current.summaryB;
+  }
+
+  aggregateCasualties += casualties;
+  aggregateAverted += averted;
+
+  if (choice === current.utilitarianChoice) {
+    utilitarianChoicesCount++;
+  }
+
+  const variance = (Math.floor(Math.random() * 5) - 2);
+  let displayA = Math.min(Math.max(current.baseA + variance, 5), 95);
+  let displayB = 100 - displayA;
+
+  document.getElementById("stat-a").innerText = `Track A: ${displayA}% of switch operators`;
+  document.getElementById("stat-b").innerText = `Track B: ${displayB}% of switch operators`;
+  document.getElementById("distribution-fill").style.width = `${displayA}%`;
+
+  document.getElementById("feedback-box").style.display = "flex";
+}
+
+function advanceRound() {
+  currentIdx++;
+  if (currentIdx < dilemmas.length) {
+    loadRound(currentIdx);
+  } else {
+    concludeRun();
+  }
+}
+
+function concludeRun() {
+  document.getElementById("play-area").style.display = "none";
+  document.getElementById("round-indicator").innerText = "Completed";
+  document.getElementById("summary-dashboard").style.display = "flex";
+
+  document.getElementById("final-casualties").innerText = aggregateCasualties.toFixed(1).replace(".0", "");
+  document.getElementById("final-saved").innerText = aggregateAverted.toFixed(1).replace(".0", "");
+
+  const badgeTitle = document.getElementById("badge-title");
+  const badgeDesc = document.getElementById("badge-desc");
+
+  if (utilitarianChoicesCount >= 9) {
+    badgeTitle.innerText = "Relentless Minimizer of Suffering";
+    badgeDesc.innerText = "You treat conscious beings as universally equal units on a ledger, cutting down bias to maximize net surviving life.";
+  } else if (utilitarianChoicesCount >= 5) {
+    badgeTitle.innerText = "Pragmatic Balancer";
+    badgeDesc.innerText = "You recognize that net welfare drives moral obligations, though close personal loyalties occasionally break your calculation.";
+  } else {
+    badgeTitle.innerText = "Tribal Sentinel";
+    badgeDesc.innerText = "Kinship and personal duties override broader global welfare, choosing heavy external casualties to shield specific favored entities.";
+  }
+}
+
+function copyResults() {
+  const badge = document.getElementById("badge-title").innerText;
+  const lost = document.getElementById("final-casualties").innerText;
+  const saved = document.getElementById("final-saved").innerText;
+  const payload = `The Switchman Debrief:\nAlignment: ${badge}\nCasualties Absorbed: ${lost}\nCasualties Averted: ${saved}\nTest the switch: https://proudarts.com/trolleygame`;
+  navigator.clipboard.writeText(payload).then(() => {
+    alert("Results copied to clipboard.");
+  });
+}
+
+loadRound(0);
+</script>
+
+</body>
+</html>
