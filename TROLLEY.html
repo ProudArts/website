@@ -167,9 +167,9 @@
 
   .station-text-wrap {
     color: #fff;
-    font-size: 12px;
-    font-weight: 600;
-    line-height: 1.35;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.25;
     word-wrap: break-word;
     overflow: hidden;
     display: flex;
@@ -198,10 +198,10 @@
     background: #252a38;
     color: var(--text-muted);
     border: 1px solid var(--card-border);
-    padding: 8px 16px;
+    padding: 10px 20px;
     border-radius: 6px;
     font-weight: 700;
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.15s ease;
   }
@@ -354,6 +354,26 @@
     font-size: 0.95rem;
     margin-bottom: 6px;
   }
+  .footer-meta {
+    margin-top: 16px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-size: 0.8rem;
+  }
+  .footer-meta a {
+    color: var(--track-a);
+    text-decoration: none;
+  }
+  .footer-meta a:hover {
+    text-decoration: underline;
+  }
+  .counter-box {
+    margin-top: 6px;
+    display: inline-block;
+  }
 
   #trolley-cart {
     transition: transform 1.2s cubic-bezier(0.45, 0, 0.25, 1);
@@ -452,18 +472,18 @@
 
           <g class="target-zone" id="zone-target-b" onclick="chooseTrack('B')">
             <rect class="zone-rect" x="746" y="35" width="290" height="125"/>
-            <text x="758" y="58" fill="var(--track-b)" font-size="11" font-weight="900" letter-spacing="1">TRACK B (DIVERSION)</text>
+            <text x="758" y="58" fill="var(--track-b)" font-size="12" font-weight="900" letter-spacing="1">TRACK B</text>
             <g id="svg-graphic-b" transform="translate(758, 68)"></g>
-            <foreignObject x="758" y="112" width="266" height="42">
+            <foreignObject x="758" y="106" width="266" height="50">
               <div xmlns="http://www.w3.org/1999/xhtml" class="station-text-wrap" id="svg-label-b"></div>
             </foreignObject>
           </g>
 
           <g class="target-zone selected" id="zone-target-a" onclick="chooseTrack('A')">
             <rect class="zone-rect" x="746" y="195" width="290" height="125"/>
-            <text x="758" y="218" fill="var(--track-a)" font-size="11" font-weight="900" letter-spacing="1">TRACK A (MAIN LINE)</text>
+            <text x="758" y="218" fill="var(--track-a)" font-size="12" font-weight="900" letter-spacing="1">TRACK A</text>
             <g id="svg-graphic-a" transform="translate(758, 228)"></g>
-            <foreignObject x="758" y="272" width="266" height="42">
+            <foreignObject x="758" y="266" width="266" height="50">
               <div xmlns="http://www.w3.org/1999/xhtml" class="station-text-wrap" id="svg-label-a"></div>
             </foreignObject>
           </g>
@@ -485,8 +505,8 @@
 
       <div class="control-strip">
         <div class="lever-btn-group">
-          <button type="button" class="lever-btn active-a" id="btn-sw-a" onclick="chooseTrack('A')">Route Track A (Straight)</button>
-          <button type="button" class="lever-btn" id="btn-sw-b" onclick="chooseTrack('B')">Route Track B (Divert Up)</button>
+          <button type="button" class="lever-btn active-a" id="btn-sw-a" onclick="chooseTrack('A')">Track A</button>
+          <button type="button" class="lever-btn" id="btn-sw-b" onclick="chooseTrack('B')">Track B</button>
         </div>
         <button type="button" class="dispatch-btn" id="btn-dispatch" onclick="dispatchTrolley()">PULL LEVER &amp; FIRE TROLLEY</button>
       </div>
@@ -535,14 +555,16 @@
       <h3>About The Trolley Problem and This Trolley Test</h3>
       <p>
         The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>Trolley Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
-      </p>    
-    
-    &copy; 2026 Proud Arts LLC. All Rights Reserved. Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
-<br>      
-<br>
- <div id="sfccu3ad6f95e18r2l2jjdywttbattqwz78"></div>
-<script type="text/javascript" src="https://counter11.optistats.ovh/private/counter.js?c=cu3ad6f95e18r2l2jjdywttbattqwz78&down=async" async></script>
-
+      </p>
+      <div class="footer-meta">
+        <div>
+          &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
+          Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
+        </div>
+        <div class="counter-box">
+          <a href="https://www.freecounterstat.com" title="website hits counter"><img src="https://counter11.optistats.ovh/private/freecounterstat.php?c=xuxga76hzkfr2pwde462ywdmffuxgrhs" border="0" title="website hits counter" alt="website hits counter"></a>
+        </div>
+      </div>
     </footer>
   </div>
 
