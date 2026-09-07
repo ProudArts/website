@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>The Trolley Problem Game, Trolley Problem and Trolley Test Simulator</title>
-<meta name="description" content="Play the interactive Trolley Problem Game and test your moral choices in this realistic Trolley Problem simulator and Trolley Test, Divert the tracks, evaluate aggregate well being, compare your statistics with switch operators, and analyze your net ethical outcomes,">
+<meta name="description" content="Play the interactive Trolley Problem Game and test your moral choices in this realistic Trolley Problem simulator and Trolley Test, Divert the tracks, evaluate aggregate well being, compare your statistics with other players, and analyze your net ethical outcomes,">
 <meta name="keywords" content="Trolley Problem, Trolley Test, Trolley Game, The Trolley Problem Game, ethics game, moral philosophy simulator, trolley dilemma simulator">
 <link rel="canonical" href="https://proudarts.com/trolleygame/">
 
@@ -237,14 +237,14 @@
   .stat-labels {
     display: flex;
     justify-content: space-between;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
   }
   .split-meter {
     width: 100%;
-    height: 14px;
+    height: 16px;
     background: #ffa502;
-    border-radius: 7px;
+    border-radius: 8px;
     overflow: hidden;
     display: flex;
   }
@@ -254,8 +254,10 @@
     transition: width 0.4s ease;
   }
   .outcome-report {
-    font-size: 0.95rem;
+    font-size: 1.05rem;
+    font-weight: 600;
     line-height: 1.45;
+    color: #ffffff;
   }
   .next-round-btn {
     align-self: flex-end;
@@ -371,16 +373,9 @@
     transition: transform 1.2s cubic-bezier(0.45, 0, 0.25, 1);
   }
 
-  /* Comic Splat Pop Effect */
   #splat-burst {
     display: none;
     pointer-events: none;
-    animation: popSplat 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-  }
-  @keyframes popSplat {
-    0% { transform: scale(0.2) rotate(-15deg); opacity: 0; }
-    60% { transform: scale(1.15) rotate(5deg); opacity: 1; }
-    100% { transform: scale(1) rotate(0deg); opacity: 1; }
   }
 
   @media (max-width: 860px) {
@@ -505,30 +500,27 @@
             </foreignObject>
           </g>
 
-          <!-- Upgraded 1.5x Callout Badge with Distinct Angled Directional Arrows -->
-          <g id="guide-badge" transform="translate(560, 150)">
-            <!-- Main Badge Container -->
-            <rect x="0" y="0" width="165" height="55" rx="8" fill="#ff4757" stroke="#ffffff" stroke-width="2" filter="drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))"/>
-            <text x="82" y="24" fill="#ffffff" font-size="12" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
-            <text x="82" y="42" fill="#ffffff" font-size="13" font-weight="900" text-anchor="middle" letter-spacing="0.5">SACRIFICE</text>
+          <!-- Clear Callout Box Positioned to the Left Without Overlap -->
+          <g id="guide-badge" transform="translate(460, 145)">
+            <rect x="0" y="0" width="170" height="60" rx="8" fill="#ff4757" stroke="#ffffff" stroke-width="2" filter="drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))"/>
+            <text x="85" y="26" fill="#ffffff" font-size="14" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
+            <text x="85" y="46" fill="#ffffff" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="0.5">SACRIFICE</text>
 
-            <!-- Distinct Angled Arrow Pointing Directly Toward Track A -->
-            <g transform="translate(165, 12)">
-              <line x1="0" y1="0" x2="35" y2="-45" stroke="#ff4757" stroke-width="5" stroke-linecap="round"/>
-              <polygon points="26,-52 48,-50 38,-30" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
+            <!-- Crisp Clean Angled Arrows Pointing to Cards -->
+            <g transform="translate(170, 14)">
+              <line x1="0" y1="0" x2="80" y2="-45" stroke="#ff4757" stroke-width="6" stroke-linecap="round"/>
+              <polygon points="68,-52 92,-48 78,-30" fill="#ff4757" stroke="#ffffff" stroke-width="2"/>
             </g>
-
-            <!-- Distinct Angled Arrow Pointing Directly Toward Track B -->
-            <g transform="translate(165, 43)">
-              <line x1="0" y1="0" x2="35" y2="45" stroke="#ff4757" stroke-width="5" stroke-linecap="round"/>
-              <polygon points="38,30 48,50 26,52" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
+            <g transform="translate(170, 46)">
+              <line x1="0" y1="0" x2="80" y2="45" stroke="#ff4757" stroke-width="6" stroke-linecap="round"/>
+              <polygon points="78,30 92,48 68,52" fill="#ff4757" stroke="#ffffff" stroke-width="2"/>
             </g>
           </g>
 
-          <!-- Comic Splat Impact Pop Effect -->
-          <g id="splat-burst" transform="translate(760, 80)">
-            <path d="M 0,-40 L 14,-15 L 42,-28 L 26,-2 L 55,14 L 24,18 L 35,46 L 4,28 L -14,52 L -18,22 L -48,32 L -30,6 L -55,-12 L -24,-14 L -32,-42 L -4,-22 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="3"/>
-            <text x="0" y="8" fill="#c0392b" font-size="20" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1">SPLAT!</text>
+          <!-- Comic Splat Impact Pop Effect Positioned Directly over Cards -->
+          <g id="splat-burst">
+            <path d="M 0,-48 L 16,-18 L 50,-32 L 32,-2 L 65,16 L 28,22 L 42,55 L 5,34 L -16,62 L -22,26 L -58,38 L -36,8 L -65,-14 L -28,-16 L -38,-50 L -5,-26 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="4"/>
+            <text x="0" y="10" fill="#c0392b" font-size="24" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1">SPLAT!</text>
           </g>
 
           <!-- Massive Heavy Industrial Trolley Car -->
@@ -564,8 +556,8 @@
 
       <div class="feedback-drawer" id="feedback-drawer">
         <div class="stat-labels">
-          <span id="stat-label-a" style="color: var(--track-active)">Track A: 50%</span>
-          <span id="stat-label-b" style="color: #ffa502">Track B: 50%</span>
+          <span id="stat-label-a" style="color: var(--track-active)">75% of players sacrificed Track A</span>
+          <span id="stat-label-b" style="color: #ffa502">25% sacrificed Track B</span>
         </div>
         <div class="split-meter">
           <div class="split-meter-fill" id="meter-fill" style="width: 50%;"></div>
@@ -601,7 +593,6 @@
       <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
 
-    <!-- Informational SEO stage block returned directly inside card -->
     <div class="about-trolley-block">
       <h3>About The Trolley Problem and This Trolley Test</h3>
       <p>
@@ -618,7 +609,6 @@
   </aside>
 </div>
 
-<!-- Centered Proud Arts LLC Footer and Hit Counter Pinned to Bottom -->
 <footer class="site-footer">
   <div class="footer-meta">
     <div>
@@ -632,7 +622,6 @@
 </footer>
 
 <script>
-// High-visibility filled silhouette generator
 function renderGraphic(type, count) {
   let out = '';
   if (type === 'person' || type === 'father') {
@@ -667,14 +656,23 @@ function renderGraphic(type, count) {
     }
     return out;
   }
-  if (type === 'dog') {
-    return `<g transform="translate(10, 4)">
-      <ellipse cx="22" cy="22" rx="14" ry="9" fill="#e67e22"/>
-      <circle cx="36" cy="14" r="6.5" fill="#d35400"/>
-      <polygon points="32,9 36,4 40,9" fill="#ba4a00"/>
-      <rect x="12" y="27" width="4" height="12" rx="1.5" fill="#d35400"/>
-      <rect x="26" y="27" width="4" height="12" rx="1.5" fill="#d35400"/>
-      <path d="M 8 20 Q 2 10 6 6" stroke="#e67e22" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+  if (type === 'pet') {
+    // Renders both dog and cat together
+    return `<g transform="translate(6, 4)">
+      <!-- Dog -->
+      <ellipse cx="18" cy="22" rx="12" ry="8" fill="#e67e22"/>
+      <circle cx="30" cy="15" r="5.5" fill="#d35400"/>
+      <polygon points="27,10 30,5 33,10" fill="#ba4a00"/>
+      <rect x="10" y="27" width="3.5" height="10" rx="1" fill="#d35400"/>
+      <rect x="22" y="27" width="3.5" height="10" rx="1" fill="#d35400"/>
+      <!-- Cat -->
+      <ellipse cx="50" cy="24" rx="9" ry="7" fill="#bdc3c7"/>
+      <circle cx="58" cy="17" r="5" fill="#95a5a6"/>
+      <polygon points="54,12 56,8 58,12" fill="#7f8c8d"/>
+      <polygon points="58,12 60,8 62,12" fill="#7f8c8d"/>
+      <rect x="44" y="28" width="3" height="9" rx="1" fill="#7f8c8d"/>
+      <rect x="53" y="28" width="3" height="9" rx="1" fill="#7f8c8d"/>
+      <path d="M 42 22 Q 38 16 42 12" stroke="#bdc3c7" stroke-width="2.5" fill="none" stroke-linecap="round"/>
     </g>`;
   }
   if (type === 'felon') {
@@ -692,11 +690,13 @@ function renderGraphic(type, count) {
       <text x="44" y="27" fill="#f1f2f6" font-size="12" font-weight="bold">300k GRID</text>
     </g>`;
   }
-  if (type === 'surgeon') {
+  if (type === 'scientist') {
     return `<g transform="translate(14, 0)">
-      <circle cx="12" cy="6" r="4.5" fill="#1abc9c"/>
-      <path d="M 5 12 Q 12 10 19 12 L 18 26 L 15 36 L 9 36 L 6 26 Z" fill="#16a085"/>
-      <rect x="22" y="14" width="2" height="16" fill="#ecf0f1"/>
+      <circle cx="12" cy="6" r="4.5" fill="#00d2d3"/>
+      <path d="M 5 12 Q 12 10 19 12 L 18 26 L 15 36 L 9 36 L 6 26 Z" fill="#01a3a4"/>
+      <!-- Flask -->
+      <polygon points="22,22 26,30 20,30" fill="#ff9ff3"/>
+      <rect x="22" y="18" width="2" height="4" fill="#ffffff"/>
     </g>`;
   }
   if (type === 'you') {
@@ -722,7 +722,7 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
-// 11 Locked Dilemmas with punchy, cleaned-up labels
+// 11 Scenarios with down-to-earth, plain feedback
 const scenarios = [
   {
     title: "Scenario 1",
@@ -733,8 +733,8 @@ const scenarios = [
     lossA: 1, lossB: 5,
     baseA: 82,
     utilitarianTarget: 'A',
-    commentA: "Four net lives preserved, Pure arithmetic prevailing over sentiment,",
-    commentB: "Five lives extinguished to spare a single individual, Net well being drops sharply,"
+    commentA: "You sacrificed 1 person to save 5 people. You saved 4 net lives.",
+    commentB: "You sacrificed 5 people to save 1 person. You lost 4 more lives than necessary."
   },
   {
     title: "Scenario 2",
@@ -745,8 +745,8 @@ const scenarios = [
     lossA: 8, lossB: 2,
     baseA: 31,
     utilitarianTarget: 'A',
-    commentA: "Preserving young children yields decades more cumulative conscious life experience,",
-    commentB: "Sacrificed decades of future potential to preserve eight near terminal journeys,"
+    commentA: "You sacrificed 8 grandmas to save 2 young kids, choosing a full lifetime of potential over old age.",
+    commentB: "You sacrificed 2 young kids to save 8 grandmas, letting decades of young life get cut short."
   },
   {
     title: "Scenario 3",
@@ -757,20 +757,20 @@ const scenarios = [
     lossA: 1, lossB: 4,
     baseA: 62,
     utilitarianTarget: 'A',
-    commentA: "One grieving household instead of four, putting broader social utility ahead of private affection,",
-    commentB: "Tribal loyalty cost society four lives instead of one,"
+    commentA: "You sacrificed your best friend to save 4 strangers. You put strangers ahead of personal friendship.",
+    commentB: "You sacrificed 4 strangers to save your best friend, putting friendship above the higher body count."
   },
   {
     title: "Scenario 4",
     trackA: "Your father",
-    trackB: "5 elderly fathers",
+    trackB: "5 unknown fathers",
     typeA: "father", countA: 1,
     typeB: "father", countB: 5,
     lossA: 1, lossB: 5,
     baseA: 58,
     utilitarianTarget: 'A',
-    commentA: "Personal attachment subordinated to prevent five grieving households,",
-    commentB: "Parental bias multiplied aggregate social despair fivefold,"
+    commentA: "You sacrificed your father to save 5 unknown fathers. You treated all fathers as equals.",
+    commentB: "You sacrificed 5 unknown fathers to save your own father. Family loyalty won out."
   },
   {
     title: "Scenario 5",
@@ -781,8 +781,8 @@ const scenarios = [
     lossA: 3, lossB: 35,
     baseA: 78,
     utilitarianTarget: 'A',
-    commentA: "Three immediate casualties absorbed to shield three hundred thousand from severe hazards,",
-    commentB: "A systemic blackout cascade cripples eldercare and hospitals, causing immense community harm,"
+    commentA: "You sacrificed 3 workers to keep drinking water running for 300,000 residents.",
+    commentB: "You chose to shut off water to 300,000 people for two weeks to save 3 workers."
   },
   {
     title: "Scenario 6",
@@ -793,8 +793,8 @@ const scenarios = [
     lossA: 1, lossB: 6,
     baseA: 78,
     utilitarianTarget: 'A',
-    commentA: "Six surviving youths generate vastly greater future experience than a single child,",
-    commentB: "Kinship preference preserved one child while extinguishing six equivalent futures,"
+    commentA: "You sacrificed your own child to save 6 unknown children. That is an agonizing numbers choice.",
+    commentB: "You sacrificed 6 unknown children to protect your own child. Bloodline came first."
   },
   {
     title: "Scenario 7",
@@ -805,8 +805,8 @@ const scenarios = [
     lossA: 1, lossB: 8,
     baseA: 88,
     utilitarianTarget: 'A',
-    commentA: "Trading one self unit for eight produces the cleanest possible ledger,",
-    commentB: "Eight functional minds extinguished to preserve your own viewpoint,"
+    commentA: "You sacrificed yourself to save 8 innocent people. Pure selflessness.",
+    commentB: "You sacrificed 8 innocent people to save your own life."
   },
   {
     title: "Scenario 8",
@@ -817,44 +817,44 @@ const scenarios = [
     lossA: 1, lossB: 2,
     baseA: 66,
     utilitarianTarget: 'A',
-    commentA: "Preserving both mother and child maximizes cumulative future conscious existence,",
-    commentB: "Two lives extinguished where only one had to fall,"
+    commentA: "You sacrificed 1 adult woman to save a pregnant mother and her unborn child.",
+    commentB: "You sacrificed a pregnant mother and her unborn child to save 1 adult woman."
   },
   {
     title: "Scenario 9",
-    trackA: "Your family dog",
+    trackA: "Your family pet",
     trackB: "1 convicted felon",
-    typeA: "dog", countA: 1,
+    typeA: "pet", countA: 1,
     typeB: "felon", countB: 1,
     lossA: 0.5, lossB: 1,
     baseA: 64,
     utilitarianTarget: 'A',
-    commentA: "A human member of society continues contributing, despite the genuine sorrow of losing a pet,",
-    commentB: "Animal loyalty prioritized over human consciousness, leaving a human household devastated,"
+    commentA: "You sacrificed your family pet to save a human life, even if they are a convicted felon.",
+    commentB: "You sacrificed a convicted felon to protect your family pet."
   },
   {
     title: "Scenario 10",
     trackA: "5 working citizens",
-    trackB: "1 trauma surgeon",
+    trackB: "1 cancer scientist finding cures",
     typeA: "person", countA: 5,
-    typeB: "surgeon", countB: 1,
+    typeB: "scientist", countB: 1,
     lossA: 5, lossB: 10,
     baseA: 73,
     utilitarianTarget: 'A',
-    commentA: "Preserving the surgeon directly spares hundreds of future surgical patients,",
-    commentB: "The death of this specialist cascades into dozens of downstream operating room fatalities,"
+    commentA: "You sacrificed 5 working citizens to protect the scientist who could save millions.",
+    commentB: "You sacrificed the top scientist to save 5 working citizens right in front of you."
   },
   {
     title: "Scenario 11",
-    trackA: "1 mystery person (might be your love)",
-    trackB: "5 confirmed strangers",
+    trackA: "Mystery person (could be family or stranger)",
+    trackB: "5 strangers",
     typeA: "mystery", countA: 1,
     typeB: "person", countB: 5,
     lossA: 1, lossB: 5,
     baseA: 59,
     utilitarianTarget: 'A',
-    commentA: "Five guaranteed survivors secured over an uncertain probability,",
-    commentB: "Subjective fear of a personal loss sacrificed five guaranteed human lives,"
+    commentA: "You gambled on an unknown face rather than taking the guaranteed 5 casualties.",
+    commentB: "You sacrificed 5 strangers to avoid risking someone you might love."
   }
 ];
 
@@ -881,7 +881,7 @@ function setupRound(idx) {
   const cart = document.getElementById("trolley-cart");
   cart.style.transform = "translate(-10px, 180px)";
 
-  // Reset splat burst
+  // Hide splat
   const splat = document.getElementById("splat-burst");
   splat.style.display = "none";
 
@@ -909,7 +909,6 @@ function setupRound(idx) {
   btn.disabled = true;
   btn.innerText = "CHOOSE A ROUTE FOR THE TROLLEY";
 
-  // Guide badge is always active and visible on every scenario
   document.getElementById("guide-badge").style.display = "block";
   document.getElementById("feedback-drawer").style.display = "none";
 }
@@ -979,15 +978,16 @@ function dispatchTrolley() {
   const cart = document.getElementById("trolley-cart");
   const splat = document.getElementById("splat-burst");
 
+  // Route the trolley and position splat burst dead center on the chosen victim card
   if (selectedTrack === 'A') {
     cart.style.transform = "translate(570px, 20px)";
-    splat.setAttribute("transform", "translate(820, 80)");
+    splat.setAttribute("transform", "translate(880, 95)");
   } else {
     cart.style.transform = "translate(570px, 180px)";
-    splat.setAttribute("transform", "translate(820, 240)");
+    splat.setAttribute("transform", "translate(880, 255)");
   }
 
-  // Trigger Comic Splat effect on collision
+  // Pop SPLAT directly on victim card impact
   setTimeout(() => {
     splat.style.display = "block";
   }, 1000);
@@ -1025,8 +1025,9 @@ function evaluateResults() {
   const pctA = Math.min(Math.max(cur.baseA + variance, 5), 95);
   const pctB = 100 - pctA;
 
-  document.getElementById("stat-label-a").innerText = `Track A: ${pctA}% of switchmen`;
-  document.getElementById("stat-label-b").innerText = `Track B: ${pctB}% of switchmen`;
+  // Clean, plain wording that anyone understands immediately
+  document.getElementById("stat-label-a").innerText = `${pctA}% of players sacrificed Track A`;
+  document.getElementById("stat-label-b").innerText = `${pctB}% sacrificed Track B`;
   document.getElementById("meter-fill").style.width = `${pctA}%`;
 
   document.getElementById("feedback-drawer").style.display = "flex";
