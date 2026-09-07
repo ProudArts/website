@@ -7,10 +7,10 @@
 <title>The Trolley Problem Game, Trolley Problem and Trolley Test Simulator</title>
 <meta name="description" content="Play the interactive Trolley Problem Game and test your moral choices in this realistic Trolley Problem simulator and Trolley Test, Divert the tracks, evaluate aggregate well being, compare your statistics with other players, and analyze your net ethical outcomes,">
 <meta name="keywords" content="Trolley Problem, Trolley Test, Trolley Game, The Trolley Problem Game, ethics game, moral philosophy simulator, trolley dilemma simulator">
-<link rel="canonical" href="https://proudarts.com/trolleygame/">
+<link rel="canonical" href="https://proudarts.com/trolley.html">
 
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://proudarts.com/trolleygame/">
+<meta property="og:url" content="https://proudarts.com/trolley.html">
 <meta property="og:title" content="The Trolley Problem Game, Trolley Problem and Trolley Test Simulator">
 <meta property="og:description" content="Throw the switch, calculate net casualties, and face the classic Trolley Problem in this interactive Trolley Problem Game and Trolley Test,">
 
@@ -20,7 +20,7 @@
   "@type": "WebApplication",
   "name": "The Trolley Problem Game",
   "alternateName": ["Trolley Problem Simulator", "Trolley Test", "Trolley Game"],
-  "url": "https://proudarts.com/trolleygame/",
+  "url": "https://proudarts.com/trolley.html",
   "applicationCategory": "GameApplication",
   "genre": "Simulation, Puzzle, Ethics",
   "operatingSystem": "All modern browsers",
@@ -264,7 +264,7 @@
     background: #3742fa;
     color: #fff;
     border: none;
-    padding: 10px 20px;
+    padding: 10px 22px;
     border-radius: 6px;
     font-weight: 700;
     cursor: pointer;
@@ -500,13 +500,12 @@
             </foreignObject>
           </g>
 
-          <!-- Clear Callout Box Positioned to the Left Without Overlap -->
+          <!-- Callout Box Positioned on Left with Angled Arrows -->
           <g id="guide-badge" transform="translate(460, 145)">
             <rect x="0" y="0" width="170" height="60" rx="8" fill="#ff4757" stroke="#ffffff" stroke-width="2" filter="drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))"/>
             <text x="85" y="26" fill="#ffffff" font-size="14" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
             <text x="85" y="46" fill="#ffffff" font-size="15" font-weight="900" text-anchor="middle" letter-spacing="0.5">SACRIFICE</text>
 
-            <!-- Crisp Clean Angled Arrows Pointing to Cards -->
             <g transform="translate(170, 14)">
               <line x1="0" y1="0" x2="80" y2="-45" stroke="#ff4757" stroke-width="6" stroke-linecap="round"/>
               <polygon points="68,-52 92,-48 78,-30" fill="#ff4757" stroke="#ffffff" stroke-width="2"/>
@@ -517,10 +516,10 @@
             </g>
           </g>
 
-          <!-- Comic Splat Impact Pop Effect Positioned Directly over Cards -->
+          <!-- 35% Bigger Comic Splat Impact Pop Effect -->
           <g id="splat-burst">
-            <path d="M 0,-48 L 16,-18 L 50,-32 L 32,-2 L 65,16 L 28,22 L 42,55 L 5,34 L -16,62 L -22,26 L -58,38 L -36,8 L -65,-14 L -28,-16 L -38,-50 L -5,-26 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="4"/>
-            <text x="0" y="10" fill="#c0392b" font-size="24" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1">SPLAT!</text>
+            <path d="M 0,-68 L 22,-25 L 70,-45 L 45,-3 L 90,22 L 40,30 L 58,78 L 7,48 L -22,88 L -30,36 L -82,52 L -50,12 L -90,-20 L -38,-22 L -52,-70 L -7,-36 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="5"/>
+            <text x="0" y="14" fill="#c0392b" font-size="34" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1.5">SPLAT!</text>
           </g>
 
           <!-- Massive Heavy Industrial Trolley Car -->
@@ -563,7 +562,7 @@
           <div class="split-meter-fill" id="meter-fill" style="width: 50%;"></div>
         </div>
         <p class="outcome-report" id="outcome-desc"></p>
-        <button type="button" class="next-round-btn" onclick="nextRound()">Next Dilemma</button>
+        <button type="button" class="next-round-btn" id="next-btn" onclick="nextRound()">Next Dilemma</button>
       </div>
     </div>
 
@@ -574,22 +573,22 @@
 
       <div class="metrics-grid">
         <div class="metric-tile">
-          <span class="progress-tag">CASUALTIES INCURRED</span>
+          <span class="progress-tag">TOTAL CASUALTIES</span>
           <div class="metric-number" style="color: var(--accent)" id="total-lost">0</div>
         </div>
         <div class="metric-tile">
-          <span class="progress-tag">CASUALTIES PREVENTED</span>
+          <span class="progress-tag">LIVES SAVED</span>
           <div class="metric-number" style="color: var(--track-active)" id="total-saved">0</div>
         </div>
       </div>
 
       <div class="badge-box">
-        <span class="progress-tag">CALCULATED ALIGNMENT</span>
-        <div class="badge-headline" id="badge-title">Relentless Utilitarian</div>
-        <div class="badge-body" id="badge-description">You measure moral rectitude strictly through cold, aggregate outcomes, Sentiment yields cleanly to the balance sheet of net suffering,</div>
+        <span class="progress-tag">YOUR MORAL ALIGNMENT</span>
+        <div class="badge-headline" id="badge-title">The Cold Calculator</div>
+        <div class="badge-body" id="badge-description">You focus strictly on aggregate body count, sacrificing anyone to protect the highest number of living beings,</div>
       </div>
 
-      <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
+      <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Share Game With Friends</button>
       <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
 
@@ -634,6 +633,14 @@ function renderGraphic(type, count) {
     }
     return out;
   }
+  if (type === 'doctor') {
+    return `<g transform="translate(14, 0)">
+      <circle cx="12" cy="6" r="4.5" fill="#1dd1a1"/>
+      <path d="M 5 12 Q 12 10 19 12 L 18 26 L 15 36 L 9 36 L 6 26 Z" fill="#10ac84"/>
+      <rect x="8" y="14" width="8" height="2" fill="#ffffff"/>
+      <rect x="11" y="11" width="2" height="8" fill="#ffffff"/>
+    </g>`;
+  }
   if (type === 'grandma') {
     for (let i = 0; i < Math.min(count, 8); i++) {
       let ox = i * 20;
@@ -657,15 +664,12 @@ function renderGraphic(type, count) {
     return out;
   }
   if (type === 'pet') {
-    // Renders both dog and cat together
     return `<g transform="translate(6, 4)">
-      <!-- Dog -->
       <ellipse cx="18" cy="22" rx="12" ry="8" fill="#e67e22"/>
       <circle cx="30" cy="15" r="5.5" fill="#d35400"/>
       <polygon points="27,10 30,5 33,10" fill="#ba4a00"/>
       <rect x="10" y="27" width="3.5" height="10" rx="1" fill="#d35400"/>
       <rect x="22" y="27" width="3.5" height="10" rx="1" fill="#d35400"/>
-      <!-- Cat -->
       <ellipse cx="50" cy="24" rx="9" ry="7" fill="#bdc3c7"/>
       <circle cx="58" cy="17" r="5" fill="#95a5a6"/>
       <polygon points="54,12 56,8 58,12" fill="#7f8c8d"/>
@@ -694,7 +698,6 @@ function renderGraphic(type, count) {
     return `<g transform="translate(14, 0)">
       <circle cx="12" cy="6" r="4.5" fill="#00d2d3"/>
       <path d="M 5 12 Q 12 10 19 12 L 18 26 L 15 36 L 9 36 L 6 26 Z" fill="#01a3a4"/>
-      <!-- Flask -->
       <polygon points="22,22 26,30 20,30" fill="#ff9ff3"/>
       <rect x="22" y="18" width="2" height="4" fill="#ffffff"/>
     </g>`;
@@ -722,7 +725,7 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
-// 11 Scenarios with down-to-earth, plain feedback
+// 11 Dilemmas with whole-number values and calibrated crowd ratios
 const scenarios = [
   {
     title: "Scenario 1",
@@ -731,7 +734,7 @@ const scenarios = [
     typeA: "person", countA: 1,
     typeB: "person", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 82,
+    baseA: 84,
     utilitarianTarget: 'A',
     commentA: "You sacrificed 1 person to save 5 people. You saved 4 net lives.",
     commentB: "You sacrificed 5 people to save 1 person. You lost 4 more lives than necessary."
@@ -743,7 +746,7 @@ const scenarios = [
     typeA: "grandma", countA: 8,
     typeB: "children", countB: 2,
     lossA: 8, lossB: 2,
-    baseA: 31,
+    baseA: 72,
     utilitarianTarget: 'A',
     commentA: "You sacrificed 8 grandmas to save 2 young kids, choosing a full lifetime of potential over old age.",
     commentB: "You sacrificed 2 young kids to save 8 grandmas, letting decades of young life get cut short."
@@ -755,7 +758,7 @@ const scenarios = [
     typeA: "person", countA: 1,
     typeB: "person", countB: 4,
     lossA: 1, lossB: 4,
-    baseA: 62,
+    baseA: 38,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your best friend to save 4 strangers. You put strangers ahead of personal friendship.",
     commentB: "You sacrificed 4 strangers to save your best friend, putting friendship above the higher body count."
@@ -767,7 +770,7 @@ const scenarios = [
     typeA: "father", countA: 1,
     typeB: "father", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 58,
+    baseA: 26,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your father to save 5 unknown fathers. You treated all fathers as equals.",
     commentB: "You sacrificed 5 unknown fathers to save your own father. Family loyalty won out."
@@ -778,11 +781,11 @@ const scenarios = [
     trackB: "Cut water to 300,000 residents for 2 weeks",
     typeA: "person", countA: 3,
     typeB: "water", countB: 1,
-    lossA: 3, lossB: 35,
-    baseA: 78,
+    lossA: 3, lossB: 30,
+    baseA: 76,
     utilitarianTarget: 'A',
     commentA: "You sacrificed 3 workers to keep drinking water running for 300,000 residents.",
-    commentB: "You chose to shut off water to 300,000 people for two weeks to save 3 workers."
+    commentB: "You chose to save 3 workers, but shutting off water to 300,000 residents in summer could cause far more casualties through heat and hospital failures."
   },
   {
     title: "Scenario 6",
@@ -791,9 +794,9 @@ const scenarios = [
     typeA: "children", countA: 1,
     typeB: "children", countB: 6,
     lossA: 1, lossB: 6,
-    baseA: 78,
+    baseA: 16,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed your own child to save 6 unknown children. That is an agonizing numbers choice.",
+    commentA: "You sacrificed your own child to save 6 unknown children. That is an agonizing choice.",
     commentB: "You sacrificed 6 unknown children to protect your own child. Bloodline came first."
   },
   {
@@ -803,22 +806,22 @@ const scenarios = [
     typeA: "you", countA: 1,
     typeB: "person", countB: 8,
     lossA: 1, lossB: 8,
-    baseA: 88,
+    baseA: 28,
     utilitarianTarget: 'A',
     commentA: "You sacrificed yourself to save 8 innocent people. Pure selflessness.",
     commentB: "You sacrificed 8 innocent people to save your own life."
   },
   {
     title: "Scenario 8",
-    trackA: "1 adult woman",
-    trackB: "1 pregnant woman",
-    typeA: "person", countA: 1,
+    trackA: "1 female doctor",
+    trackB: "1 pregnant teenager",
+    typeA: "doctor", countA: 1,
     typeB: "pregnant", countB: 2,
     lossA: 1, lossB: 2,
-    baseA: 66,
+    baseA: 42,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 1 adult woman to save a pregnant mother and her unborn child.",
-    commentB: "You sacrificed a pregnant mother and her unborn child to save 1 adult woman."
+    commentA: "You sacrificed 1 doctor to protect both the young mother and her unborn child.",
+    commentB: "You sacrificed a pregnant teen and unborn child to protect an active physician who saves lives daily."
   },
   {
     title: "Scenario 9",
@@ -826,8 +829,8 @@ const scenarios = [
     trackB: "1 convicted felon",
     typeA: "pet", countA: 1,
     typeB: "felon", countB: 1,
-    lossA: 0.5, lossB: 1,
-    baseA: 64,
+    lossA: 1, lossB: 1,
+    baseA: 34,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your family pet to save a human life, even if they are a convicted felon.",
     commentB: "You sacrificed a convicted felon to protect your family pet."
@@ -835,26 +838,26 @@ const scenarios = [
   {
     title: "Scenario 10",
     trackA: "5 working citizens",
-    trackB: "1 cancer scientist finding cures",
+    trackB: "1 cancer scientist with a proven cure",
     typeA: "person", countA: 5,
     typeB: "scientist", countB: 1,
-    lossA: 5, lossB: 10,
-    baseA: 73,
+    lossA: 5, lossB: 50,
+    baseA: 78,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 5 working citizens to protect the scientist who could save millions.",
-    commentB: "You sacrificed the top scientist to save 5 working citizens right in front of you."
+    commentA: "You sacrificed 5 citizens to protect the scientist whose proven cure will save thousands of future lives.",
+    commentB: "You sacrificed the cure-holding scientist to save 5 immediate lives on the tracks."
   },
   {
     title: "Scenario 11",
-    trackA: "Mystery person (could be family or stranger)",
+    trackA: "Mystery person (could be a family member)",
     trackB: "5 strangers",
     typeA: "mystery", countA: 1,
     typeB: "person", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 59,
+    baseA: 64,
     utilitarianTarget: 'A',
-    commentA: "You gambled on an unknown face rather than taking the guaranteed 5 casualties.",
-    commentB: "You sacrificed 5 strangers to avoid risking someone you might love."
+    commentA: "You risked the unknown face to guarantee five strangers walk away alive.",
+    commentB: "You sacrificed 5 strangers to eliminate any chance of harming your family."
   }
 ];
 
@@ -881,7 +884,6 @@ function setupRound(idx) {
   const cart = document.getElementById("trolley-cart");
   cart.style.transform = "translate(-10px, 180px)";
 
-  // Hide splat
   const splat = document.getElementById("splat-burst");
   splat.style.display = "none";
 
@@ -908,6 +910,13 @@ function setupRound(idx) {
   btn.classList.remove("ready");
   btn.disabled = true;
   btn.innerText = "CHOOSE A ROUTE FOR THE TROLLEY";
+
+  const nextBtn = document.getElementById("next-btn");
+  if (idx === scenarios.length - 1) {
+    nextBtn.innerText = "See Final Results";
+  } else {
+    nextBtn.innerText = "Next Dilemma";
+  }
 
   document.getElementById("guide-badge").style.display = "block";
   document.getElementById("feedback-drawer").style.display = "none";
@@ -978,7 +987,6 @@ function dispatchTrolley() {
   const cart = document.getElementById("trolley-cart");
   const splat = document.getElementById("splat-burst");
 
-  // Route the trolley and position splat burst dead center on the chosen victim card
   if (selectedTrack === 'A') {
     cart.style.transform = "translate(570px, 20px)";
     splat.setAttribute("transform", "translate(880, 95)");
@@ -987,7 +995,6 @@ function dispatchTrolley() {
     splat.setAttribute("transform", "translate(880, 255)");
   }
 
-  // Pop SPLAT directly on victim card impact
   setTimeout(() => {
     splat.style.display = "block";
   }, 1000);
@@ -1025,7 +1032,6 @@ function evaluateResults() {
   const pctA = Math.min(Math.max(cur.baseA + variance, 5), 95);
   const pctB = 100 - pctA;
 
-  // Clean, plain wording that anyone understands immediately
   document.getElementById("stat-label-a").innerText = `${pctA}% of players sacrificed Track A`;
   document.getElementById("stat-label-b").innerText = `${pctB}% sacrificed Track B`;
   document.getElementById("meter-fill").style.width = `${pctA}%`;
@@ -1047,21 +1053,21 @@ function showDashboard() {
   document.getElementById("progress-indicator").innerText = "Completed";
   document.getElementById("summary-dashboard").style.display = "flex";
 
-  document.getElementById("total-lost").innerText = totalCasualties.toFixed(1).replace(".0", "");
-  document.getElementById("total-saved").innerText = totalPrevented.toFixed(1).replace(".0", "");
+  document.getElementById("total-lost").innerText = Math.round(totalCasualties);
+  document.getElementById("total-saved").innerText = Math.round(totalPrevented);
 
   const bTitle = document.getElementById("badge-title");
   const bDesc = document.getElementById("badge-description");
 
   if (optimalDecisionsCount >= 9) {
-    bTitle.innerText = "Relentless Minimizer of Suffering";
-    bDesc.innerText = "You view sentient beings as universally equal units on a ledger, discarding bias to maximize net surviving life,";
+    bTitle.innerText = "The Cold Calculator";
+    bDesc.innerText = "You focus strictly on the total numbers, sacrificing anyone to protect the highest number of living beings,";
   } else if (optimalDecisionsCount >= 5) {
-    bTitle.innerText = "Pragmatic Balancer";
-    bDesc.innerText = "You recognize that net welfare drives moral obligations, though personal loyalties occasionally break your calculation,";
+    bTitle.innerText = "The Balanced Thinker";
+    bDesc.innerText = "You try to save the most lives possible, but you draw the line when close friends or family are on the tracks,";
   } else {
-    bTitle.innerText = "Tribal Sentinel";
-    bDesc.innerText = "Kinship and personal bonds override global welfare, absorbing massive external casualties to shield favored entities,";
+    bTitle.innerText = "Family First";
+    bDesc.innerText = "You protect your inner circle, loved ones, and pets at all costs, no matter how many strangers must be sacrificed,";
   }
 }
 
@@ -1069,9 +1075,9 @@ function copyStats() {
   const badge = document.getElementById("badge-title").innerText;
   const lost = document.getElementById("total-lost").innerText;
   const saved = document.getElementById("total-saved").innerText;
-  const str = `The Switchman Debrief:\nAlignment: ${badge}\nLives Lost: ${lost}\nLives Prevented: ${saved}\nPlay at: https://proudarts.com/trolleygame`;
+  const str = `The Trolley Problem Game Debrief:\nAlignment: ${badge}\nTotal Casualties: ${lost}\nLives Saved: ${saved}\nPlay it here: https://proudarts.com/trolley.html`;
   navigator.clipboard.writeText(str).then(() => {
-    alert("Results copied to clipboard,");
+    alert("Results copied to clipboard, Send it to a friend,");
   });
 }
 
