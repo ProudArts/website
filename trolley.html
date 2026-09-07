@@ -55,8 +55,9 @@
     color: var(--text);
     min-height: 100vh;
     display: flex;
-    justify-content: center;
-    padding: 20px 12px;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 12px 30px 12px;
   }
   .app-container {
     display: flex;
@@ -64,6 +65,7 @@
     gap: 20px;
     width: 100%;
     max-width: 1200px;
+    flex: 1 0 auto;
   }
   .main-stage {
     flex: 1 1 820px;
@@ -107,12 +109,13 @@
     padding-bottom: 12px;
   }
   .game-title {
-    font-size: 1.15rem;
-    font-weight: 800;
+    font-size: 1.55rem;
+    font-weight: 900;
     letter-spacing: 0.5px;
+    color: #ffffff;
   }
   .progress-tag {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
     color: var(--text-muted);
   }
@@ -122,8 +125,11 @@
     gap: 4px;
   }
   .scenario-title {
-    font-size: 1.35rem;
-    font-weight: 800;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
   .scenario-desc {
     color: var(--text-muted);
@@ -197,7 +203,7 @@
     border-radius: 6px;
     cursor: not-allowed;
     letter-spacing: 0.5px;
-    font-size: 0.95rem;
+    font-size: 1rem;
     transition: all 0.2s ease;
     min-width: 320px;
     text-align: center;
@@ -315,10 +321,12 @@
     border: 1px solid var(--card-border);
   }
 
-  footer {
-    margin-top: 24px;
+  .site-footer {
+    width: 100%;
+    max-width: 1200px;
+    margin-top: 40px;
     border-top: 1px solid var(--card-border);
-    padding-top: 20px;
+    padding-top: 24px;
     color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.6;
@@ -327,7 +335,7 @@
     align-items: center;
     text-align: center;
   }
-  footer h3 {
+  .site-footer h3 {
     color: #fff;
     font-size: 0.95rem;
     margin-bottom: 6px;
@@ -359,7 +367,6 @@
     transition: transform 1.2s cubic-bezier(0.45, 0, 0.25, 1);
   }
 
-  /* Round 1 Callout Guide */
   #guide-badge {
     transition: opacity 0.3s ease;
   }
@@ -485,42 +492,47 @@
           </g>
 
           <!-- Round 1 Visual Callout Badge with Arrows -->
-          <g id="guide-badge" transform="translate(640, 160)" style="display: none;">
-            <rect x="0" y="0" width="100" height="40" rx="6" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
-            <text x="50" y="18" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK TO</text>
-            <text x="50" y="30" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle" letter-spacing="0.5">TARGET ROUTE</text>
+          <g id="guide-badge" transform="translate(620, 160)" style="display: none;">
+            <rect x="0" y="0" width="120" height="42" rx="6" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="60" y="18" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
+            <text x="60" y="32" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle" letter-spacing="0.5">SACRIFICE</text>
             <!-- Up arrow toward Track A -->
-            <path d="M 80 -4 L 88 -16 L 96 -4 Z" fill="#ff4757"/>
+            <path d="M 100 -4 L 108 -16 L 116 -4 Z" fill="#ff4757"/>
             <!-- Down arrow toward Track B -->
-            <path d="M 80 44 L 88 56 L 96 44 Z" fill="#ff4757"/>
+            <path d="M 100 46 L 108 58 L 116 46 Z" fill="#ff4757"/>
           </g>
 
-          <!-- Scaled Heavy Industrial Trolley -->
-          <g id="trolley-cart" transform="translate(40, 210)">
-            <!-- Chassis shadow -->
-            <rect x="2" y="50" width="118" height="8" rx="4" fill="rgba(0,0,0,0.6)"/>
-            <!-- Main steel red body -->
-            <rect x="0" y="8" width="124" height="42" rx="5" fill="#a82315" stroke="#7a140a" stroke-width="2.5"/>
-            <!-- Rivet line accent -->
-            <line x1="4" y1="44" x2="120" y2="44" stroke="#7a140a" stroke-width="2"/>
-            <!-- Roof curvature -->
-            <path d="M 0 14 Q 62 2 124 14 Z" fill="#c0392b"/>
-            <!-- Triple Commuter Windows -->
-            <rect x="12" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
-            <rect x="38" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
-            <rect x="64" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
-            <!-- Front Operator Cabin Window -->
-            <rect x="90" y="18" width="22" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
-            <!-- Imposing front cowcatcher plow -->
-            <polygon points="124,30 140,48 124,48" fill="#1e272e" stroke="#2f3542" stroke-width="1.5"/>
-            <!-- Twin forward lanterns -->
-            <circle cx="120" cy="24" r="5" fill="#f1c40f"/>
-            <circle cx="120" cy="36" r="5" fill="#f39c12"/>
-            <!-- Heavy rail bogie wheels -->
-            <circle cx="24" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
-            <circle cx="48" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
-            <circle cx="86" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
-            <circle cx="108" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
+          <!-- Massive Heavy Industrial Trolley Car (Twice As Big) -->
+          <g id="trolley-cart" transform="translate(-10, 180)">
+            <!-- Chassis track shadow -->
+            <rect x="4" y="80" width="232" height="12" rx="6" fill="rgba(0,0,0,0.6)"/>
+            <!-- Heavy red steel superstructure -->
+            <rect x="0" y="12" width="240" height="68" rx="8" fill="#a82315" stroke="#7a140a" stroke-width="3"/>
+            <!-- Rivet and plating divider lines -->
+            <line x1="8" y1="62" x2="232" y2="62" stroke="#7a140a" stroke-width="2.5"/>
+            <line x1="60" y1="12" x2="60" y2="62" stroke="#7a140a" stroke-width="1.5"/>
+            <line x1="120" y1="12" x2="120" y2="62" stroke="#7a140a" stroke-width="1.5"/>
+            <line x1="180" y1="12" x2="180" y2="62" stroke="#7a140a" stroke-width="1.5"/>
+            <!-- Heavy curved roof casing -->
+            <path d="M 0 20 Q 120 0 240 20 Z" fill="#c0392b"/>
+            <!-- Commuter passenger windows -->
+            <rect x="18" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
+            <rect x="76" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
+            <rect x="134" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
+            <!-- Front operator cab window -->
+            <rect x="190" y="24" width="36" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
+            <!-- Massive front cowcatcher plow -->
+            <polygon points="240,42 270,78 240,78" fill="#1e272e" stroke="#2f3542" stroke-width="2"/>
+            <!-- Twin glowing forward lanterns -->
+            <circle cx="234" cy="34" r="7" fill="#f1c40f"/>
+            <circle cx="234" cy="52" r="7" fill="#f39c12"/>
+            <!-- Heavy 6-wheel rail bogie assembly -->
+            <circle cx="36" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
+            <circle cx="72" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
+            <circle cx="108" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
+            <circle cx="150" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
+            <circle cx="186" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
+            <circle cx="222" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
           </g>
         </svg>
       </div>
@@ -569,23 +581,6 @@
       <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
       <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
-
-    <!-- Centered Footer with Analytics & Copyright -->
-    <footer>
-      <h3>About The Trolley Problem and This Trolley Test</h3>
-      <p style="max-width: 760px;">
-        The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>Trolley Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
-      </p>
-      <div class="footer-meta">
-        <div>
-          &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
-          Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
-        </div>
-        <div class="counter-box">
-          <a href="https://www.freecounterstat.com" title="website hits counter"><img src="https://counter11.optistats.ovh/private/freecounterstat.php?c=xuxga76hzkfr2pwde462ywdmffuxgrhs" border="0" title="website hits counter" alt="website hits counter"></a>
-        </div>
-      </div>
-    </footer>
   </div>
 
   <aside class="ad-rail">
@@ -595,6 +590,23 @@
     </div>
   </aside>
 </div>
+
+<!-- Centered Footer Anchored to True Bottom -->
+<footer class="site-footer">
+  <h3>About The Trolley Problem and This Trolley Test</h3>
+  <p style="max-width: 760px;">
+    The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>Trolley Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
+  </p>
+  <div class="footer-meta">
+    <div>
+      &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
+      Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
+    </div>
+    <div class="counter-box">
+      <a href="https://www.freecounterstat.com" title="website hits counter"><img src="https://counter11.optistats.ovh/private/freecounterstat.php?c=xuxga76hzkfr2pwde462ywdmffuxgrhs" border="0" title="website hits counter" alt="website hits counter"></a>
+    </div>
+  </div>
+</footer>
 
 <script>
 function renderGraphic(type, count) {
@@ -674,7 +686,6 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
-// Dilemma definitions mapped cleanly with Track A on Top and Track B on Bottom
 const scenarios = [
   {
     title: "Round 1: The Baseline",
@@ -831,15 +842,13 @@ function setupRound(idx) {
   document.getElementById("svg-graphic-b").innerHTML = renderGraphic(data.typeB, data.countB);
 
   const cart = document.getElementById("trolley-cart");
-  cart.style.transform = "translate(40px, 210px)";
+  cart.style.transform = "translate(-10px, 180px)";
 
-  // Reset selection states
   document.getElementById("zone-target-a").classList.remove("selected");
   document.getElementById("zone-target-b").classList.remove("selected");
   document.getElementById("bulb-a").setAttribute("fill", "#333a4d");
   document.getElementById("bulb-b").setAttribute("fill", "#333a4d");
 
-  // Reset switch blade and operator lever to neutral center
   const blade = document.getElementById("switch-blade");
   blade.setAttribute("x1", "325");
   blade.setAttribute("y1", "248");
@@ -854,13 +863,11 @@ function setupRound(idx) {
   leverKnob.setAttribute("cx", "18");
   leverKnob.setAttribute("cy", "20");
 
-  // Reset dispatch button to required choice state
   const btn = document.getElementById("btn-dispatch");
   btn.classList.remove("ready");
   btn.disabled = true;
   btn.innerText = "CHOOSE A ROUTE FOR THE TROLLEY";
 
-  // Show visual guide badge on Round 1 only
   const guideBadge = document.getElementById("guide-badge");
   if (idx === 0) {
     guideBadge.style.display = "block";
@@ -875,7 +882,6 @@ function chooseTrack(choice) {
   if (runLocked) return;
   selectedTrack = choice;
 
-  // Dismiss guide badge upon first interaction
   const guideBadge = document.getElementById("guide-badge");
   if (guideBadge) {
     guideBadge.style.display = "none";
@@ -892,24 +898,21 @@ function chooseTrack(choice) {
 
   btn.classList.add("ready");
   btn.disabled = false;
-  btn.innerText = `START TROLLEY (TRACK ${choice} SELECTED)`;
+  btn.innerText = "START TROLLEY";
 
   if (choice === 'A') {
     zoneA.classList.add("selected");
     zoneB.classList.remove("selected");
 
-    // Divert switch blade up toward Track A
     blade.setAttribute("x1", "325");
     blade.setAttribute("y1", "248");
     blade.setAttribute("x2", "365");
     blade.setAttribute("y2", "230");
     blade.setAttribute("stroke", "#2ed573");
 
-    // Track A gets green light, Track B drops dark
     bulbA.setAttribute("fill", "#2ed573");
     bulbB.setAttribute("fill", "#333a4d");
 
-    // Pull operator lever forward
     leverArm.setAttribute("x2", "4");
     leverArm.setAttribute("y2", "26");
     leverKnob.setAttribute("cx", "4");
@@ -918,18 +921,15 @@ function chooseTrack(choice) {
     zoneB.classList.add("selected");
     zoneA.classList.remove("selected");
 
-    // Route switch blade straight toward Track B
     blade.setAttribute("x1", "325");
     blade.setAttribute("y1", "248");
     blade.setAttribute("x2", "375");
     blade.setAttribute("y2", "248");
     blade.setAttribute("stroke", "#2ed573");
 
-    // Track B gets green light, Track A drops dark
     bulbB.setAttribute("fill", "#2ed573");
     bulbA.setAttribute("fill", "#333a4d");
 
-    // Push operator lever back
     leverArm.setAttribute("x2", "26");
     leverArm.setAttribute("y2", "24");
     leverKnob.setAttribute("cx", "26");
@@ -948,9 +948,9 @@ function dispatchTrolley() {
   const cart = document.getElementById("trolley-cart");
 
   if (selectedTrack === 'A') {
-    cart.style.transform = "translate(660px, 50px)";
+    cart.style.transform = "translate(570px, 20px)";
   } else {
-    cart.style.transform = "translate(660px, 210px)";
+    cart.style.transform = "translate(570px, 180px)";
   }
 
   setTimeout(() => {
