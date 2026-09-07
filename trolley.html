@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Trolley Game, The Trolley Problem and Trolley Test Simulator</title>
-<meta name="description" content="Play the interactive Trolley Game and test your moral choices in this realistic Trolley Problem simulator and Trolley Test, Divert the tracks, evaluate aggregate well being, compare your statistics with switch operators, and analyze your net ethical outcomes,">
-<meta name="keywords" content="Trolley Problem, Trolley Test, Trolley Game, ethics game, moral philosophy simulator, trolley dilemma simulator">
+<title>The Trolley Problem Game, Trolley Problem and Trolley Test Simulator</title>
+<meta name="description" content="Play the interactive Trolley Problem Game and test your moral choices in this realistic Trolley Problem simulator and Trolley Test, Divert the tracks, evaluate aggregate well being, compare your statistics with switch operators, and analyze your net ethical outcomes,">
+<meta name="keywords" content="Trolley Problem, Trolley Test, Trolley Game, The Trolley Problem Game, ethics game, moral philosophy simulator, trolley dilemma simulator">
 <link rel="canonical" href="https://proudarts.com/trolleygame/">
 
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://proudarts.com/trolleygame/">
-<meta property="og:title" content="Trolley Game, The Trolley Problem and Trolley Test Simulator">
-<meta property="og:description" content="Throw the switch, calculate net casualties, and face the classic Trolley Problem in this interactive Trolley Game and Trolley Test,">
+<meta property="og:title" content="The Trolley Problem Game, Trolley Problem and Trolley Test Simulator">
+<meta property="og:description" content="Throw the switch, calculate net casualties, and face the classic Trolley Problem in this interactive Trolley Problem Game and Trolley Test,">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Trolley Game",
-  "alternateName": ["Trolley Problem Simulator", "Trolley Test"],
+  "name": "The Trolley Problem Game",
+  "alternateName": ["Trolley Problem Simulator", "Trolley Test", "Trolley Game"],
   "url": "https://proudarts.com/trolleygame/",
   "applicationCategory": "GameApplication",
   "genre": "Simulation, Puzzle, Ethics",
@@ -100,6 +100,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 12px;
+    line-height: 1.4;
   }
   header {
     display: flex;
@@ -113,6 +115,8 @@
     font-weight: 900;
     letter-spacing: 0.5px;
     color: #ffffff;
+    flex: 1;
+    text-align: center;
   }
   .progress-tag {
     font-size: 0.9rem;
@@ -125,15 +129,11 @@
     gap: 4px;
   }
   .scenario-title {
-    font-size: 1.05rem;
+    font-size: 1.15rem;
     font-weight: 700;
     color: var(--text-muted);
     text-transform: uppercase;
     letter-spacing: 0.5px;
-  }
-  .scenario-desc {
-    color: var(--text-muted);
-    font-size: 0.9rem;
   }
 
   .rail-canvas-wrapper {
@@ -321,12 +321,25 @@
     border: 1px solid var(--card-border);
   }
 
+  .about-trolley-block {
+    margin-top: 16px;
+    border-top: 1px solid var(--card-border);
+    padding-top: 16px;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.6;
+  }
+  .about-trolley-block h3 {
+    color: #fff;
+    font-size: 0.95rem;
+    margin-bottom: 6px;
+  }
+
   .site-footer {
     width: 100%;
     max-width: 1200px;
-    margin-top: 40px;
-    border-top: 1px solid var(--card-border);
-    padding-top: 24px;
+    margin-top: 32px;
+    padding-top: 16px;
     color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.6;
@@ -335,15 +348,7 @@
     align-items: center;
     text-align: center;
   }
-  .site-footer h3 {
-    color: #fff;
-    font-size: 0.95rem;
-    margin-bottom: 6px;
-  }
   .footer-meta {
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.05);
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -383,6 +388,9 @@
       width: 100%;
       min-width: unset;
     }
+    .game-title {
+      font-size: 1.25rem;
+    }
   }
 </style>
 </head>
@@ -391,14 +399,13 @@
 <div class="app-container">
   <div class="main-stage">
     <header>
-      <h1 class="game-title">Trolley Game, The Trolley Problem &amp; Trolley Test</h1>
+      <h1 class="game-title">The Trolley Problem Game</h1>
       <div class="progress-tag" id="progress-indicator">Dilemma 1 of 11</div>
     </header>
 
     <div id="game-arena">
       <div class="scenario-header">
         <h2 class="scenario-title" id="dilemma-title">Loading track data...</h2>
-        <p class="scenario-desc" id="dilemma-instructions">Select a path by clicking the victims to set the switch, then dispatch the trolley,</p>
       </div>
 
       <div class="rail-canvas-wrapper">
@@ -443,7 +450,7 @@
           <path d="M 330 248 C 410 248, 440 88, 520 88 L 710 88" fill="none" stroke="#4b5568" stroke-width="4"/>
           <path d="M 350 272 C 430 272, 460 112, 540 112 L 710 112" fill="none" stroke="#4b5568" stroke-width="4"/>
 
-          <!-- Dynamic Junction Switch Blade -->
+          <!-- Dynamic Switch Blade -->
           <line id="switch-blade" x1="325" y1="248" x2="375" y2="248" stroke="#4b5568" stroke-width="5" stroke-linecap="round"/>
 
           <!-- Terminus Signal Lights -->
@@ -496,37 +503,26 @@
             <rect x="0" y="0" width="120" height="42" rx="6" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
             <text x="60" y="18" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
             <text x="60" y="32" fill="#ffffff" font-size="10" font-weight="900" text-anchor="middle" letter-spacing="0.5">SACRIFICE</text>
-            <!-- Up arrow toward Track A -->
             <path d="M 100 -4 L 108 -16 L 116 -4 Z" fill="#ff4757"/>
-            <!-- Down arrow toward Track B -->
             <path d="M 100 46 L 108 58 L 116 46 Z" fill="#ff4757"/>
           </g>
 
-          <!-- Massive Heavy Industrial Trolley Car (Twice As Big) -->
+          <!-- Massive Heavy Industrial Trolley Car -->
           <g id="trolley-cart" transform="translate(-10, 180)">
-            <!-- Chassis track shadow -->
             <rect x="4" y="80" width="232" height="12" rx="6" fill="rgba(0,0,0,0.6)"/>
-            <!-- Heavy red steel superstructure -->
             <rect x="0" y="12" width="240" height="68" rx="8" fill="#a82315" stroke="#7a140a" stroke-width="3"/>
-            <!-- Rivet and plating divider lines -->
             <line x1="8" y1="62" x2="232" y2="62" stroke="#7a140a" stroke-width="2.5"/>
             <line x1="60" y1="12" x2="60" y2="62" stroke="#7a140a" stroke-width="1.5"/>
             <line x1="120" y1="12" x2="120" y2="62" stroke="#7a140a" stroke-width="1.5"/>
             <line x1="180" y1="12" x2="180" y2="62" stroke="#7a140a" stroke-width="1.5"/>
-            <!-- Heavy curved roof casing -->
             <path d="M 0 20 Q 120 0 240 20 Z" fill="#c0392b"/>
-            <!-- Commuter passenger windows -->
             <rect x="18" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
             <rect x="76" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
             <rect x="134" y="24" width="32" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
-            <!-- Front operator cab window -->
             <rect x="190" y="24" width="36" height="24" rx="3" fill="#ecf0f1" opacity="0.9"/>
-            <!-- Massive front cowcatcher plow -->
             <polygon points="240,42 270,78 240,78" fill="#1e272e" stroke="#2f3542" stroke-width="2"/>
-            <!-- Twin glowing forward lanterns -->
             <circle cx="234" cy="34" r="7" fill="#f1c40f"/>
             <circle cx="234" cy="52" r="7" fill="#f39c12"/>
-            <!-- Heavy 6-wheel rail bogie assembly -->
             <circle cx="36" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
             <circle cx="72" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
             <circle cx="108" cy="80" r="13" fill="#1e272e" stroke="#7f8c8d" stroke-width="4"/>
@@ -558,7 +554,6 @@
     <div class="summary-dashboard" id="summary-dashboard">
       <div class="scenario-header">
         <h2 class="scenario-title">Comprehensive Run Debrief</h2>
-        <p class="scenario-desc">Eleven calculations finished, The net balance sheet of your run stands locked,</p>
       </div>
 
       <div class="metrics-grid">
@@ -581,22 +576,26 @@
       <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
       <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
+
+    <!-- Informational SEO stage block returned directly inside card -->
+    <div class="about-trolley-block">
+      <h3>About The Trolley Problem and This Trolley Test</h3>
+      <p>
+        The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>The Trolley Problem Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
+      </p>
+    </div>
   </div>
 
   <aside class="ad-rail">
     <div>Sponsorship Terminal</div>
     <div class="ad-slot">
-      <span>300x250 Programmatic Ad Unit</span>
+      <span>300x250 Programmatic Ad Unit Available</span>
     </div>
   </aside>
 </div>
 
-<!-- Centered Footer Anchored to True Bottom -->
+<!-- Centered Proud Arts LLC Footer and Hit Counter Pinned to Bottom -->
 <footer class="site-footer">
-  <h3>About The Trolley Problem and This Trolley Test</h3>
-  <p style="max-width: 760px;">
-    The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>Trolley Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
-  </p>
   <div class="footer-meta">
     <div>
       &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
