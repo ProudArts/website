@@ -39,12 +39,10 @@
     --card: #181b24;
     --card-border: #2c3242;
     --accent: #ff4757;
-    --track-a: #2ed573;
-    --track-b: #ffa502;
+    --track-active: #2ed573;
     --text: #f1f2f6;
     --text-muted: #8e99ac;
-    --rail-color: #57606f;
-    --tie-color: #2f3542;
+    --label-offwhite: #dcdde1;
   }
   * {
     box-sizing: border-box;
@@ -161,8 +159,8 @@
     transition: all 0.2s ease;
   }
   .target-zone.selected .zone-rect {
-    stroke: var(--accent);
-    fill: rgba(255, 71, 87, 0.12);
+    stroke: var(--track-active);
+    fill: rgba(46, 213, 115, 0.08);
   }
 
   .station-text-wrap {
@@ -182,63 +180,39 @@
 
   .control-strip {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     background: rgba(0,0,0,0.25);
     border: 1px solid var(--card-border);
     border-radius: 8px;
-    padding: 12px 16px;
-    gap: 12px;
-  }
-  .lever-btn-group {
-    display: flex;
-    gap: 8px;
-  }
-  .lever-btn {
-    background: #252a38;
-    color: var(--text-muted);
-    border: 1px solid var(--card-border);
-    padding: 10px 20px;
-    border-radius: 6px;
-    font-weight: 700;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.15s ease;
-  }
-  .lever-btn.active-a {
-    background: var(--track-a);
-    color: #0b0d12;
-    box-shadow: 0 0 10px rgba(46, 213, 115, 0.4);
-    border-color: var(--track-a);
-  }
-  .lever-btn.active-b {
-    background: var(--track-b);
-    color: #0b0d12;
-    box-shadow: 0 0 10px rgba(255, 165, 2, 0.4);
-    border-color: var(--track-b);
+    padding: 14px 16px;
   }
 
   .dispatch-btn {
-    background: var(--accent);
-    color: white;
+    background: var(--card-border);
+    color: var(--text-muted);
     font-weight: 800;
     border: none;
-    padding: 10px 22px;
+    padding: 14px 36px;
     border-radius: 6px;
-    cursor: pointer;
+    cursor: not-allowed;
     letter-spacing: 0.5px;
-    transition: transform 0.1s ease, filter 0.15s ease;
+    font-size: 0.95rem;
+    transition: all 0.2s ease;
+    min-width: 320px;
+    text-align: center;
   }
-  .dispatch-btn:hover {
+  .dispatch-btn.ready {
+    background: var(--accent);
+    color: #ffffff;
+    cursor: pointer;
+    box-shadow: 0 0 16px rgba(255, 71, 87, 0.4);
+  }
+  .dispatch-btn.ready:hover {
     filter: brightness(1.1);
   }
-  .dispatch-btn:active {
+  .dispatch-btn.ready:active {
     transform: scale(0.98);
-  }
-  .dispatch-btn:disabled {
-    background: #3a4154;
-    cursor: not-allowed;
-    filter: none;
   }
 
   .feedback-drawer {
@@ -264,14 +238,14 @@
   .split-meter {
     width: 100%;
     height: 14px;
-    background: var(--track-b);
+    background: #ffa502;
     border-radius: 7px;
     overflow: hidden;
     display: flex;
   }
   .split-meter-fill {
     height: 100%;
-    background: var(--track-a);
+    background: #2ed573;
     transition: width 0.4s ease;
   }
   .outcome-report {
@@ -344,10 +318,14 @@
   footer {
     margin-top: 24px;
     border-top: 1px solid var(--card-border);
-    padding-top: 16px;
+    padding-top: 20px;
     color: var(--text-muted);
     font-size: 0.85rem;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
   footer h3 {
     color: #fff;
@@ -356,27 +334,34 @@
   }
   .footer-meta {
     margin-top: 16px;
-    padding-top: 12px;
+    padding-top: 16px;
     border-top: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    font-size: 0.8rem;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.85rem;
   }
   .footer-meta a {
-    color: var(--track-a);
+    color: var(--track-active);
     text-decoration: none;
   }
   .footer-meta a:hover {
     text-decoration: underline;
   }
   .counter-box {
-    margin-top: 6px;
-    display: inline-block;
+    display: flex;
+    justify-content: center;
   }
 
   #trolley-cart {
     transition: transform 1.2s cubic-bezier(0.45, 0, 0.25, 1);
+  }
+
+  /* Round 1 Callout Guide */
+  #guide-badge {
+    transition: opacity 0.3s ease;
   }
 
   @media (max-width: 860px) {
@@ -386,6 +371,10 @@
     .ad-rail {
       width: 100%;
       min-height: 120px;
+    }
+    .dispatch-btn {
+      width: 100%;
+      min-width: unset;
     }
   }
 </style>
@@ -402,13 +391,14 @@
     <div id="game-arena">
       <div class="scenario-header">
         <h2 class="scenario-title" id="dilemma-title">Loading track data...</h2>
-        <p class="scenario-desc" id="dilemma-instructions">Select a path by clicking the victims, toggling the switch, or pulling the lever, then dispatch the trolley to resolve aggregate harm,</p>
+        <p class="scenario-desc" id="dilemma-instructions">Select a path by clicking the victims to set the switch, then dispatch the trolley,</p>
       </div>
 
       <div class="rail-canvas-wrapper">
         <svg id="rail-stage" viewBox="0 0 1050 360">
           <rect x="0" y="0" width="1050" height="360" fill="#0d0f15"/>
 
+          <!-- Cross Ties -->
           <g stroke="#1f2430" stroke-width="6">
             <line x1="50" y1="240" x2="50" y2="280"/>
             <line x1="90" y1="240" x2="90" y2="280"/>
@@ -439,28 +429,32 @@
             <line x1="690" y1="80" x2="690" y2="120"/>
           </g>
 
+          <!-- Steel Rails -->
           <line x1="40" y1="248" x2="710" y2="248" stroke="#4b5568" stroke-width="4"/>
           <line x1="40" y1="272" x2="710" y2="272" stroke="#4b5568" stroke-width="4"/>
 
           <path d="M 330 248 C 410 248, 440 88, 520 88 L 710 88" fill="none" stroke="#4b5568" stroke-width="4"/>
           <path d="M 350 272 C 430 272, 460 112, 540 112 L 710 112" fill="none" stroke="#4b5568" stroke-width="4"/>
 
-          <line id="switch-blade" x1="325" y1="248" x2="375" y2="248" stroke="#2ed573" stroke-width="5" stroke-linecap="round"/>
+          <!-- Dynamic Junction Switch Blade -->
+          <line id="switch-blade" x1="325" y1="248" x2="375" y2="248" stroke="#4b5568" stroke-width="5" stroke-linecap="round"/>
 
+          <!-- Terminus Signal Lights -->
           <g transform="translate(718, 80)">
             <rect x="0" y="0" width="16" height="32" rx="4" fill="#1e2330" stroke="#333a4d"/>
-            <circle id="bulb-b" class="signal-bulb" cx="8" cy="16" r="5" fill="#444"/>
+            <circle id="bulb-a" class="signal-bulb" cx="8" cy="16" r="5" fill="#333a4d"/>
           </g>
           <g transform="translate(718, 240)">
             <rect x="0" y="0" width="16" height="32" rx="4" fill="#1e2330" stroke="#333a4d"/>
-            <circle id="bulb-a" class="signal-bulb" cx="8" cy="16" r="5" fill="#2ed573"/>
+            <circle id="bulb-b" class="signal-bulb" cx="8" cy="16" r="5" fill="#333a4d"/>
           </g>
 
+          <!-- Switchman Operator Unit -->
           <g id="switchman-unit" transform="translate(300, 160)">
             <rect x="-10" y="55" width="40" height="6" rx="2" fill="#2f3542"/>
             <rect x="12" y="40" width="12" height="16" rx="2" fill="#475266"/>
-            <line id="svg-lever-arm" x1="18" y1="50" x2="26" y2="24" stroke="#ff4757" stroke-width="4" stroke-linecap="round"/>
-            <circle id="svg-lever-knob" cx="26" cy="24" r="4" fill="#ff4757"/>
+            <line id="svg-lever-arm" x1="18" y1="50" x2="22" y2="24" stroke="#ff4757" stroke-width="4" stroke-linecap="round"/>
+            <circle id="svg-lever-knob" cx="22" cy="24" r="4" fill="#ff4757"/>
 
             <circle cx="-2" cy="20" r="7" fill="#f1f2f6"/>
             <path d="M -11 20 Q -2 12 7 20 Z" fill="#ffa502"/>
@@ -470,51 +464,76 @@
             <line x1="-2" y1="44" x2="4" y2="56" stroke="#f1f2f6" stroke-width="3"/>
           </g>
 
-          <g class="target-zone" id="zone-target-b" onclick="chooseTrack('B')">
+          <!-- Top Track Card: TRACK A -->
+          <g class="target-zone" id="zone-target-a" onclick="chooseTrack('A')">
             <rect class="zone-rect" x="746" y="35" width="290" height="125"/>
-            <text x="758" y="58" fill="var(--track-b)" font-size="12" font-weight="900" letter-spacing="1">TRACK B</text>
-            <g id="svg-graphic-b" transform="translate(758, 68)"></g>
+            <text x="891" y="58" fill="var(--label-offwhite)" font-size="13" font-weight="900" letter-spacing="1" text-anchor="middle">TRACK A</text>
+            <g id="svg-graphic-a" transform="translate(758, 68)"></g>
             <foreignObject x="758" y="106" width="266" height="50">
-              <div xmlns="http://www.w3.org/1999/xhtml" class="station-text-wrap" id="svg-label-b"></div>
-            </foreignObject>
-          </g>
-
-          <g class="target-zone selected" id="zone-target-a" onclick="chooseTrack('A')">
-            <rect class="zone-rect" x="746" y="195" width="290" height="125"/>
-            <text x="758" y="218" fill="var(--track-a)" font-size="12" font-weight="900" letter-spacing="1">TRACK A</text>
-            <g id="svg-graphic-a" transform="translate(758, 228)"></g>
-            <foreignObject x="758" y="266" width="266" height="50">
               <div xmlns="http://www.w3.org/1999/xhtml" class="station-text-wrap" id="svg-label-a"></div>
             </foreignObject>
           </g>
 
-          <g id="trolley-cart" transform="translate(60, 222)">
-            <rect x="2" y="32" width="70" height="6" rx="3" fill="rgba(0,0,0,0.5)"/>
-            <rect x="0" y="4" width="74" height="28" rx="4" fill="#c0392b" stroke="#962d22" stroke-width="2"/>
-            <path d="M 0 8 Q 37 0 74 8 Z" fill="#e74c3c"/>
-            <rect x="8" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
-            <rect x="24" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
-            <rect x="40" y="10" width="12" height="10" rx="1" fill="#ecf0f1"/>
-            <rect x="56" y="10" width="10" height="10" rx="1" fill="#f39c12"/>
-            <polygon points="74,20 84,30 74,30" fill="#2c3e50"/>
-            <circle cx="16" cy="32" r="5" fill="#2c3e50" stroke="#7f8c8d" stroke-width="2"/>
-            <circle cx="58" cy="32" r="5" fill="#2c3e50" stroke="#7f8c8d" stroke-width="2"/>
+          <!-- Bottom Track Card: TRACK B -->
+          <g class="target-zone" id="zone-target-b" onclick="chooseTrack('B')">
+            <rect class="zone-rect" x="746" y="195" width="290" height="125"/>
+            <text x="891" y="218" fill="var(--label-offwhite)" font-size="13" font-weight="900" letter-spacing="1" text-anchor="middle">TRACK B</text>
+            <g id="svg-graphic-b" transform="translate(758, 228)"></g>
+            <foreignObject x="758" y="266" width="266" height="50">
+              <div xmlns="http://www.w3.org/1999/xhtml" class="station-text-wrap" id="svg-label-b"></div>
+            </foreignObject>
+          </g>
+
+          <!-- Round 1 Visual Callout Badge with Arrows -->
+          <g id="guide-badge" transform="translate(640, 160)" style="display: none;">
+            <rect x="0" y="0" width="100" height="40" rx="6" fill="#ff4757" stroke="#ffffff" stroke-width="1.5"/>
+            <text x="50" y="18" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK TO</text>
+            <text x="50" y="30" fill="#ffffff" font-size="9" font-weight="900" text-anchor="middle" letter-spacing="0.5">TARGET ROUTE</text>
+            <!-- Up arrow toward Track A -->
+            <path d="M 80 -4 L 88 -16 L 96 -4 Z" fill="#ff4757"/>
+            <!-- Down arrow toward Track B -->
+            <path d="M 80 44 L 88 56 L 96 44 Z" fill="#ff4757"/>
+          </g>
+
+          <!-- Scaled Heavy Industrial Trolley -->
+          <g id="trolley-cart" transform="translate(40, 210)">
+            <!-- Chassis shadow -->
+            <rect x="2" y="50" width="118" height="8" rx="4" fill="rgba(0,0,0,0.6)"/>
+            <!-- Main steel red body -->
+            <rect x="0" y="8" width="124" height="42" rx="5" fill="#a82315" stroke="#7a140a" stroke-width="2.5"/>
+            <!-- Rivet line accent -->
+            <line x1="4" y1="44" x2="120" y2="44" stroke="#7a140a" stroke-width="2"/>
+            <!-- Roof curvature -->
+            <path d="M 0 14 Q 62 2 124 14 Z" fill="#c0392b"/>
+            <!-- Triple Commuter Windows -->
+            <rect x="12" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
+            <rect x="38" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
+            <rect x="64" y="18" width="18" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
+            <!-- Front Operator Cabin Window -->
+            <rect x="90" y="18" width="22" height="15" rx="2" fill="#ecf0f1" opacity="0.9"/>
+            <!-- Imposing front cowcatcher plow -->
+            <polygon points="124,30 140,48 124,48" fill="#1e272e" stroke="#2f3542" stroke-width="1.5"/>
+            <!-- Twin forward lanterns -->
+            <circle cx="120" cy="24" r="5" fill="#f1c40f"/>
+            <circle cx="120" cy="36" r="5" fill="#f39c12"/>
+            <!-- Heavy rail bogie wheels -->
+            <circle cx="24" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
+            <circle cx="48" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
+            <circle cx="86" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
+            <circle cx="108" cy="50" r="9" fill="#1e272e" stroke="#7f8c8d" stroke-width="3"/>
           </g>
         </svg>
       </div>
 
+      <!-- Single Centered Dispatch Control Strip -->
       <div class="control-strip">
-        <div class="lever-btn-group">
-          <button type="button" class="lever-btn active-a" id="btn-sw-a" onclick="chooseTrack('A')">Track A</button>
-          <button type="button" class="lever-btn" id="btn-sw-b" onclick="chooseTrack('B')">Track B</button>
-        </div>
-        <button type="button" class="dispatch-btn" id="btn-dispatch" onclick="dispatchTrolley()">PULL LEVER &amp; FIRE TROLLEY</button>
+        <button type="button" class="dispatch-btn" id="btn-dispatch" onclick="dispatchTrolley()">CHOOSE A ROUTE FOR THE TROLLEY</button>
       </div>
 
       <div class="feedback-drawer" id="feedback-drawer">
         <div class="stat-labels">
-          <span id="stat-label-a" style="color: var(--track-a)">Track A: 50%</span>
-          <span id="stat-label-b" style="color: var(--track-b)">Track B: 50%</span>
+          <span id="stat-label-a" style="color: var(--track-active)">Track A: 50%</span>
+          <span id="stat-label-b" style="color: #ffa502">Track B: 50%</span>
         </div>
         <div class="split-meter">
           <div class="split-meter-fill" id="meter-fill" style="width: 50%;"></div>
@@ -537,7 +556,7 @@
         </div>
         <div class="metric-tile">
           <span class="progress-tag">CASUALTIES PREVENTED</span>
-          <div class="metric-number" style="color: var(--track-a)" id="total-saved">0</div>
+          <div class="metric-number" style="color: var(--track-active)" id="total-saved">0</div>
         </div>
       </div>
 
@@ -547,13 +566,14 @@
         <div class="badge-body" id="badge-description">You measure moral rectitude strictly through cold, aggregate outcomes, Sentiment yields cleanly to the balance sheet of net suffering,</div>
       </div>
 
-      <button type="button" class="dispatch-btn" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
+      <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Copy Run Debrief</button>
       <a class="btn-proudarts" href="https://proudarts.com" target="_blank" rel="noopener">Visit ProudArts.com</a>
     </div>
 
+    <!-- Centered Footer with Analytics & Copyright -->
     <footer>
       <h3>About The Trolley Problem and This Trolley Test</h3>
-      <p>
+      <p style="max-width: 760px;">
         The <strong>Trolley Problem</strong> is a foundational thought experiment in ethics, challenging decision makers to evaluate net consequences versus direct action, This interactive <strong>Trolley Game</strong> acts as an empirical <strong>Trolley Test</strong>, requiring switch operators to divert runaway train cars across eleven locked moral dilemmas, weighing aggregate casualties, personal duties, and systemic consequences,
       </p>
       <div class="footer-meta">
@@ -654,18 +674,19 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
+// Dilemma definitions mapped cleanly with Track A on Top and Track B on Bottom
 const scenarios = [
   {
     title: "Round 1: The Baseline",
-    trackA: "5 random commuters",
-    trackB: "1 random commuter",
-    typeA: "commuter", countA: 5,
-    typeB: "commuter", countB: 1,
-    lossA: 5, lossB: 1,
-    baseA: 18,
-    utilitarianTarget: 'B',
-    commentA: "Five lives extinguished to spare a single individual, Net well being drops sharply,",
-    commentB: "Four net lives preserved, Pure arithmetic prevailing over sentiment,"
+    trackA: "1 random commuter",
+    trackB: "5 random commuters",
+    typeA: "commuter", countA: 1,
+    typeB: "commuter", countB: 5,
+    lossA: 1, lossB: 5,
+    baseA: 82,
+    utilitarianTarget: 'A',
+    commentA: "Four net lives preserved, Pure arithmetic prevailing over sentiment,",
+    commentB: "Five lives extinguished to spare a single individual, Net well being drops sharply,"
   },
   {
     title: "Round 2: The Life-Years",
@@ -705,15 +726,15 @@ const scenarios = [
   },
   {
     title: "Round 5: The Infrastructure",
-    trackA: "Power and water cut to 300,000 residents for two weeks in summer",
-    trackB: "3 utility workers",
-    typeA: "infrastructure", countA: 1,
-    typeB: "person", countB: 3,
-    lossA: 35, lossB: 3,
-    baseA: 22,
-    utilitarianTarget: 'B',
-    commentA: "A systemic blackout cascade cripples eldercare and hospitals, causing immense community harm,",
-    commentB: "Three immediate casualties absorbed to shield three hundred thousand from severe hazards,"
+    trackA: "3 utility workers",
+    trackB: "Power and water cut to 300,000 residents for two weeks in summer",
+    typeA: "person", countA: 3,
+    typeB: "infrastructure", countB: 1,
+    lossA: 3, lossB: 35,
+    baseA: 78,
+    utilitarianTarget: 'A',
+    commentA: "Three immediate casualties absorbed to shield three hundred thousand from severe hazards,",
+    commentB: "A systemic blackout cascade cripples eldercare and hospitals, causing immense community harm,"
   },
   {
     title: "Round 6: The Bloodline",
@@ -729,27 +750,27 @@ const scenarios = [
   },
   {
     title: "Round 7: The Self-Trade",
-    trackA: "8 regular people",
-    trackB: "You",
-    typeA: "person", countA: 8,
-    typeB: "person", countB: 1,
-    lossA: 8, lossB: 1,
-    baseA: 12,
-    utilitarianTarget: 'B',
-    commentA: "Eight functional minds extinguished to preserve your own viewpoint,",
-    commentB: "Trading one self unit for eight produces the cleanest possible ledger,"
+    trackA: "You",
+    trackB: "8 regular people",
+    typeA: "person", countA: 1,
+    typeB: "person", countB: 8,
+    lossA: 1, lossB: 8,
+    baseA: 88,
+    utilitarianTarget: 'A',
+    commentA: "Trading one self unit for eight produces the cleanest possible ledger,",
+    commentB: "Eight functional minds extinguished to preserve your own viewpoint,"
   },
   {
     title: "Round 8: The Potential Life",
-    trackA: "1 pregnant woman",
-    trackB: "1 adult woman",
-    typeA: "person", countA: 2,
-    typeB: "person", countB: 1,
-    lossA: 2, lossB: 1,
-    baseA: 34,
-    utilitarianTarget: 'B',
-    commentA: "Two lives extinguished where only one had to fall,",
-    commentB: "Preserving both mother and child maximizes cumulative future conscious existence,"
+    trackA: "1 adult woman",
+    trackB: "1 pregnant woman",
+    typeA: "person", countA: 1,
+    typeB: "person", countB: 2,
+    lossA: 1, lossB: 2,
+    baseA: 66,
+    utilitarianTarget: 'A',
+    commentA: "Preserving both mother and child maximizes cumulative future conscious existence,",
+    commentB: "Two lives extinguished where only one had to fall,"
   },
   {
     title: "Round 9: The Animal Bond",
@@ -765,32 +786,32 @@ const scenarios = [
   },
   {
     title: "Round 10: The Scalpel",
-    trackA: "1 top trauma surgeon operating on hundreds of cases a year",
-    trackB: "5 average working citizens",
-    typeA: "surgeon", countA: 1,
-    typeB: "person", countB: 5,
-    lossA: 10, lossB: 5,
-    baseA: 27,
-    utilitarianTarget: 'B',
-    commentA: "The death of this specialist cascades into dozens of downstream operating room fatalities,",
-    commentB: "Preserving the surgeon directly spares hundreds of future surgical patients,"
+    trackA: "5 average working citizens",
+    trackB: "1 top trauma surgeon operating on hundreds of cases a year",
+    typeA: "person", countA: 5,
+    typeB: "surgeon", countB: 1,
+    lossA: 5, lossB: 10,
+    baseA: 73,
+    utilitarianTarget: 'A',
+    commentA: "Preserving the surgeon directly spares hundreds of future surgical patients,",
+    commentB: "The death of this specialist cascades into dozens of downstream operating room fatalities,"
   },
   {
     title: "Round 11: The Veil (Bonus Round)",
-    trackA: "5 confirmed strangers",
-    trackB: "1 mystery individual who has a chance of being someone you deeply love",
-    typeA: "person", countA: 5,
-    typeB: "mystery", countB: 1,
-    lossA: 5, lossB: 1,
-    baseA: 41,
-    utilitarianTarget: 'B',
-    commentA: "Subjective fear of a personal loss sacrificed five guaranteed human lives,",
-    commentB: "Five guaranteed survivors secured over an uncertain probability,"
+    trackA: "1 mystery individual who has a chance of being someone you deeply love",
+    trackB: "5 confirmed strangers",
+    typeA: "mystery", countA: 1,
+    typeB: "person", countB: 5,
+    lossA: 1, lossB: 5,
+    baseA: 59,
+    utilitarianTarget: 'A',
+    commentA: "Five guaranteed survivors secured over an uncertain probability,",
+    commentB: "Subjective fear of a personal loss sacrificed five guaranteed human lives,"
   }
 ];
 
 let roundIdx = 0;
-let selectedTrack = 'A';
+let selectedTrack = null;
 let runLocked = false;
 let totalCasualties = 0;
 let totalPrevented = 0;
@@ -798,6 +819,7 @@ let optimalDecisionsCount = 0;
 
 function setupRound(idx) {
   runLocked = false;
+  selectedTrack = null;
   const data = scenarios[idx];
 
   document.getElementById("progress-indicator").innerText = `Dilemma ${idx + 1} of ${scenarios.length}`;
@@ -809,80 +831,126 @@ function setupRound(idx) {
   document.getElementById("svg-graphic-b").innerHTML = renderGraphic(data.typeB, data.countB);
 
   const cart = document.getElementById("trolley-cart");
-  cart.style.transform = "translate(60px, 222px)";
+  cart.style.transform = "translate(40px, 210px)";
+
+  // Reset selection states
+  document.getElementById("zone-target-a").classList.remove("selected");
+  document.getElementById("zone-target-b").classList.remove("selected");
+  document.getElementById("bulb-a").setAttribute("fill", "#333a4d");
+  document.getElementById("bulb-b").setAttribute("fill", "#333a4d");
+
+  // Reset switch blade and operator lever to neutral center
+  const blade = document.getElementById("switch-blade");
+  blade.setAttribute("x1", "325");
+  blade.setAttribute("y1", "248");
+  blade.setAttribute("x2", "370");
+  blade.setAttribute("y2", "248");
+  blade.setAttribute("stroke", "#4b5568");
+
+  const leverArm = document.getElementById("svg-lever-arm");
+  const leverKnob = document.getElementById("svg-lever-knob");
+  leverArm.setAttribute("x2", "18");
+  leverArm.setAttribute("y2", "20");
+  leverKnob.setAttribute("cx", "18");
+  leverKnob.setAttribute("cy", "20");
+
+  // Reset dispatch button to required choice state
+  const btn = document.getElementById("btn-dispatch");
+  btn.classList.remove("ready");
+  btn.disabled = true;
+  btn.innerText = "CHOOSE A ROUTE FOR THE TROLLEY";
+
+  // Show visual guide badge on Round 1 only
+  const guideBadge = document.getElementById("guide-badge");
+  if (idx === 0) {
+    guideBadge.style.display = "block";
+  } else {
+    guideBadge.style.display = "none";
+  }
 
   document.getElementById("feedback-drawer").style.display = "none";
-  document.getElementById("btn-dispatch").disabled = false;
-
-  chooseTrack('A');
 }
 
 function chooseTrack(choice) {
   if (runLocked) return;
   selectedTrack = choice;
 
+  // Dismiss guide badge upon first interaction
+  const guideBadge = document.getElementById("guide-badge");
+  if (guideBadge) {
+    guideBadge.style.display = "none";
+  }
+
   const zoneA = document.getElementById("zone-target-a");
   const zoneB = document.getElementById("zone-target-b");
-  const btnA = document.getElementById("btn-sw-a");
-  const btnB = document.getElementById("btn-sw-b");
   const blade = document.getElementById("switch-blade");
   const bulbA = document.getElementById("bulb-a");
   const bulbB = document.getElementById("bulb-b");
   const leverArm = document.getElementById("svg-lever-arm");
   const leverKnob = document.getElementById("svg-lever-knob");
+  const btn = document.getElementById("btn-dispatch");
+
+  btn.classList.add("ready");
+  btn.disabled = false;
+  btn.innerText = `START TROLLEY (TRACK ${choice} SELECTED)`;
 
   if (choice === 'A') {
     zoneA.classList.add("selected");
     zoneB.classList.remove("selected");
-    btnA.classList.add("active-a");
-    btnB.classList.remove("active-b");
 
+    // Divert switch blade up toward Track A
+    blade.setAttribute("x1", "325");
+    blade.setAttribute("y1", "248");
+    blade.setAttribute("x2", "365");
+    blade.setAttribute("y2", "230");
+    blade.setAttribute("stroke", "#2ed573");
+
+    // Track A gets green light, Track B drops dark
+    bulbA.setAttribute("fill", "#2ed573");
+    bulbB.setAttribute("fill", "#333a4d");
+
+    // Pull operator lever forward
+    leverArm.setAttribute("x2", "4");
+    leverArm.setAttribute("y2", "26");
+    leverKnob.setAttribute("cx", "4");
+    leverKnob.setAttribute("cy", "26");
+  } else {
+    zoneB.classList.add("selected");
+    zoneA.classList.remove("selected");
+
+    // Route switch blade straight toward Track B
     blade.setAttribute("x1", "325");
     blade.setAttribute("y1", "248");
     blade.setAttribute("x2", "375");
     blade.setAttribute("y2", "248");
     blade.setAttribute("stroke", "#2ed573");
 
-    bulbA.setAttribute("fill", "#2ed573");
-    bulbB.setAttribute("fill", "#333a4d");
+    // Track B gets green light, Track A drops dark
+    bulbB.setAttribute("fill", "#2ed573");
+    bulbA.setAttribute("fill", "#333a4d");
 
+    // Push operator lever back
     leverArm.setAttribute("x2", "26");
     leverArm.setAttribute("y2", "24");
     leverKnob.setAttribute("cx", "26");
     leverKnob.setAttribute("cy", "24");
-  } else {
-    zoneB.classList.add("selected");
-    zoneA.classList.remove("selected");
-    btnB.classList.add("active-b");
-    btnA.classList.remove("active-a");
-
-    blade.setAttribute("x1", "325");
-    blade.setAttribute("y1", "248");
-    blade.setAttribute("x2", "365");
-    blade.setAttribute("y2", "230");
-    blade.setAttribute("stroke", "#ffa502");
-
-    bulbB.setAttribute("fill", "#ffa502");
-    bulbA.setAttribute("fill", "#333a4d");
-
-    leverArm.setAttribute("x2", "4");
-    leverArm.setAttribute("y2", "26");
-    leverKnob.setAttribute("cx", "4");
-    leverKnob.setAttribute("cy", "26");
   }
 }
 
 function dispatchTrolley() {
-  if (runLocked) return;
+  if (runLocked || !selectedTrack) return;
   runLocked = true;
-  document.getElementById("btn-dispatch").disabled = true;
+
+  const btn = document.getElementById("btn-dispatch");
+  btn.disabled = true;
+  btn.classList.remove("ready");
 
   const cart = document.getElementById("trolley-cart");
 
   if (selectedTrack === 'A') {
-    cart.style.transform = "translate(690px, 222px)";
+    cart.style.transform = "translate(660px, 50px)";
   } else {
-    cart.style.transform = "translate(690px, 62px)";
+    cart.style.transform = "translate(660px, 210px)";
   }
 
   setTimeout(() => {
