@@ -500,7 +500,7 @@
             </foreignObject>
           </g>
 
-          <!-- Callout Box Positioned on Left with Angled Arrows -->
+          <!-- Left-Shifted Callout Box with Angled Arrows -->
           <g id="guide-badge" transform="translate(460, 145)">
             <rect x="0" y="0" width="170" height="60" rx="8" fill="#ff4757" stroke="#ffffff" stroke-width="2" filter="drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))"/>
             <text x="85" y="26" fill="#ffffff" font-size="14" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
@@ -516,13 +516,13 @@
             </g>
           </g>
 
-          <!-- 35% Bigger Comic Splat Impact Pop Effect -->
+          <!-- 35% Scaled-Up Comic Splat Impact Burst -->
           <g id="splat-burst">
             <path d="M 0,-68 L 22,-25 L 70,-45 L 45,-3 L 90,22 L 40,30 L 58,78 L 7,48 L -22,88 L -30,36 L -82,52 L -50,12 L -90,-20 L -38,-22 L -52,-70 L -7,-36 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="5"/>
             <text x="0" y="14" fill="#c0392b" font-size="34" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1.5">SPLAT!</text>
           </g>
 
-          <!-- Massive Heavy Industrial Trolley Car -->
+          <!-- Massive Industrial Trolley Car -->
           <g id="trolley-cart" transform="translate(-10, 180)">
             <rect x="4" y="80" width="232" height="12" rx="6" fill="rgba(0,0,0,0.6)"/>
             <rect x="0" y="12" width="240" height="68" rx="8" fill="#a82315" stroke="#7a140a" stroke-width="3"/>
@@ -555,8 +555,8 @@
 
       <div class="feedback-drawer" id="feedback-drawer">
         <div class="stat-labels">
-          <span id="stat-label-a" style="color: var(--track-active)">75% of players sacrificed Track A</span>
-          <span id="stat-label-b" style="color: #ffa502">25% sacrificed Track B</span>
+          <span id="stat-label-a" style="color: var(--track-active)">97% of players sacrificed Track A</span>
+          <span id="stat-label-b" style="color: #ffa502">3% sacrificed Track B</span>
         </div>
         <div class="split-meter">
           <div class="split-meter-fill" id="meter-fill" style="width: 50%;"></div>
@@ -585,7 +585,7 @@
       <div class="badge-box">
         <span class="progress-tag">YOUR MORAL ALIGNMENT</span>
         <div class="badge-headline" id="badge-title">The Cold Calculator</div>
-        <div class="badge-body" id="badge-description">You focus strictly on aggregate body count, sacrificing anyone to protect the highest number of living beings,</div>
+        <div class="badge-body" id="badge-description">You focus strictly on aggregate numbers, sacrificing anyone to protect the highest number of living beings,</div>
       </div>
 
       <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Share Game With Friends</button>
@@ -623,7 +623,7 @@
 <script>
 function renderGraphic(type, count) {
   let out = '';
-  if (type === 'person' || type === 'father') {
+  if (type === 'person' || type === 'father' || type === 'homeless') {
     for (let i = 0; i < Math.min(count, 8); i++) {
       let ox = i * 20;
       out += `<g transform="translate(${ox}, 0)">
@@ -725,7 +725,7 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
-// 11 Dilemmas with whole-number values and calibrated crowd ratios
+// 11 Recalibrated Scenarios with precise behavioral distribution baselines
 const scenarios = [
   {
     title: "Scenario 1",
@@ -734,7 +734,7 @@ const scenarios = [
     typeA: "person", countA: 1,
     typeB: "person", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 84,
+    baseA: 97,
     utilitarianTarget: 'A',
     commentA: "You sacrificed 1 person to save 5 people. You saved 4 net lives.",
     commentB: "You sacrificed 5 people to save 1 person. You lost 4 more lives than necessary."
@@ -746,7 +746,7 @@ const scenarios = [
     typeA: "grandma", countA: 8,
     typeB: "children", countB: 2,
     lossA: 8, lossB: 2,
-    baseA: 72,
+    baseA: 86,
     utilitarianTarget: 'A',
     commentA: "You sacrificed 8 grandmas to save 2 young kids, choosing a full lifetime of potential over old age.",
     commentB: "You sacrificed 2 young kids to save 8 grandmas, letting decades of young life get cut short."
@@ -758,7 +758,7 @@ const scenarios = [
     typeA: "person", countA: 1,
     typeB: "person", countB: 4,
     lossA: 1, lossB: 4,
-    baseA: 38,
+    baseA: 8,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your best friend to save 4 strangers. You put strangers ahead of personal friendship.",
     commentB: "You sacrificed 4 strangers to save your best friend, putting friendship above the higher body count."
@@ -770,7 +770,7 @@ const scenarios = [
     typeA: "father", countA: 1,
     typeB: "father", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 26,
+    baseA: 9,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your father to save 5 unknown fathers. You treated all fathers as equals.",
     commentB: "You sacrificed 5 unknown fathers to save your own father. Family loyalty won out."
@@ -778,13 +778,13 @@ const scenarios = [
   {
     title: "Scenario 5",
     trackA: "3 utility workers",
-    trackB: "Cut water to 300,000 residents for 2 weeks",
+    trackB: "Cut water to 300,000 residents for 2 weeks in summer",
     typeA: "person", countA: 3,
     typeB: "water", countB: 1,
     lossA: 3, lossB: 30,
-    baseA: 76,
+    baseA: 82,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 3 workers to keep drinking water running for 300,000 residents.",
+    commentA: "You sacrificed 3 workers to keep drinking water running for 300,000 residents in summer.",
     commentB: "You chose to save 3 workers, but shutting off water to 300,000 residents in summer could cause far more casualties through heat and hospital failures."
   },
   {
@@ -794,7 +794,7 @@ const scenarios = [
     typeA: "children", countA: 1,
     typeB: "children", countB: 6,
     lossA: 1, lossB: 6,
-    baseA: 16,
+    baseA: 6,
     utilitarianTarget: 'A',
     commentA: "You sacrificed your own child to save 6 unknown children. That is an agonizing choice.",
     commentB: "You sacrificed 6 unknown children to protect your own child. Bloodline came first."
@@ -806,22 +806,22 @@ const scenarios = [
     typeA: "you", countA: 1,
     typeB: "person", countB: 8,
     lossA: 1, lossB: 8,
-    baseA: 28,
+    baseA: 16,
     utilitarianTarget: 'A',
     commentA: "You sacrificed yourself to save 8 innocent people. Pure selflessness.",
     commentB: "You sacrificed 8 innocent people to save your own life."
   },
   {
     title: "Scenario 8",
-    trackA: "1 female doctor",
+    trackA: "1 female ER doctor",
     trackB: "1 pregnant teenager",
     typeA: "doctor", countA: 1,
     typeB: "pregnant", countB: 2,
     lossA: 1, lossB: 2,
-    baseA: 42,
+    baseA: 68,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 1 doctor to protect both the young mother and her unborn child.",
-    commentB: "You sacrificed a pregnant teen and unborn child to protect an active physician who saves lives daily."
+    commentA: "You sacrificed 1 ER doctor to protect the young pregnant teen and her unborn child.",
+    commentB: "You sacrificed a pregnant teen and unborn child to protect an active ER physician saving lives daily."
   },
   {
     title: "Scenario 9",
@@ -838,26 +838,26 @@ const scenarios = [
   {
     title: "Scenario 10",
     trackA: "5 working citizens",
-    trackB: "1 cancer scientist with a proven cure",
+    trackB: "1 scientist close to a cancer cure",
     typeA: "person", countA: 5,
     typeB: "scientist", countB: 1,
     lossA: 5, lossB: 50,
-    baseA: 78,
+    baseA: 82,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 5 citizens to protect the scientist whose proven cure will save thousands of future lives.",
-    commentB: "You sacrificed the cure-holding scientist to save 5 immediate lives on the tracks."
+    commentA: "You sacrificed 5 citizens to protect the scientist whose ongoing breakthrough could save millions of lives.",
+    commentB: "You sacrificed the cure-seeking scientist to save 5 immediate lives on the tracks."
   },
   {
     title: "Scenario 11",
-    trackA: "Mystery person (could be a family member)",
-    trackB: "5 strangers",
+    trackA: "Mystery person (family member or stranger)",
+    trackB: "5 homeless people",
     typeA: "mystery", countA: 1,
-    typeB: "person", countB: 5,
+    typeB: "homeless", countB: 5,
     lossA: 1, lossB: 5,
-    baseA: 64,
+    baseA: 22,
     utilitarianTarget: 'A',
-    commentA: "You risked the unknown face to guarantee five strangers walk away alive.",
-    commentB: "You sacrificed 5 strangers to eliminate any chance of harming your family."
+    commentA: "You risked the mystery gamble to protect five living individuals.",
+    commentB: "You sacrificed 5 homeless people to eliminate any chance of harming your family."
   }
 ];
 
@@ -1029,7 +1029,7 @@ function evaluateResults() {
   }
 
   const variance = Math.floor(Math.random() * 5) - 2;
-  const pctA = Math.min(Math.max(cur.baseA + variance, 5), 95);
+  const pctA = Math.min(Math.max(cur.baseA + variance, 2), 98);
   const pctB = 100 - pctA;
 
   document.getElementById("stat-label-a").innerText = `${pctA}% of players sacrificed Track A`;
@@ -1061,7 +1061,7 @@ function showDashboard() {
 
   if (optimalDecisionsCount >= 9) {
     bTitle.innerText = "The Cold Calculator";
-    bDesc.innerText = "You focus strictly on the total numbers, sacrificing anyone to protect the highest number of living beings,";
+    bDesc.innerText = "You focus strictly on aggregate numbers, sacrificing anyone to protect the highest number of living beings,";
   } else if (optimalDecisionsCount >= 5) {
     bTitle.innerText = "The Balanced Thinker";
     bDesc.innerText = "You try to save the most lives possible, but you draw the line when close friends or family are on the tracks,";
