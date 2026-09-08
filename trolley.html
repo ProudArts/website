@@ -414,7 +414,6 @@
         <svg id="rail-stage" viewBox="0 0 1050 360">
           <rect x="0" y="0" width="1050" height="360" fill="#0d0f15"/>
 
-          <!-- Cross Ties -->
           <g stroke="#1f2430" stroke-width="6">
             <line x1="50" y1="240" x2="50" y2="280"/>
             <line x1="90" y1="240" x2="90" y2="280"/>
@@ -445,17 +444,14 @@
             <line x1="690" y1="80" x2="690" y2="120"/>
           </g>
 
-          <!-- Steel Rails -->
           <line x1="40" y1="248" x2="710" y2="248" stroke="#4b5568" stroke-width="4"/>
           <line x1="40" y1="272" x2="710" y2="272" stroke="#4b5568" stroke-width="4"/>
 
           <path d="M 330 248 C 410 248, 440 88, 520 88 L 710 88" fill="none" stroke="#4b5568" stroke-width="4"/>
           <path d="M 350 272 C 430 272, 460 112, 540 112 L 710 112" fill="none" stroke="#4b5568" stroke-width="4"/>
 
-          <!-- Dynamic Switch Blade -->
           <line id="switch-blade" x1="325" y1="248" x2="375" y2="248" stroke="#4b5568" stroke-width="5" stroke-linecap="round"/>
 
-          <!-- Terminus Signal Lights -->
           <g transform="translate(718, 80)">
             <rect x="0" y="0" width="16" height="32" rx="4" fill="#1e2330" stroke="#333a4d"/>
             <circle id="bulb-a" class="signal-bulb" cx="8" cy="16" r="5" fill="#333a4d"/>
@@ -465,7 +461,6 @@
             <circle id="bulb-b" class="signal-bulb" cx="8" cy="16" r="5" fill="#333a4d"/>
           </g>
 
-          <!-- Switchman Operator Unit -->
           <g id="switchman-unit" transform="translate(300, 160)">
             <rect x="-10" y="55" width="40" height="6" rx="2" fill="#2f3542"/>
             <rect x="12" y="40" width="12" height="16" rx="2" fill="#475266"/>
@@ -480,7 +475,6 @@
             <line x1="-2" y1="44" x2="4" y2="56" stroke="#f1f2f6" stroke-width="3"/>
           </g>
 
-          <!-- Top Track Card: TRACK A -->
           <g class="target-zone" id="zone-target-a" onclick="chooseTrack('A')">
             <rect class="zone-rect" x="746" y="35" width="290" height="125"/>
             <text x="891" y="58" fill="var(--label-offwhite)" font-size="13" font-weight="900" letter-spacing="1" text-anchor="middle">TRACK A</text>
@@ -490,7 +484,6 @@
             </foreignObject>
           </g>
 
-          <!-- Bottom Track Card: TRACK B -->
           <g class="target-zone" id="zone-target-b" onclick="chooseTrack('B')">
             <rect class="zone-rect" x="746" y="195" width="290" height="125"/>
             <text x="891" y="218" fill="var(--label-offwhite)" font-size="13" font-weight="900" letter-spacing="1" text-anchor="middle">TRACK B</text>
@@ -500,7 +493,6 @@
             </foreignObject>
           </g>
 
-          <!-- Left-Shifted Callout Box with Angled Arrows -->
           <g id="guide-badge" transform="translate(460, 145)">
             <rect x="0" y="0" width="170" height="60" rx="8" fill="#ff4757" stroke="#ffffff" stroke-width="2" filter="drop-shadow(0 0 8px rgba(255, 71, 87, 0.5))"/>
             <text x="85" y="26" fill="#ffffff" font-size="14" font-weight="900" text-anchor="middle" letter-spacing="0.5">CLICK WHO TO</text>
@@ -516,13 +508,11 @@
             </g>
           </g>
 
-          <!-- 35% Scaled-Up Comic Splat Impact Burst -->
           <g id="splat-burst">
             <path d="M 0,-68 L 22,-25 L 70,-45 L 45,-3 L 90,22 L 40,30 L 58,78 L 7,48 L -22,88 L -30,36 L -82,52 L -50,12 L -90,-20 L -38,-22 L -52,-70 L -7,-36 Z" fill="#f1c40f" stroke="#ff4757" stroke-width="5"/>
             <text x="0" y="14" fill="#c0392b" font-size="34" font-weight="900" text-anchor="middle" font-family="'Impact', system-ui, sans-serif" letter-spacing="1.5">SPLAT!</text>
           </g>
 
-          <!-- Massive Industrial Trolley Car -->
           <g id="trolley-cart" transform="translate(-10, 180)">
             <rect x="4" y="80" width="232" height="12" rx="6" fill="rgba(0,0,0,0.6)"/>
             <rect x="0" y="12" width="240" height="68" rx="8" fill="#a82315" stroke="#7a140a" stroke-width="3"/>
@@ -548,7 +538,6 @@
         </svg>
       </div>
 
-      <!-- Single Centered Dispatch Control Strip -->
       <div class="control-strip">
         <button type="button" class="dispatch-btn" id="btn-dispatch" onclick="dispatchTrolley()">CHOOSE A ROUTE FOR THE TROLLEY</button>
       </div>
@@ -584,8 +573,8 @@
 
       <div class="badge-box">
         <span class="progress-tag">YOUR MORAL ALIGNMENT</span>
-        <div class="badge-headline" id="badge-title">The Cold Calculator</div>
-        <div class="badge-body" id="badge-description">You focus strictly on aggregate numbers, sacrificing anyone to protect the highest number of living beings,</div>
+        <div class="badge-headline" id="badge-title">The Ledger Machine</div>
+        <div class="badge-body" id="badge-description">You do not care about names, hugs, or tears, you care about the numbers, if derailing your closest cousin saves three strangers in Nebraska, cousin Earl is out of luck,</div>
       </div>
 
       <button type="button" class="dispatch-btn ready" style="align-self: center" onclick="copyStats()">Share Game With Friends</button>
@@ -725,7 +714,6 @@ function renderGraphic(type, count) {
   return `<circle cx="12" cy="12" r="10" fill="#7f8c8d"/>`;
 }
 
-// 11 Recalibrated Scenarios with precise behavioral distribution baselines
 const scenarios = [
   {
     title: "Scenario 1",
@@ -736,8 +724,8 @@ const scenarios = [
     lossA: 1, lossB: 5,
     baseA: 97,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 1 person to save 5 people. You saved 4 net lives.",
-    commentB: "You sacrificed 5 people to save 1 person. You lost 4 more lives than necessary."
+    commentA: "You squashed one guy to save five, plain arithmetic, but that one guy definitely had plans tonight,",
+    commentB: "You ran over five people to save one complete stranger, somewhere a math teacher just threw a chalkboard,"
   },
   {
     title: "Scenario 2",
@@ -748,8 +736,8 @@ const scenarios = [
     lossA: 8, lossB: 2,
     baseA: 86,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 8 grandmas to save 2 young kids, choosing a full lifetime of potential over old age.",
-    commentB: "You sacrificed 2 young kids to save 8 grandmas, letting decades of young life get cut short."
+    commentA: "Eight bingo nights cancelled forever, but hey, those kids have whole lifetimes of bad decisions ahead of them,",
+    commentB: "You wiped out the future generation so the bridge club could play one more round of canasta,"
   },
   {
     title: "Scenario 3",
@@ -760,8 +748,8 @@ const scenarios = [
     lossA: 1, lossB: 4,
     baseA: 8,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed your best friend to save 4 strangers. You put strangers ahead of personal friendship.",
-    commentB: "You sacrificed 4 strangers to save your best friend, putting friendship above the higher body count."
+    commentA: "With friends like you, who needs enemies, good luck finding someone else to pick you up from the airport,",
+    commentB: "Four entire bloodlines extinguished just so you have someone to help you move a couch on Saturday,"
   },
   {
     title: "Scenario 4",
@@ -772,8 +760,8 @@ const scenarios = [
     lossA: 1, lossB: 5,
     baseA: 9,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed your father to save 5 unknown fathers. You treated all fathers as equals.",
-    commentB: "You sacrificed 5 unknown fathers to save your own father. Family loyalty won out."
+    commentA: "You sent your own dad down the tracks to save five random guys, your Thanksgiving invites just got revoked permanently,",
+    commentB: "Five backyard barbecues canceled forever so your old man could keep telling his same three stories,"
   },
   {
     title: "Scenario 5",
@@ -784,8 +772,8 @@ const scenarios = [
     lossA: 3, lossB: 30,
     baseA: 82,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 3 workers to keep drinking water running for 300,000 residents in summer.",
-    commentB: "You chose to save 3 workers, but shutting off water to 300,000 residents in summer could cause far more casualties through heat and hospital failures."
+    commentA: "Three honest hardhats took the hit so three hundred thousand people could keep taking cold showers in August,",
+    commentB: "Three workers walk away clean while an entire city of three hundred thousand unwashed citizens sweats through their mattresses,"
   },
   {
     title: "Scenario 6",
@@ -796,8 +784,8 @@ const scenarios = [
     lossA: 1, lossB: 6,
     baseA: 6,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed your own child to save 6 unknown children. That is an agonizing choice.",
-    commentB: "You sacrificed 6 unknown children to protect your own child. Bloodline came first."
+    commentA: "You traded your own kid for a half dozen stranger kids, that ride home is going to be the quietest car ride in human history,",
+    commentB: "Six playground spots opened up simultaneously, stone cold primal parenting, you protected your nest and let the neighborhood take the hit,"
   },
   {
     title: "Scenario 7",
@@ -808,8 +796,8 @@ const scenarios = [
     lossA: 1, lossB: 8,
     baseA: 16,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed yourself to save 8 innocent people. Pure selflessness.",
-    commentB: "You sacrificed 8 innocent people to save your own life."
+    commentA: "Look at you, Captain Martyr, who is going to clear your browser history now?",
+    commentB: "Eight human beings flattened so you could live to scroll memes for another forty years,"
   },
   {
     title: "Scenario 8",
@@ -820,8 +808,8 @@ const scenarios = [
     lossA: 1, lossB: 2,
     baseA: 68,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 1 ER doctor to protect the young pregnant teen and her unborn child.",
-    commentB: "You sacrificed a pregnant teen and unborn child to protect an active ER physician saving lives daily."
+    commentA: "A seasoned ER doc down, the entire night shift at the trauma center is going to be short staffed and furious with you,",
+    commentB: "The hospital stays open, but your conscience is going to need heavy therapy,"
   },
   {
     title: "Scenario 9",
@@ -832,8 +820,8 @@ const scenarios = [
     lossA: 1, lossB: 1,
     baseA: 34,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed your family pet to save a human life, even if they are a convicted felon.",
-    commentB: "You sacrificed a convicted felon to protect your family pet."
+    commentA: "You fed Mr, Whiskers to the train to save a guy currently serving time for mail fraud, sleep good tonight,",
+    commentB: "A guy in an orange jumpsuit took the impact so a four legged animal that drinks out of the toilet could live, pet people totally respect this call,"
   },
   {
     title: "Scenario 10",
@@ -844,8 +832,8 @@ const scenarios = [
     lossA: 5, lossB: 50,
     baseA: 82,
     utilitarianTarget: 'A',
-    commentA: "You sacrificed 5 citizens to protect the scientist whose ongoing breakthrough could save millions of lives.",
-    commentB: "You sacrificed the cure-seeking scientist to save 5 immediate lives on the tracks."
+    commentA: "Five everyday lunchbox workers squished so the lab genius can keep mixing test tubes, that research paper better win a Nobel Prize,",
+    commentB: "You wiped out the guy right at the finish line of a breakthrough so five shift workers could make happy hour,"
   },
   {
     title: "Scenario 11",
@@ -856,8 +844,8 @@ const scenarios = [
     lossA: 1, lossB: 5,
     baseA: 22,
     utilitarianTarget: 'A',
-    commentA: "You risked the mystery gamble to protect five living individuals.",
-    commentB: "You sacrificed 5 homeless people to eliminate any chance of harming your family."
+    commentA: "You pulled the lever on the mystery box, let us pray Thanksgiving dinner does not have an empty chair this year,",
+    commentB: "Five vulnerable guys flattened on the tracks just in case the mystery guy was your uncle Bob,"
   }
 ];
 
@@ -1060,14 +1048,14 @@ function showDashboard() {
   const bDesc = document.getElementById("badge-description");
 
   if (optimalDecisionsCount >= 9) {
-    bTitle.innerText = "The Cold Calculator";
-    bDesc.innerText = "You focus strictly on aggregate numbers, sacrificing anyone to protect the highest number of living beings,";
+    bTitle.innerText = "The Ledger Machine";
+    bDesc.innerText = "You do not care about names, hugs, or tears, you care about the numbers, if derailing your closest cousin saves three strangers in Nebraska, cousin Earl is out of luck,";
   } else if (optimalDecisionsCount >= 5) {
-    bTitle.innerText = "The Balanced Thinker";
-    bDesc.innerText = "You try to save the most lives possible, but you draw the line when close friends or family are on the tracks,";
+    bTitle.innerText = "The Fence Straddler";
+    bDesc.innerText = "You try to play the logical hero when it is safe, but the second someone you love steps on the rails, all your pretty moral rules get dumped into the river,";
   } else {
-    bTitle.innerText = "Family First";
-    bDesc.innerText = "You protect your inner circle, loved ones, and pets at all costs, no matter how many strangers must be sacrificed,";
+    bTitle.innerText = "The Bunker Clan";
+    bDesc.innerText = "Society can burn to the waterline as long as your family, your best buddy, and your dog make it back to the porch intact, zero apologies given,";
   }
 }
 
