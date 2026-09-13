@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -14,197 +15,284 @@
             align-items: center; 
             margin: 0;
         }
-        .container { 
-            width: 100%;
-            max-width: 1000px; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 12px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
-        }
-        h2 { margin-top: 0; color: #222; text-align: center; margin-bottom: 25px; }
 
-        .config-section {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: none;
-            border: 1px solid #ddd;
-        }
-        .config-toggle {
-            display: block;
-            margin: 0 auto 20px;
-            background: none;
-            border: 1px solid #999;
-            color: #666;
-            padding: 5px 15px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-size: 0.8rem;
+```
+    .container { 
+        width: 100%;
+        max-width: 1000px; 
+        background: white; 
+        padding: 30px; 
+        border-radius: 12px; 
+        box-shadow: 0 4px 15px rgba(0,0,0,0.1); 
+    }
+
+    h2 { 
+        margin-top: 0; 
+        color: #222; 
+        text-align: center; 
+        margin-bottom: 20px; 
+    }
+
+    /* Compact Settings Bar */
+    .settings-bar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 12px 18px;
+        background: #f8f9fa;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 8px 12px;
+        margin-bottom: 20px;
+        font-size: 0.82rem;
+    }
+
+    .setting-group {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        white-space: nowrap;
+    }
+
+    .setting-group label {
+        font-weight: bold;
+        color: #555;
+    }
+
+    .settings-bar input[type="text"] {
+        width: 95px;
+        padding: 6px 8px;
+        font-size: 0.82rem;
+    }
+
+    .settings-bar input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .gas-price-group {
+        display: none;
+    }
+
+    .header-row {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 0 10px;
+        font-weight: bold;
+        color: #444;
+        text-align: center;
+        font-size: 0.9rem;
+    }
+
+    .vehicle-row {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+        gap: 10px;
+        margin-bottom: 10px;
+        padding: 10px;
+        background: #fff;
+        border: 2px solid #eee;
+        border-radius: 8px;
+        align-items: center;
+        transition: all 0.3s ease;
+    }
+
+    .winner {
+        border-color: #28a745;
+        background-color: #f0fff4;
+        box-shadow: 0 0 10px rgba(40, 167, 69, 0.2);
+    }
+
+    input { 
+        width: 100%; 
+        padding: 10px; 
+        border: 1px solid #ccc; 
+        border-radius: 6px; 
+        box-sizing: border-box; 
+        font-size: 0.95rem;
+        text-align: center;
+    }
+
+    .data-cell {
+        font-size: 1rem;
+        color: #666;
+        text-align: center;
+    }
+
+    .result-cell {
+        font-size: 1.15rem;
+        font-weight: bold;
+        color: #007bff;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .winner .result-cell { color: #28a745; }
+
+    .status-msg {
+        font-size: 0.75rem;
+        font-weight: normal;
+        display: block;
+        margin-top: 4px;
+    }
+
+    .remove-btn {
+        background: #ff4d4d;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        height: 30px;
+        font-weight: bold;
+    }
+
+    .add-btn {
+        display: block;
+        width: 220px;
+        margin: 20px auto;
+        padding: 12px;
+        background-color: #28a745;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+    }
+
+    .info-text { 
+        margin-top: 30px; 
+        font-size: 0.9rem; 
+        color: #555; 
+        line-height: 1.6;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+    }
+
+    footer {
+        margin-top: 40px;
+        text-align: center;
+        font-size: 0.85rem;
+        color: #777;
+        padding-bottom: 40px;
+    }
+
+    footer a { color: #007bff; text-decoration: none; }
+    
+    .counter-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-top: 10px;
+        margin-bottom: 25px;
+        transform: scale(1.0);
+        transform-origin: center;
+    }
+
+    /* Responsive layout */
+    @media (max-width: 800px) {
+        .container {
+            padding: 20px 10px;
         }
 
         .header-row {
-            display: grid;
             grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding: 0 10px;
-            font-weight: bold;
-            color: #444;
-            text-align: center;
-            font-size: 0.9rem;
+            gap: 5px;
+            font-size: 0.75rem;
         }
 
         .vehicle-row {
-            display: grid;
             grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
-            gap: 10px;
-            margin-bottom: 10px;
-            padding: 10px;
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 8px;
-            align-items: center;
-            transition: all 0.3s ease;
+            gap: 5px;
+            padding: 7px;
         }
 
-        .winner {
-            border-color: #28a745;
-            background-color: #f0fff4;
-            box-shadow: 0 0 10px rgba(40, 167, 69, 0.2);
-        }
-
-        input { 
-            width: 100%; 
-            padding: 10px; 
-            border: 1px solid #ccc; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
-            font-size: 0.95rem;
-            text-align: center;
-        }
-
-        .data-cell {
-            font-size: 1rem;
-            color: #666;
-            text-align: center;
+        input {
+            padding: 8px 4px;
+            font-size: 0.85rem;
         }
 
         .result-cell {
-            font-size: 1.15rem;
-            font-weight: bold;
-            color: #007bff;
-            text-align: center;
-            line-height: 1.2;
-        }
-        .winner .result-cell { color: #28a745; }
-
-        .status-msg {
-            font-size: 0.75rem;
-            font-weight: normal;
-            display: block;
-            margin-top: 4px;
+            font-size: 1rem;
         }
 
-        .remove-btn {
-            background: #ff4d4d;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            height: 30px;
-            font-weight: bold;
-        }
-
-        .add-btn {
-            display: block;
-            width: 220px;
-            margin: 20px auto;
-            padding: 12px;
-            background-color: #28a745;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-        }
-
-        .info-text { 
-            margin-top: 30px; 
-            font-size: 0.9rem; 
-            color: #555; 
-            line-height: 1.6;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        footer {
-            margin-top: 40px;
-            text-align: center;
+        .data-cell {
             font-size: 0.85rem;
-            color: #777;
-            padding-bottom: 40px;
         }
-        footer a { color: #007bff; text-decoration: none; }
-        
-        .counter-wrapper {
-            display: flex;
-            justify-content: center;
-            margin-top: 10px;
-            margin-bottom: 25px;
-            transform: scale(1.0);
-            transform-origin: center;
-        }
-    </style>
+    }
+</style>
+```
+
 </head>
 <body>
 
 <div class="container">
     <h2>Free Price Per Mile Calculator</h2>
-    
-    <button class="config-toggle" onclick="toggleConfig()">⚙️ Advanced Settings</button>
-    
-    <div id="config" class="config-section">
-        <label style="font-size: 0.9rem;">Estimated Max Lifespan (Miles):</label>
-        <input type="text" id="lifespan" value="200,000" style="width: 120px; margin-left: 10px;" oninput="formatLifespan(this)">
+
+```
+<div class="settings-bar">
+    <div class="setting-group">
+        <label for="lifespan">Max Lifespan:</label>
+        <input type="text" id="lifespan" value="200,000" oninput="formatLifespan(this)">
     </div>
 
-    <div class="header-row">
-        <div>Vehicle Name</div>
-        <div>Price</div>
-        <div>Current Miles</div>
-        <div>Miles Left</div>
-        <div>Price Per Mile</div>
-        <div></div>
+    <div class="setting-group">
+        <input type="checkbox" id="includeFuel" onchange="toggleFuel(); calculateAll();">
+        <label for="includeFuel">Include Fuel Cost (MPG)</label>
     </div>
 
-    <div id="vehicle-list">
-        <div class="vehicle-row">
-            <input type="text" value="Vehicle 1" oninput="calculateAll()">
-            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
-            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
-            <div class="data-cell miles-left">-</div>
-            <div class="result-cell">-</div>
-            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
-        </div>
-        <div class="vehicle-row">
-            <input type="text" value="Vehicle 2" oninput="calculateAll()">
-            <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
-            <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
-            <div class="data-cell miles-left">-</div>
-            <div class="result-cell">-</div>
-            <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
-        </div>
+    <div class="setting-group gas-price-group" id="gasPriceGroup">
+        <label for="gasPrice">Gas Price:</label>
+        <input type="text" id="gasPrice" value="$3.30" oninput="formatGasPrice(this)">
     </div>
 
-    <button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
-
-    <div class="info-text">
-        <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the "unit price" for every mile left in the vehicle's expected life.</p>
-        <p><strong>Method:</strong> We subtract current mileage from the estimated lifespan (default 200,000) to find <strong>Miles Left</strong>. We then divide the price by those miles to find the <strong>Price Per Mile</strong>. The vehicle with the best value is highlighted in green.</p>
-        <p><strong>Pro Tip:</strong> Click <strong>Advanced Settings</strong> to adjust the Max Lifespan for heavy-duty trucks or high-longevity models.</p>
+    <div class="setting-group">
+        <input type="checkbox" id="includeMaintenance" onchange="calculateAll();">
+        <label for="includeMaintenance">Include Maintenance Curve</label>
     </div>
+</div>
+
+<div class="header-row" id="header-row">
+    <div>Vehicle Name</div>
+    <div>Price</div>
+    <div>Current Miles</div>
+    <div>Miles Left</div>
+    <div>Price Per Mile</div>
+    <div></div>
+</div>
+
+<div id="vehicle-list">
+    <div class="vehicle-row">
+        <input type="text" value="Vehicle 1" oninput="calculateAll()">
+        <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
+        <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+        <div class="data-cell miles-left">-</div>
+        <div class="result-cell">-</div>
+        <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
+    </div>
+
+    <div class="vehicle-row">
+        <input type="text" value="Vehicle 2" oninput="calculateAll()">
+        <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
+        <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
+        <div class="data-cell miles-left">-</div>
+        <div class="result-cell">-</div>
+        <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
+    </div>
+</div>
+
+<button class="add-btn" onclick="addRow()">+ Add Vehicle to Compare</button>
+
+<div class="info-text">
+    <p><strong>How to use:</strong> Compare vehicles of the same make, model, or year. This tool calculates the "unit price" for every mile left in the vehicle's expected life.</p>
+    <p><strong>Method:</strong> We subtract current mileage from the maximum lifespan to find <strong>Miles Left</strong>. We then divide the price by those miles to find the base <strong>Price Per Mile</strong>. Optional fuel and maintenance costs can be added to create a more complete ownership cost per mile. The vehicle with the best value is highlighted in green.</p>
+    <p><strong>Maintenance Curve:</strong> When enabled, maintenance is estimated at $0.04/mile from 0–50,000 miles, $0.08/mile from 50,000–100,000, $0.12/mile from 100,000–150,000, and $0.16/mile above 150,000 miles. The calculator applies the appropriate rates across the vehicle's remaining lifespan and uses the resulting average maintenance cost per mile.</p>
+    <p><strong>Fuel Cost:</strong> When enabled, enter each vehicle's estimated MPG. Fuel cost per mile is calculated using the gas price divided by MPG and added to the vehicle's total cost per mile.</p>
+</div>
+```
+
 </div>
 
 <footer>
@@ -217,15 +305,71 @@
             </a>
         </noscript>
     </div>
-    
-    &copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
-    Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
+
+```
+&copy; 2026 Proud Arts LLC. All Rights Reserved.<br>
+Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@proudarts.com</a>
+```
+
 </footer>
 
 <script>
-    function toggleConfig() {
-        const config = document.getElementById('config');
-        config.style.display = config.style.display === 'block' ? 'none' : 'block';
+    function toggleFuel() {
+        const fuelEnabled = document.getElementById('includeFuel').checked;
+        const gasPriceGroup = document.getElementById('gasPriceGroup');
+
+        gasPriceGroup.style.display = fuelEnabled ? 'flex' : 'none';
+
+        updateFuelColumns();
+    }
+
+    function updateFuelColumns() {
+        const fuelEnabled = document.getElementById('includeFuel').checked;
+        const header = document.getElementById('header-row');
+        const rows = document.getElementsByClassName('vehicle-row');
+
+        if (fuelEnabled) {
+            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 40px';
+            
+            if (!header.querySelector('.mpg-header')) {
+                const mpgHeader = document.createElement('div');
+                mpgHeader.className = 'mpg-header';
+                mpgHeader.innerText = 'Est. MPG';
+                header.insertBefore(mpgHeader, header.querySelector('div:nth-child(5)'));
+            }
+
+            for (let row of rows) {
+                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 40px';
+
+                if (!row.querySelector('.mpg-input')) {
+                    const mpgInput = document.createElement('input');
+                    mpgInput.type = 'text';
+                    mpgInput.className = 'mpg-input';
+                    mpgInput.placeholder = '0';
+                    mpgInput.oninput = function() {
+                        formatMPG(this);
+                    };
+
+                    row.insertBefore(mpgInput, row.querySelector('.result-cell'));
+                }
+            }
+        } else {
+            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 40px';
+
+            const mpgHeader = header.querySelector('.mpg-header');
+            if (mpgHeader) {
+                mpgHeader.remove();
+            }
+
+            for (let row of rows) {
+                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 40px';
+
+                const mpgInput = row.querySelector('.mpg-input');
+                if (mpgInput) {
+                    mpgInput.remove();
+                }
+            }
+        }
     }
 
     function formatCurrency(input) {
@@ -235,6 +379,19 @@
         } else {
             input.value = "";
         }
+        calculateAll();
+    }
+
+    function formatGasPrice(input) {
+        let value = input.value.replace(/[^\d.]/g, "");
+        let number = parseFloat(value);
+
+        if (!isNaN(number)) {
+            input.value = "$" + number.toFixed(2);
+        } else {
+            input.value = "";
+        }
+
         calculateAll();
     }
 
@@ -253,12 +410,51 @@
         calculateAll();
     }
 
+    function formatMPG(input) {
+        let value = input.value.replace(/[^\d.]/g, "");
+        if (value) {
+            input.value = value;
+        } else {
+            input.value = "";
+        }
+        calculateAll();
+    }
+
+    function calculateMaintenanceCostPerMile(startMileage, endMileage) {
+        if (endMileage <= startMileage) {
+            return 0;
+        }
+
+        const segments = [
+            { start: 0, end: 50000, rate: 0.04 },
+            { start: 50000, end: 100000, rate: 0.08 },
+            { start: 100000, end: 150000, rate: 0.12 },
+            { start: 150000, end: Infinity, rate: 0.16 }
+        ];
+
+        let totalMaintenanceCost = 0;
+        let totalMiles = endMileage - startMileage;
+
+        for (let segment of segments) {
+            const segmentStart = Math.max(startMileage, segment.start);
+            const segmentEnd = Math.min(endMileage, segment.end);
+
+            if (segmentEnd > segmentStart) {
+                const segmentMiles = segmentEnd - segmentStart;
+                totalMaintenanceCost += segmentMiles * segment.rate;
+            }
+        }
+
+        return totalMaintenanceCost / totalMiles;
+    }
+
     function addRow() {
         const list = document.getElementById('vehicle-list');
         const count = list.getElementsByClassName('vehicle-row').length + 1;
         
         const newRow = document.createElement('div');
         newRow.className = 'vehicle-row';
+
         newRow.innerHTML = `
             <input type="text" value="Vehicle ${count}" oninput="calculateAll()">
             <input type="text" class="price-input" placeholder="$0" oninput="formatCurrency(this)">
@@ -267,13 +463,26 @@
             <div class="result-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         `;
+
         list.appendChild(newRow);
+
+        if (document.getElementById('includeFuel').checked) {
+            updateFuelColumns();
+        }
+
         calculateAll();
     }
 
     function calculateAll() {
         const lifespanStr = document.getElementById('lifespan').value.replace(/\D/g, "");
         const lifespan = parseFloat(lifespanStr) || 200000;
+
+        const fuelEnabled = document.getElementById('includeFuel').checked;
+        const maintenanceEnabled = document.getElementById('includeMaintenance').checked;
+
+        const gasPriceStr = document.getElementById('gasPrice').value.replace(/[^\d.]/g, "");
+        const gasPrice = parseFloat(gasPriceStr) || 0;
+
         const rows = document.getElementsByClassName('vehicle-row');
         
         let bestCost = Infinity;
@@ -281,8 +490,15 @@
 
         for (let row of rows) {
             row.classList.remove('winner');
-            const price = parseFloat(row.querySelector('.price-input').value.replace(/\D/g, ""));
-            const mileage = parseFloat(row.querySelector('.mileage-input').value.replace(/\D/g, ""));
+
+            const price = parseFloat(
+                row.querySelector('.price-input').value.replace(/\D/g, "")
+            );
+
+            const mileage = parseFloat(
+                row.querySelector('.mileage-input').value.replace(/\D/g, "")
+            );
+
             const leftDisplay = row.querySelector('.miles-left');
             const output = row.querySelector('.result-cell');
 
@@ -293,28 +509,70 @@
             }
 
             const remainingMiles = lifespan - mileage;
-            leftDisplay.innerText = remainingMiles > 0 ? remainingMiles.toLocaleString() : "0";
+
+            leftDisplay.innerText = remainingMiles > 0
+                ? remainingMiles.toLocaleString()
+                : "0";
 
             if (remainingMiles <= 0) {
-                output.innerHTML = "MAX LIFE REACHED<br><span class='status-msg'>Check Advanced Settings</span>";
+                output.innerHTML = "MAX LIFE REACHED<br><span class='status-msg'>Check Max Lifespan</span>";
                 output.style.color = "#dc3545";
-            } else {
-                const costPerMile = price / remainingMiles;
-                output.innerText = "$" + costPerMile.toFixed(3);
-                output.style.color = "#007bff";
+                continue;
+            }
 
-                if (costPerMile < bestCost) {
-                    bestCost = costPerMile;
-                    bestRow = row;
+            /* Base purchase price per remaining mile */
+            const baseCostPerMile = price / remainingMiles;
+
+            /* Fuel cost per mile */
+            let fuelCostPerMile = 0;
+
+            if (fuelEnabled) {
+                const mpgInput = row.querySelector('.mpg-input');
+
+                if (mpgInput) {
+                    const mpg = parseFloat(mpgInput.value.replace(/[^\d.]/g, ""));
+
+                    if (!isNaN(mpg) && mpg > 0) {
+                        fuelCostPerMile = gasPrice / mpg;
+                    }
                 }
+            }
+
+            /* Average maintenance cost per remaining mile */
+            let maintenanceCostPerMile = 0;
+
+            if (maintenanceEnabled) {
+                maintenanceCostPerMile =
+                    calculateMaintenanceCostPerMile(mileage, lifespan);
+            }
+
+            /* Final combined cost per mile */
+            const totalCostPerMile =
+                baseCostPerMile +
+                fuelCostPerMile +
+                maintenanceCostPerMile;
+
+            output.innerText = "$" + totalCostPerMile.toFixed(3);
+            output.style.color = "#007bff";
+
+            if (totalCostPerMile < bestCost) {
+                bestCost = totalCostPerMile;
+                bestRow = row;
             }
         }
 
-        const activeCalcs = Array.from(rows).filter(r => r.querySelector('.result-cell').innerText.includes('$')).length;
+        const activeCalcs = Array.from(rows)
+            .filter(r => r.querySelector('.result-cell').innerText.includes('$'))
+            .length;
+
         if (bestRow && activeCalcs > 1) {
             bestRow.classList.add('winner');
         }
     }
+
+    /* Initialize controls */
+    toggleFuel();
+    calculateAll();
 </script>
 
 </body>
