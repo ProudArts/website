@@ -78,7 +78,7 @@
 
     .header-row {
         display: grid;
-        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px;
         gap: 10px;
         margin-bottom: 10px;
         padding: 0 10px;
@@ -90,7 +90,7 @@
 
     .vehicle-row {
         display: grid;
-        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+        grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px;
         gap: 10px;
         margin-bottom: 10px;
         padding: 10px;
@@ -132,6 +132,16 @@
     }
 
     .winner .result-cell { color: #28a745; }
+
+    .overpaid-cell {
+        font-size: 1rem;
+        font-weight: bold;
+        color: #dc3545;
+        text-align: center;
+        line-height: 1.2;
+    }
+
+    .winner .overpaid-cell { color: #28a745; }
 
     .status-msg {
         font-size: 0.75rem;
@@ -198,13 +208,13 @@
         }
 
         .header-row {
-            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px;
             gap: 5px;
             font-size: 0.75rem;
         }
 
         .vehicle-row {
-            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 40px;
+            grid-template-columns: 1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px;
             gap: 5px;
             padding: 7px;
         }
@@ -219,6 +229,10 @@
         }
 
         .data-cell {
+            font-size: 0.85rem;
+        }
+
+        .overpaid-cell {
             font-size: 0.85rem;
         }
     }
@@ -260,6 +274,7 @@
     <div>Current Miles</div>
     <div>Miles Left</div>
     <div>Price Per Mile</div>
+    <div>Overpaid</div>
     <div></div>
 </div>
 
@@ -270,6 +285,7 @@
         <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
         <div class="data-cell miles-left">-</div>
         <div class="result-cell">-</div>
+        <div class="overpaid-cell">-</div>
         <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
     </div>
 
@@ -279,6 +295,7 @@
         <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
         <div class="data-cell miles-left">-</div>
         <div class="result-cell">-</div>
+        <div class="overpaid-cell">-</div>
         <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
     </div>
 </div>
@@ -290,6 +307,7 @@
     <p><strong>Method:</strong> We subtract current mileage from the maximum lifespan to find <strong>Miles Left</strong>. We then divide the price by those miles to find the base <strong>Price Per Mile</strong>. Optional fuel and maintenance costs can be added to create a more complete ownership cost per mile. The vehicle with the best value is highlighted in green.</p>
     <p><strong>Maintenance Curve:</strong> When enabled, maintenance is estimated at $0.04/mile from 0–50,000 miles, $0.08/mile from 50,000–100,000, $0.12/mile from 100,000–150,000, and $0.16/mile above 150,000 miles. The calculator applies the appropriate rates across the vehicle's remaining lifespan and uses the resulting average maintenance cost per mile.</p>
     <p><strong>Fuel Cost:</strong> When enabled, enter each vehicle's estimated MPG. Fuel cost per mile is calculated using the gas price divided by MPG and added to the vehicle's total cost per mile.</p>
+    <p><strong>Overpaid:</strong> This represents the total extra cash penalty you absorb across that vehicle's remaining miles compared to the best value vehicle in the list.</p>
 </div>
 ```
 
@@ -329,8 +347,8 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
         const rows = document.getElementsByClassName('vehicle-row');
 
         if (fuelEnabled) {
-            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 40px';
-            
+            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 1.25fr 40px';
+
             if (!header.querySelector('.mpg-header')) {
                 const mpgHeader = document.createElement('div');
                 mpgHeader.className = 'mpg-header';
@@ -339,7 +357,7 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             }
 
             for (let row of rows) {
-                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 40px';
+                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 0.9fr 0.9fr 1.2fr 1.25fr 40px';
 
                 if (!row.querySelector('.mpg-input')) {
                     const mpgInput = document.createElement('input');
@@ -354,7 +372,7 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
                 }
             }
         } else {
-            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 40px';
+            header.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px';
 
             const mpgHeader = header.querySelector('.mpg-header');
             if (mpgHeader) {
@@ -362,7 +380,7 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             }
 
             for (let row of rows) {
-                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 40px';
+                row.style.gridTemplateColumns = '1.2fr 1fr 1fr 1fr 1.2fr 1.25fr 40px';
 
                 const mpgInput = row.querySelector('.mpg-input');
                 if (mpgInput) {
@@ -461,6 +479,7 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             <input type="text" class="mileage-input" placeholder="0" oninput="formatNumber(this)">
             <div class="data-cell miles-left">-</div>
             <div class="result-cell">-</div>
+            <div class="overpaid-cell">-</div>
             <button class="remove-btn" onclick="this.parentElement.remove(); calculateAll();">×</button>
         `;
 
@@ -484,9 +503,10 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
         const gasPrice = parseFloat(gasPriceStr) || 0;
 
         const rows = document.getElementsByClassName('vehicle-row');
-        
+
         let bestCost = Infinity;
         let bestRow = null;
+        const validRows = [];
 
         for (let row of rows) {
             row.classList.remove('winner');
@@ -501,10 +521,16 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
 
             const leftDisplay = row.querySelector('.miles-left');
             const output = row.querySelector('.result-cell');
+            const overpaid = row.querySelector('.overpaid-cell');
+
+            // Reset display state on every calculation.
+            output.style.color = "#007bff";
+            overpaid.style.color = "#dc3545";
 
             if (isNaN(price) || isNaN(mileage)) {
                 leftDisplay.innerText = "-";
                 output.innerText = "-";
+                overpaid.innerText = "-";
                 continue;
             }
 
@@ -517,6 +543,7 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             if (remainingMiles <= 0) {
                 output.innerHTML = "MAX LIFE REACHED<br><span class='status-msg'>Check Max Lifespan</span>";
                 output.style.color = "#dc3545";
+                overpaid.innerText = "-";
                 continue;
             }
 
@@ -529,13 +556,22 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             if (fuelEnabled) {
                 const mpgInput = row.querySelector('.mpg-input');
 
-                if (mpgInput) {
-                    const mpg = parseFloat(mpgInput.value.replace(/[^\d.]/g, ""));
-
-                    if (!isNaN(mpg) && mpg > 0) {
-                        fuelCostPerMile = gasPrice / mpg;
-                    }
+                if (!mpgInput) {
+                    overpaid.innerText = "-";
+                    output.innerText = "-";
+                    continue;
                 }
+
+                const mpg = parseFloat(mpgInput.value.replace(/[^\d.]/g, ""));
+
+                // Fuel mode requires a valid MPG input.
+                if (isNaN(mpg) || mpg <= 0) {
+                    overpaid.innerText = "-";
+                    output.innerText = "-";
+                    continue;
+                }
+
+                fuelCostPerMile = gasPrice / mpg;
             }
 
             /* Average maintenance cost per remaining mile */
@@ -554,6 +590,13 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
 
             output.innerText = "$" + totalCostPerMile.toFixed(3);
             output.style.color = "#007bff";
+            overpaid.innerText = "-";
+
+            validRows.push({
+                row,
+                totalCostPerMile,
+                remainingMiles
+            });
 
             if (totalCostPerMile < bestCost) {
                 bestCost = totalCostPerMile;
@@ -561,12 +604,27 @@ Questions or comments? Email me at <a href="mailto:john@proudarts.com">john@prou
             }
         }
 
-        const activeCalcs = Array.from(rows)
-            .filter(r => r.querySelector('.result-cell').innerText.includes('$'))
-            .length;
+        // The lowest combined cost per mile is the baseline deal.
+        // Overpaid is the extra cost absorbed across each vehicle's remaining miles.
+        if (bestRow && validRows.length > 0) {
+            for (const vehicle of validRows) {
+                const overpaid = vehicle.row.querySelector('.overpaid-cell');
 
-        if (bestRow && activeCalcs > 1) {
-            bestRow.classList.add('winner');
+                if (vehicle.row === bestRow) {
+                    vehicle.row.classList.add('winner');
+                    vehicle.row.querySelector('.result-cell').style.color = "#28a745";
+                    overpaid.innerText = "Best Value ($0)";
+                    overpaid.style.color = "#28a745";
+                } else {
+                    const penalty =
+                        (vehicle.totalCostPerMile - bestCost) *
+                        vehicle.remainingMiles;
+
+                    overpaid.innerText =
+                        "+$" + Math.round(penalty).toLocaleString();
+                    overpaid.style.color = "#dc3545";
+                }
+            }
         }
     }
 
