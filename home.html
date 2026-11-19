@@ -199,3 +199,160 @@
     </header>
 
     <div class="controls">
+      <input type="search" id="searchInput" placeholder="Filter projects by name or URL..." />
+      <button id="refreshBtn" title="Fetch latest files from GitHub">Refresh List</button>
+    </div>
+
+    <div class="status-bar">
+      <span id="countLabel">Scanning repository...</span>
+      <span id="repoLabel">Source: github.com/ProudArts/website</span>
+    </div>
+
+    <div id="grid" class="grid"></div>
+  </div>
+
+  <script>
+    const OWNER = "ProudArts";
+    const REPO = "website";
+    const API_URL = `https://api.github.com/repos/${OWNER}/${REPO}/contents/`;
+    const CACHE_KEY = "proudarts_repo_index_v1";
+    const CACHE_TTL_MS = 10 * 60 * 1000;
+
+    // Files and folders to hide from the directory
+    const IGNORE_NAMES = new Set([
+      "index.html",
+      "home.html",
+      "hub.html",
+      "404.html",
+      "cname",
+      "readme.md",
+      ".gitignore",
+      ".github",
+      "assets",
+      "images",
+      "img",
+      "icons",
+      "privacy",
+      "css",
+      "js",
+      "fonts"
+    ]);
+
+    let allItems = [];
+
+    function formatTitle(filename) {
+      return filename
+        .replace(/\.html$/i, "")
+        .replace(/[-_]+/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase())
+        .replace(/\bAtt\b/g, "AT&T")
+        .replace(/\bVerizon\b/g, "Verizon");
+    }
+
+    function renderItems(items) {
+      const grid = document.getElementById("grid");
+      const countLabel = document.getElementById("countLabel");
+
+      if (!items.length) {
+        countLabel.textContent = "0 matching items";
+        grid.innerHTML = `<div class="empty" style="grid-column: 1 / -1;">No matching pages or tools found.</div>`;
+        return;
+      }
+
+      countLabel.textContent = `Showing ${items.length} ${items.length === 1 ? "project" : "projects"}`;
+
+      grid.innerHTML = items.map((item) => {
+        const isDir = item.type === "dir";
+        const href = isDir ? `/${item.name}/` : `/${item.name}`;
+        const badgeClass = isDir ? "badge-app" : "badge-page";
+        const badgeText = isDir ? "App / Folder" : "Page";
+        const title = formatTitle(item.name);
+
+        return `
+          <a class="card" href="${href}">
+            <div>
+              <div class="card-top">
+                <span class="badge ${badgeClass}">${badgeText}</span>
+                <span style="color: var(--muted); font-size: 0.85rem;">&nearr;</span>
+              </div>
+              <h2>${title}</h2>
+            </div>
+            <div class="path">proudarts.com${href}</div>
+          </a>
+        `;
+      }).join("");
+    }
+
+    async function loadDirectory(forceRefresh = false) {
+      const grid = document.getElementById("grid");
+      const countLabel = document.getElementById("countLabel");
+
+      if (!forceRefresh) {
+        try {
+          const cached = JSON.parse(localStorage.getItem(CACHE_KEY));
+          if (cached && Date.now() - cached.timestamp < CACHE_TTL_MS) {
+            allItems = cached.items;
+            renderItems(allItems);
+            return;
+          }
+        } catch (e) {}
+      }
+
+      countLabel.textContent = "Fetching live file list from GitHub...";
+
+      try {
+        const response = await fetch(API_URL);
+        if (!response.ok) {
+          throw new Error(`GitHub API returned ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        allItems = data
+          .filter((entry) => {
+            const lower = entry.name.toLowerCase();
+            if (lower.startsWith(".")) return false;
+            if (IGNORE_NAMES.has(lower)) return false;
+            return entry.type === "dir" || lower.endsWith(".html");
+          })
+          .sort((a, b) => a.name.localeCompare(b.name));
+
+        localStorage.setItem(
+          CACHE_KEY,
+          JSON.stringify({ timestamp: Date.now(), items: allItems })
+        );
+
+        renderItems(allItems);
+      } catch (err) {
+        countLabel.textContent = "Error loading directory";
+        grid.innerHTML = `
+          <div class="error" style="grid-column: 1 / -1;">
+            Could not load repository contents (${err.message}). If GitHub rate-limited your IP, wait a few minutes and refresh.
+          </div>
+        `;
+      }
+    }
+
+    document.getElementById("searchInput").addEventListener("input", (e) => {
+      const q = e.target.value.trim().toLowerCase();
+      if (!q) {
+        renderItems(allItems);
+        return;
+      }
+      const filtered = allItems.filter(
+        (item) =>
+          item.name.toLowerCase().includes(q) ||
+          formatTitle(item.name).toLowerCase().includes(q)
+      );
+      renderItems(filtered);
+    });
+
+    document.getElementById("refreshBtn").addEventListener("click", () => {
+      localStorage.removeItem(CACHE_KEY);
+      loadDirectory(true);
+    });
+
+    loadDirectory();
+  </script>
+</body>
+</html>
